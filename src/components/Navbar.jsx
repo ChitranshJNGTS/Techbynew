@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { FaUserCircle, FaLock, FaBars, FaTimes } from "react-icons/fa";
 import { IoChevronDown } from "react-icons/io5";
+import API from "../Api/JobApi";
 import { Link } from "react-router-dom";
 
 export default function Navbar({ onLoginClick }) {
@@ -8,12 +9,29 @@ export default function Navbar({ onLoginClick }) {
 const [user, setUser] = useState(null);
 
 useEffect(() => {
-  const storedUser = localStorage.getItem("user");
-
-  if (storedUser) {
-    setUser(JSON.parse(storedUser));
-  }
+  getProfile();
 }, []);
+
+const getProfile = async () => {
+  try {
+    const token = localStorage.getItem("token");
+
+    if (!token) return;
+
+    const { data } = await API.get("/users/profile", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    if (data.success) {
+      setUser(data.user);
+    }
+  } catch (err) {
+    console.log(err);
+    setUser(null);
+  }
+};
 
   return (
    <nav className="fixed top-0 left-0 right-0 z-50 border-b border-white/20 bg-slate-900/80 backdrop-blur-md">

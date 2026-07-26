@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const API = axios.create({
-  baseURL: "http://localhost:5050/api",
+  baseURL: import.meta.env.VITE_API_URL || "http://localhost:5060/api",
 });
 
 // Send JWT token with every request
@@ -11,6 +11,11 @@ API.interceptors.request.use(
 
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
+    }
+
+    // Remove Content-Type for FormData
+    if (config.data instanceof FormData) {
+      delete config.headers["Content-Type"];
     }
 
     return config;
