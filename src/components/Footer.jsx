@@ -1,3 +1,4 @@
+
 import {
   FaFacebookF,
   FaTwitter,
@@ -9,81 +10,100 @@ import {
   FaPhoneAlt,
   FaArrowRight,
 } from "react-icons/fa";
-     import { Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 
+const quickLinks = [
+  { name: "Home", path: "/" },
+  { name: "Browse Jobs", path: "/all-jobs" },
+  { name: "About Us", path: "/about" },
+  { name: "Contact Us", path: "/contact" },
+  { name: "Privacy Policy", path: "/privacy-policy" },
+  { name: "Terms & Conditions", path: "/terms-condition" },
+];
+
+const jobCategories = [
+  "Software Development",
+  "UI/UX Design",
+  "Marketing",
+  "Finance",
+  "Healthcare",
+  "Customer Support",
+];
 
 export default function Footer() {
+  const handleCategoryClick = (category) => {
+    // Query parameter will be used by All Jobs page
+    return `/all-jobs?search=${encodeURIComponent(category)}`;
+  };
+
   return (
-    <footer className="bg-slate-950 border-t border-slate-800 text-slate-300">
-      {/* Top CTA */}
-      {/* <div className="max-w-7xl mx-auto px-6 py-16">
-        <div className="bg-gradient-to-r from-emerald-500 to-green-600 rounded-3xl p-10 flex flex-col lg:flex-row justify-between items-center gap-8">
-
-          <div>
-            <h2 className="text-4xl font-bold text-white">
-              Ready to Find Your Dream Job?
-            </h2>
-
-            <p className="text-green-100 mt-3 max-w-xl">
-              Join thousands of job seekers and employers who trust our platform
-              every day.
-            </p>
-          </div>
-
-          <button className="bg-white text-emerald-600 font-semibold px-8 py-4 rounded-xl hover:bg-slate-100 transition">
-            Get Started
-          </button>
-        </div>
-      </div> */}
+    <footer className="bg-slate-950 text-slate-400">
 
       {/* Main Footer */}
-
       <div className="max-w-7xl mx-auto px-6 py-20 grid lg:grid-cols-4 md:grid-cols-2 gap-12">
 
         {/* Company */}
-
         <div>
-          <h2 className="text-3xl font-bold text-white">
-            Tech<span className="text-emerald-400">By</span>
-          </h2>
+          <Link to="/">
+            <h2 className="text-3xl font-bold text-white">
+              Tech<span className="text-emerald-400">By</span>
+            </h2>
+          </Link>
 
           <p className="mt-6 leading-8 text-slate-400">
-            India's trusted job platform connecting talented professionals with
-            top companies across multiple industries.
+            A simple and growing platform connecting talented professionals
+            with companies and helping candidates discover the right
+            opportunities.
           </p>
 
-          <div className="flex gap-4 mt-8">
+          {/* Social Links */}
+          <div className="flex gap-3 mt-8">
 
             <a
-              href="#"
+              href="https://facebook.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Facebook"
               className="w-11 h-11 rounded-full bg-slate-900 flex items-center justify-center hover:bg-emerald-500 hover:text-white transition"
             >
               <FaFacebookF />
             </a>
 
             <a
-              href="#"
+              href="https://twitter.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Twitter"
               className="w-11 h-11 rounded-full bg-slate-900 flex items-center justify-center hover:bg-emerald-500 hover:text-white transition"
             >
               <FaTwitter />
             </a>
 
             <a
-              href="#"
+              href="https://linkedin.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="LinkedIn"
               className="w-11 h-11 rounded-full bg-slate-900 flex items-center justify-center hover:bg-emerald-500 hover:text-white transition"
             >
               <FaLinkedinIn />
             </a>
 
             <a
-              href="#"
+              href="https://instagram.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Instagram"
               className="w-11 h-11 rounded-full bg-slate-900 flex items-center justify-center hover:bg-emerald-500 hover:text-white transition"
             >
               <FaInstagram />
             </a>
 
             <a
-              href="#"
+              href="https://github.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="GitHub"
               className="w-11 h-11 rounded-full bg-slate-900 flex items-center justify-center hover:bg-emerald-500 hover:text-white transition"
             >
               <FaGithub />
@@ -93,144 +113,89 @@ export default function Footer() {
         </div>
 
         {/* Quick Links */}
+        <div>
+          <h3 className="text-white text-xl font-semibold mb-6">
+            Quick Links
+          </h3>
 
-<div>
-  <h3 className="text-white text-xl font-semibold mb-6">
-    Quick Links
-  </h3>
-
-  <ul className="space-y-4">
-
-    {[
-      {
-        name: "Home",
-        path: "/"
-      },
-      {
-        name: "Browse Jobs",
-        path: "/jobs"
-      },
-      {
-        name: "About",
-        path: "/about"
-      },
-      {
-        name: "Contact",
-        path: "/contact"
-      },
-      {
-        name: "Privacy Policy",
-        path: "/privacy-policy"
-      },
-      {
-        name: "Terms & Condition",
-        path: "/terms-condition"
-      }
-
-    ].map((item) => (
-
-      <li key={item.name}>
-
-        <Link
-          to={item.path}
-          className="
-          flex 
-          items-center 
-          gap-2 
-          text-slate-400
-          hover:text-emerald-400 
-          transition
-          "
-        >
-
-          <FaArrowRight className="text-xs" />
-
-          {item.name}
-
-        </Link>
-
-      </li>
-
-    ))}
-
-  </ul>
-
-</div>
+          <ul className="space-y-4">
+            {quickLinks.map((item) => (
+              <li key={item.name}>
+                <Link
+                  to={item.path}
+                  className="flex items-center gap-2 text-slate-400 hover:text-emerald-400 transition"
+                >
+                  <FaArrowRight className="text-xs" />
+                  {item.name}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
 
         {/* Job Categories */}
-
         <div>
           <h3 className="text-white text-xl font-semibold mb-6">
             Job Categories
           </h3>
 
           <ul className="space-y-4">
-
-            {[
-              "Software Development",
-              "UI/UX Design",
-              "Marketing",
-              "Finance",
-              "Healthcare",
-              "Customer Support",
-
-            ].map((item) => (
-              <li key={item}>
-                <a
-                  href="#"
-                  className="flex items-center gap-2 hover:text-emerald-400 transition"
+            {jobCategories.map((category) => (
+              <li key={category}>
+                <Link
+                  to={handleCategoryClick(category)}
+                  className="flex items-center gap-2 text-slate-400 hover:text-emerald-400 transition"
                 >
                   <FaArrowRight className="text-xs" />
-                  {item}
-                </a>
+                  {category}
+                </Link>
               </li>
             ))}
-
           </ul>
         </div>
 
         {/* Contact */}
-
         <div>
-
           <h3 className="text-white text-xl font-semibold mb-6">
             Contact Us
           </h3>
 
           <div className="space-y-6">
 
+            {/* Location */}
             <div className="flex gap-4">
-
-              <FaMapMarkerAlt className="text-emerald-400 mt-1" />
+              <FaMapMarkerAlt className="text-emerald-400 mt-1 shrink-0" />
 
               <p>
                 Indore,
                 <br />
                 Madhya Pradesh, India
               </p>
-
             </div>
 
-            <div className="flex gap-4">
+            {/* Email */}
+            <a
+              href="mailto:support@techby.in"
+              className="flex gap-4 hover:text-emerald-400 transition"
+            >
+              <FaEnvelope className="text-emerald-400 mt-1 shrink-0" />
 
-              <FaEnvelope className="text-emerald-400 mt-1" />
+              <p>support@techby.in</p>
+            </a>
 
-              <p>support@jobportal.com</p>
-
-            </div>
-
-            <div className="flex gap-4">
-
-              <FaPhoneAlt className="text-emerald-400 mt-1" />
+            {/* Phone */}
+            <a
+              href="tel:+917879746796"
+              className="flex gap-4 hover:text-emerald-400 transition"
+            >
+              <FaPhoneAlt className="text-emerald-400 mt-1 shrink-0" />
 
               <p>+91 7879746796</p>
-
-            </div>
+            </a>
 
           </div>
 
           {/* Newsletter */}
-
           <div className="mt-8">
 
             <h4 className="text-white font-semibold mb-4">
@@ -238,54 +203,63 @@ export default function Footer() {
             </h4>
 
             <div className="flex">
-
               <input
                 type="email"
                 placeholder="Enter email"
-                className="flex-1 bg-slate-900 border border-slate-700 rounded-l-xl px-4 py-3 outline-none focus:border-emerald-500"
+                className="flex-1 min-w-0 bg-slate-900 border border-slate-700 rounded-l-xl px-4 py-3 outline-none focus:border-emerald-500 text-white"
               />
 
-              <button className="bg-emerald-500 px-6 rounded-r-xl hover:bg-emerald-600 transition text-white">
+              <button
+                type="button"
+                className="bg-emerald-500 px-6 rounded-r-xl hover:bg-emerald-600 transition text-white font-medium"
+              >
                 Join
               </button>
-
             </div>
 
           </div>
-
         </div>
 
       </div>
 
       {/* Bottom */}
-
       <div className="border-t border-slate-800">
 
         <div className="max-w-7xl mx-auto px-6 py-6 flex flex-col md:flex-row justify-between items-center gap-4">
 
-          <p className="text-slate-400">
-            © {new Date().getFullYear()} JobPortal. All Rights Reserved.
+          <p className="text-slate-400 text-sm text-center md:text-left">
+            © {new Date().getFullYear()} TechBy. All Rights Reserved.
           </p>
 
-          <div className="flex gap-8">
+          <div className="flex flex-wrap justify-center gap-6 text-sm">
 
-            <a href="#" className="hover:text-emerald-400 transition">
+            <Link
+              to="/privacy-policy"
+              className="hover:text-emerald-400 transition"
+            >
               Privacy Policy
-            </a>
+            </Link>
 
-            <a href="#" className="hover:text-emerald-400 transition">
+            <Link
+              to="/terms-condition"
+              className="hover:text-emerald-400 transition"
+            >
               Terms & Conditions
-            </a>
+            </Link>
 
-            <a href="#" className="hover:text-emerald-400 transition">
-              Cookies
-            </a>
+            <Link
+              to="/cookie-policy"
+              className="hover:text-emerald-400 transition"
+            >
+              Cookie Policy
+            </Link>
 
           </div>
 
         </div>
 
       </div>
+
     </footer>
   );
 }

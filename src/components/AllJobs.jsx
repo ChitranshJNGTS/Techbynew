@@ -101,126 +101,66 @@ export default function AllJobs() {
       <Navbar />
       <section className="bg-slate-950 pt-20 pb-24 lg:pb-0 min-h-screen">
         {/* Hero */}
+<div className="bg-gradient-to-r from-slate-900 to-slate-800 py-16 sm:py-20 border-b border-slate-800">
+  <div className="max-w-7xl mx-auto px-4 sm:px-6">
+    <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white">
+      Browse Jobs
+    </h1>
 
-        <div className="bg-gradient-to-r from-slate-900 to-slate-800 py-20 border-b border-slate-800">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6">
-            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white">
-              Browse Jobs
-            </h1>
+    <p className="text-slate-400 mt-4 text-sm sm:text-base">
+      Discover thousands of verified jobs from top companies.
+    </p>
 
-            <p className="text-slate-400 mt-4 text-sm sm:text-base">
-              Discover thousands of verified jobs from top companies.
-            </p>
+    <div className="mt-6 bg-slate-900/80 border border-slate-800 rounded-2xl p-3 sm:p-4 flex flex-col lg:flex-row gap-3">
 
-            <div
-              className="
-    grid 
-    grid-cols-1 
-    sm:grid-cols-2 
-    lg:grid-cols-4 
-    gap-4 
-    bg-slate-900 
-    mt-8 
-    sm:mt-10 
-    rounded-2xl 
-    p-4 
-    sm:p-5
-  "
-            >
-              {/* Job Search */}
+      {/* Job Search */}
+      <div className="relative flex-[1.5]">
+        <FaSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" />
 
-              <div className="relative">
-                <FaSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" />
+        <input
+          placeholder="Job title, skills or keywords"
+          value={keyword}
+          onChange={(e) => setKeyword(e.target.value)}
+          className="w-full h-12 bg-slate-950 border border-slate-700 rounded-xl pl-11 pr-4 text-white text-sm outline-none focus:border-emerald-500 transition"
+        />
+      </div>
 
-                <input
-                  placeholder="Job title..."
-                  value={keyword}
-                  onChange={(e) => setKeyword(e.target.value)}
-                  className="
-          w-full 
-          h-12
-          bg-slate-950 
-          border 
-          border-slate-700 
-          rounded-xl 
-          pl-12 
-          pr-4
-          text-white 
-          outline-none 
-          focus:border-emerald-500
-        "
-                />
-              </div>
+      {/* Location */}
+      <div className="relative flex-1">
+        <FaMapMarkerAlt className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" />
 
-              {/* Location */}
+        <input
+          placeholder="City or location"
+          value={location}
+          onChange={(e) => setLocation(e.target.value)}
+          className="w-full h-12 bg-slate-950 border border-slate-700 rounded-xl pl-11 pr-4 text-white text-sm outline-none focus:border-emerald-500 transition"
+        />
+      </div>
 
-              <div className="relative">
-                <FaMapMarkerAlt className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" />
+      {/* Job Type */}
+      <select
+        value={jobType}
+        onChange={(e) => setJobType(e.target.value)}
+        className="h-12 lg:w-40 bg-slate-950 border border-slate-700 rounded-xl px-4 text-white text-sm outline-none focus:border-emerald-500 transition"
+      >
+        <option>All</option>
+        <option>Full Time</option>
+        <option>Part Time</option>
+        <option>Internship</option>
+        <option>Remote</option>
+      </select>
 
-                <input
-                  placeholder="Location"
-                  value={location}
-                  onChange={(e) => setLocation(e.target.value)}
-                  className="
-          w-full
-          h-12
-          bg-slate-950 
-          border 
-          border-slate-700 
-          rounded-xl 
-          pl-12
-          pr-4
-          text-white 
-          outline-none 
-          focus:border-emerald-500
-        "
-                />
-              </div>
+      {/* Search Button */}
+      <button
+        className="h-12 lg:w-36 bg-emerald-500 hover:bg-emerald-600 rounded-xl text-white text-sm font-semibold transition flex items-center justify-center gap-2"
+      >
+        <FaSearch className="text-sm" />
+        Search
+      </button>
+    </div>
+  </div>
+</div>
 
-              {/* Job Type */}
-
-              <select
-                value={jobType}
-                onChange={(e) => setJobType(e.target.value)}
-                className="
-        w-full
-        h-12
-        bg-slate-950 
-        border 
-        border-slate-700 
-        rounded-xl 
-        px-4 
-        text-white
-        outline-none
-        focus:border-emerald-500
-      "
-              >
-                <option>All</option>
-                <option>Full Time</option>
-                <option>Part Time</option>
-                <option>Internship</option>
-                <option>Remote</option>
-              </select>
-
-              {/* Search Button */}
-
-              <button
-                className="
-        w-full
-        h-12
-        bg-emerald-500 
-        hover:bg-emerald-600 
-        rounded-xl 
-        text-white 
-        font-semibold
-        transition
-      "
-              >
-                Search Jobs
-              </button>
-            </div>
-          </div>
-        </div>
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 lg:py-12 grid grid-cols-1 lg:grid-cols-4 gap-8">
           {/* Sidebar */}

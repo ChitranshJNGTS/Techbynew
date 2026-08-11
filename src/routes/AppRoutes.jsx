@@ -23,7 +23,7 @@ export default function AppRoutes() {
       {/* Public Routes */}
       <Route path="/" element={<Home />} />
       <Route path="/all-jobs" element={<AllJobs />} />
-      <Route path="/book-interview" element={<DemoInterview />} />
+      <Route path="/mock-interview" element={<DemoInterview />} />
        <Route path="/login" element={<Login />} />
         <Route path="/jobs/:id" element={<JobDescription />} />
          <Route path="/about" element={<About />} />
@@ -34,7 +34,7 @@ export default function AppRoutes() {
               <Route path="/admin" element={<AdminDashboard/>} />
               <Route path="/recruiter/post-job" element={<PostJob />} />
               <Route path="/admin/login" element={<AdminLogin />} />
-              <Route path="/training-program" element={<TrainingProgram />} />
+              <Route path="/training" element={<TrainingProgram />} />
     </Routes>
   );
 }

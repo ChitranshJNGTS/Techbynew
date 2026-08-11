@@ -1,43 +1,74 @@
+
 import { useEffect, useState } from "react";
-import { FaUserCircle, FaLock, FaBars, FaTimes } from "react-icons/fa";
-import { IoChevronDown } from "react-icons/io5";
+import {
+  FaUserCircle,
+  FaLock,
+  FaBars,
+  FaTimes,
+  FaHome,
+  FaBriefcase,
+  FaGraduationCap,
+  FaVideo,
+} from "react-icons/fa";
 import API from "../Api/JobApi";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 export default function Navbar({ onLoginClick }) {
- const [menuOpen, setMenuOpen] = useState(false);
-const [user, setUser] = useState(null);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [user, setUser] = useState(null);
 
-useEffect(() => {
-  getProfile();
-}, []);
+  const location = useLocation();
 
-const getProfile = async () => {
-  try {
-    const token = localStorage.getItem("token");
+  useEffect(() => {
+    getProfile();
+  }, []);
 
-    if (!token) return;
+  const getProfile = async () => {
+    try {
+      const token = localStorage.getItem("token");
 
-    const { data } = await API.get("/users/profile", {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+      if (!token) {
+        setUser(null);
+        return;
+      }
 
-    if (data.success) {
-      setUser(data.user);
+      const { data } = await API.get("/users/profile", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (data.success) {
+        setUser(data.user);
+      }
+    } catch (err) {
+      console.log(err);
+      setUser(null);
     }
-  } catch (err) {
-    console.log(err);
-    setUser(null);
-  }
-};
+  };
+
+  const isActive = (path) => location.pathname === path;
+
+  const navLinkClass = (path) =>
+    `flex items-center gap-2 transition px-3 py-2 rounded-lg ${
+      isActive(path)
+        ? "text-emerald-400 bg-emerald-500/10"
+        : "text-slate-300 hover:text-emerald-400 hover:bg-slate-800"
+    }`;
+
+  const closeMenu = () => {
+    setMenuOpen(false);
+  };
 
   return (
-   <nav className="fixed top-0 left-0 right-0 z-50 border-b border-white/20 bg-slate-900/80 backdrop-blur-md">
-      <div className="max-w-7xl mx-auto px-5 lg:px-8 h-20 lg:h-20 flex justify-between items-center">
-        {/* Logo */}
-        <Link to={"/"} className="flex items-center gap-3">
+    <nav className="fixed top-0 left-0 right-0 z-50 bg-slate-950/95 backdrop-blur-md border-b border-slate-800">
+
+      {/* Main Navbar */}
+      <div className="max-w-7xl mx-auto px-6">
+        <div className="h-20 flex items-center justify-between">
+
+          {/* Logo */}
+            <Link to={"/"} className="flex items-center gap-3">
           <div className="w-10 h-10 lg:w-12 lg:h-12 rounded-full border-4 border-green-500 flex items-center justify-center">
             <span className="text-green-500 font-bold text-xl lg:text-2xl">
               TB
@@ -49,229 +80,219 @@ const getProfile = async () => {
           </h1>
         </Link>
 
-       {/* Desktop Menu */}
-<ul className="hidden lg:flex items-center gap-10 text-white font-medium">
-  <li>
-    <Link
-      to="/"
-      className="hover:text-green-400 transition"
-    >
-      Home
-    </Link>
-  </li>
+          {/* Desktop Menu */}
+          <div className="hidden lg:flex items-center gap-2">
 
+            <Link to="/" className={navLinkClass("/")}>
+              <FaHome />
+              Home
+            </Link>
 
-  <li>
-    <Link
-      to="/all-jobs"
-      className="hover:text-green-400 transition"
-    >
-      Jobs
-    </Link>
-  </li>
+            <Link to="/all-jobs" className={navLinkClass("/all-jobs")}>
+              <FaBriefcase />
+              Jobs
+            </Link>
 
-  <li>
-    <Link
-      to="/book-interview"
-      className="hover:text-green-400 transition"
-    >
-      Book Interview
-    </Link>
-  </li>
+            {/* <Link
+              to="/training"
+              className={navLinkClass("/training")}
+            >
+              <FaGraduationCap />
+              Training
+            </Link> */}
 
- 
-</ul>
+            <Link
+              to="/mock-interview"
+              className={navLinkClass("/mock-interview")}
+            >
+              <FaVideo />
+              Mock Interview
+            </Link>
 
-        {/* Desktop Buttons */}
-      <div className="hidden lg:flex items-center gap-6">
+          </div>
 
-  {user ? (
+          {/* Desktop Buttons */}
+          <div className="hidden lg:flex items-center gap-4">
 
-    <Link
-      to="/profile"
-      className="flex items-center gap-3 hover:bg-slate-800 px-3 py-2 rounded-xl transition"
-    >
+            {user ? (
+              <Link
+                to="/profile"
+                className={`flex items-center gap-3 px-3 py-2 rounded-xl transition ${
+                  isActive("/profile")
+                    ? "bg-emerald-500/10"
+                    : "hover:bg-slate-800"
+                }`}
+              >
+                <img
+                  src={
+                    user.profileImage ||
+                    `https://ui-avatars.com/api/?name=${encodeURIComponent(
+                      user.name
+                    )}&background=10b981&color=fff`
+                  }
+                  alt={user.name}
+                  className="w-10 h-10 rounded-full object-cover"
+                />
 
-      <img
-        src={
-          user.profileImage ||
-          `https://ui-avatars.com/api/?name=${encodeURIComponent(
-            user.name
-          )}&background=10b981&color=fff`
-        }
-        alt={user.name}
-        className="w-10 h-10 rounded-full object-cover"
-      />
+                <div>
+                  <p className="text-white font-semibold">
+                    {user.name}
+                  </p>
 
-      <div>
+                  <p
+                    className={`text-xs ${
+                      isActive("/profile")
+                        ? "text-emerald-400"
+                        : "text-slate-400"
+                    }`}
+                  >
+                    My Profile
+                  </p>
+                </div>
+              </Link>
+            ) : (
+              <>
+                <Link
+                  to="/login"
+                  className="flex items-center gap-2 text-white hover:text-emerald-400 transition"
+                >
+                  <FaLock />
+                  Log In
+                </Link>
 
-        <p className="text-white font-semibold">
-          {user.name}
-        </p>
+                <Link
+                  to="/login"
+                  className="flex items-center gap-2 bg-emerald-500 px-5 py-2 rounded-lg text-white hover:bg-emerald-600 transition"
+                >
+                  <FaUserCircle />
+                  Register
+                </Link>
+              </>
+            )}
 
-        <p className="text-slate-400 text-xs">
-          My Profile
-        </p>
+          </div>
 
-      </div>
+          {/* Mobile Menu Button */}
+          <button
+            className="lg:hidden text-white text-2xl"
+            onClick={() => setMenuOpen(!menuOpen)}
+          >
+            {menuOpen ? <FaTimes /> : <FaBars />}
+          </button>
 
-    </Link>
-
-  ) : (
-
-    <>
-      <Link
-        to="/login"
-        className="flex items-center gap-2 text-white hover:text-green-400 transition"
-      >
-        <FaLock />
-        Log In
-      </Link>
-
-      <Link
-        to="/login"
-        className="flex items-center gap-2 bg-green-500 px-5 py-2 rounded-lg text-white hover:bg-green-600 transition"
-      >
-        <FaUserCircle />
-        Register
-      </Link>
-    </>
-
-  )}
-
-</div>
-
-        {/* Mobile Menu Button */}
-        <button
-          className="lg:hidden text-white text-2xl"
-          onClick={() => setMenuOpen(!menuOpen)}
-        >
-          {menuOpen ? <FaTimes /> : <FaBars />}
-        </button>
+        </div>
       </div>
 
       {/* Mobile Menu */}
       <div
         className={`lg:hidden overflow-hidden transition-all duration-300 bg-slate-900/95 backdrop-blur-md ${
-          menuOpen ? "max-h-[500px]" : "max-h-0"
+          menuOpen ? "max-h-[700px]" : "max-h-0"
         }`}
       >
-       <ul className="flex flex-col px-6 py-4 text-white font-medium">
+        <div className="px-6 py-5">
 
-  <li className="py-3 border-b border-slate-700">
-    <Link
-      to="/"
-      className="block hover:text-green-400"
-      onClick={() => setMenuOpen(false)}
-    >
-      Home
-    </Link>
-  </li>
+          {/* Mobile User Details */}
+          {user ? (
+            <Link
+              to="/profile"
+              onClick={closeMenu}
+              className={`flex items-center gap-4 p-4 rounded-2xl mb-5 border transition ${
+                isActive("/profile")
+                  ? "bg-emerald-500/10 border-emerald-500/40"
+                  : "bg-slate-800/50 border-slate-700 hover:border-emerald-500/40"
+              }`}
+            >
+              <img
+                src={
+                  user.profileImage ||
+                  `https://ui-avatars.com/api/?name=${encodeURIComponent(
+                    user.name
+                  )}&background=10b981&color=fff`
+                }
+                alt={user.name}
+                className="w-14 h-14 rounded-full object-cover"
+              />
 
-  <li className="py-3 border-b border-slate-700">
-    <Link
-      to="/about"
-      className="block hover:text-green-400"
-      onClick={() => setMenuOpen(false)}
-    >
-      About Us
-    </Link>
-  </li>
+              <div>
+                <h3 className="text-white font-semibold">
+                  {user.name}
+                </h3>
 
-  <li className="py-3 border-b border-slate-700">
-    <Link
-      to="/all-jobs"
-      className="block hover:text-green-400"
-      onClick={() => setMenuOpen(false)}
-    >
-      Jobs
-    </Link>
-  </li>
+                <p className="text-slate-400 text-sm">
+                  {user.email}
+                </p>
 
-  <li className="py-3 border-b border-slate-700">
-    <Link
-      to="/book-interview"
-      className="block hover:text-green-400"
-      onClick={() => setMenuOpen(false)}
-    >
-      Book Interview
-    </Link>
-  </li>
+                <p className="text-emerald-400 text-xs mt-1">
+                  View Profile
+                </p>
+              </div>
+            </Link>
+          ) : (
+            <div className="flex gap-3 mb-5">
 
-  <li className="py-3 border-b border-slate-700">
-    <Link
-      to="/contact"
-      className="block hover:text-green-400"
-      onClick={() => setMenuOpen(false)}
-    >
-      Contact Us
-    </Link>
-  </li>
+              <Link
+                to="/login"
+                onClick={closeMenu}
+                className="flex-1 flex items-center justify-center gap-2 border border-slate-700 text-white py-3 rounded-xl hover:border-emerald-500 hover:text-emerald-400 transition"
+              >
+                <FaLock />
+                Log In
+              </Link>
 
- {user ? (
+              <Link
+                to="/login"
+                onClick={closeMenu}
+                className="flex-1 flex items-center justify-center gap-2 bg-emerald-500 text-white py-3 rounded-xl hover:bg-emerald-600 transition"
+              >
+                <FaUserCircle />
+                Register
+              </Link>
 
-<div className="mt-5 border-t border-slate-700 pt-5">
+            </div>
+          )}
 
-  <Link
-    to="/profile"
-    onClick={() => setMenuOpen(false)}
-    className="flex items-center gap-4"
-  >
+          {/* Mobile Navigation */}
+          <div className="flex flex-col gap-2">
 
-    <img
-      src={
-        user.profileImage ||
-        `https://ui-avatars.com/api/?name=${encodeURIComponent(
-          user.name
-        )}&background=10b981&color=fff`
-      }
-      alt={user.name}
-      className="w-14 h-14 rounded-full"
-    />
+            <Link
+              to="/"
+              onClick={closeMenu}
+              className={navLinkClass("/")}
+            >
+              <FaHome />
+              Home
+            </Link>
 
-    <div>
+            <Link
+              to="/all-jobs"
+              onClick={closeMenu}
+              className={navLinkClass("/all-jobs")}
+            >
+              <FaBriefcase />
+              Jobs
+            </Link>
 
-      <h3 className="text-white font-semibold">
-        {user.name}
-      </h3>
+            <Link
+              to="/training"
+              onClick={closeMenu}
+              className={navLinkClass("/training")}
+            >
+              <FaGraduationCap />
+              Training
+            </Link>
 
-      <p className="text-slate-400 text-sm">
-        View Profile
-      </p>
+            <Link
+              to="/mock-interview"
+              onClick={closeMenu}
+              className={navLinkClass("/mock-interview")}
+            >
+              <FaVideo />
+              Mock Interview
+            </Link>
 
-    </div>
+          </div>
 
-  </Link>
-
-</div>
-
-) : (
-
-<div className="flex flex-col gap-3 mt-5">
-
-  <Link
-    to="/login"
-    onClick={() => setMenuOpen(false)}
-    className="flex items-center justify-center gap-2 border border-green-500 rounded-lg py-3 hover:bg-green-500 transition"
-  >
-    <FaLock />
-    Log In
-  </Link>
-
-  <Link
-    to="/login"
-    onClick={() => setMenuOpen(false)}
-    className="flex items-center justify-center gap-2 bg-green-500 rounded-lg py-3 hover:bg-green-600 transition"
-  >
-    <FaUserCircle />
-    Register
-  </Link>
-
-</div>
-
-)}
-
-</ul>
+        </div>
       </div>
     </nav>
   );

@@ -173,6 +173,30 @@
 //   );
 // }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 import {
   FaCalendarAlt,
   FaClock,
@@ -182,6 +206,7 @@ import {
   FaCheckCircle,
 } from "react-icons/fa";
 import Navbar from "../components/Navbar";
+import { Link } from "react-router-dom";
 import API from "../Api/JobApi";
 import Footer from "../components/Footer";
 import { useEffect, useState } from "react";
@@ -278,6 +303,44 @@ export default function BookInterview() {
       </div>
     );
   }
+
+  if (!interviews.length) {
+  return (
+    <>
+      <Navbar />
+
+      <section className="min-h-screen bg-slate-950 pt-24 pb-20">
+        <div className="max-w-7xl mx-auto px-6">
+
+          <div className="text-center py-24">
+            <div className="w-20 h-20 mx-auto mb-6 rounded-full bg-slate-900 border border-slate-800 flex items-center justify-center">
+              <FaVideo className="text-emerald-400 text-3xl" />
+            </div>
+
+            <h1 className="text-3xl md:text-4xl font-bold text-white">
+              No Interview Sessions Available
+            </h1>
+
+            <p className="text-slate-400 mt-4 max-w-lg mx-auto leading-7">
+              There are no mock interview sessions available at the moment.
+              New sessions will be added soon. Please check back later.
+            </p>
+
+            <Link
+              to="/"
+              className="inline-flex mt-8 bg-emerald-500 hover:bg-emerald-600 text-white px-7 py-3 rounded-xl font-semibold transition"
+            >
+              Back to Home
+            </Link>
+          </div>
+
+        </div>
+      </section>
+
+      <Footer />
+    </>
+  );
+}
   return (
     <>
       <Navbar />
