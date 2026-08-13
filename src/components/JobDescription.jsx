@@ -353,7 +353,7 @@ export default function JobDescription() {
             {/* RIGHT SIDEBAR */}
             <aside className="space-y-6">
               {/* Apply Card */}
-              <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6 sticky top-24">
+              <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6 ">
                 <div className="flex items-center gap-3 mb-6">
                   <div className="w-11 h-11 rounded-xl bg-emerald-500/10 flex items-center justify-center">
                     <FaBriefcase className="text-emerald-400" />

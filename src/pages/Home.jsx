@@ -14,6 +14,7 @@ import Footer from "../components/Footer";
 import DemoInterviewSection from "../components/DemoInterviewSection";
 import Hero from "../components/Hero";
 import TrainingProgram from "../components/TrainingProgram";
+import HotJobs from "../components/HotJobs";
 
 export default function Home() {
   return (
@@ -24,6 +25,7 @@ export default function Home() {
 
 {/* <PopularCategories /> */}
       <RecentJobs />
+      <HotJobs/>
       <DemoInterviewSection/>
       <HowItWorks />
       <WhyChooseUs />
