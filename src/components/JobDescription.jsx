@@ -14,8 +14,9 @@ import {
   FaExternalLinkAlt,
   FaLaptopHouse,
   FaBolt,
+  FaShareAlt,
 } from "react-icons/fa";
-
+import { auth } from "../../firebase";
 import { toast } from "react-toastify";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
@@ -54,40 +55,42 @@ export default function JobDescription() {
     }
   };
 
-  const applyJob = async () => {
-    try {
-      setApplying(true);
+ const applyJob = async () => {
+  try {
+    setApplying(true);
 
-      const token = localStorage.getItem("token");
+    const firebaseUser = auth.currentUser;
 
-      if (!token) {
-        toast.error("Please login to apply for this job.");
-        return;
-      }
-
-      const { data } = await API.post(
-        `/applications/apply/${job._id}`,
-        {},
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-
-      if (data.success) {
-        toast.success(data.message || "Application submitted successfully!");
-      } else {
-        toast.error(data.message || "Failed to apply.");
-      }
-    } catch (error) {
-      toast.error(
-        error.response?.data?.message || "Failed to apply for this job."
-      );
-    } finally {
-      setApplying(false);
+    if (!firebaseUser) {
+      toast.error("Please login to apply for this job.");
+      return;
     }
-  };
+
+    const { data } = await API.post(
+      `/applications/apply/${job._id}`,
+      {}
+    );
+
+    if (data.success) {
+      toast.success(
+        data.message || "Application submitted successfully!"
+      );
+    } else {
+      toast.error(data.message || "Failed to apply.");
+    }
+
+  } catch (error) {
+    console.error("Apply Job Error:", error);
+
+    toast.error(
+      error.response?.data?.message ||
+      "Failed to apply for this job."
+    );
+
+  } finally {
+    setApplying(false);
+  }
+};
 
   if (loading) {
     return (
@@ -139,6 +142,41 @@ export default function JobDescription() {
     );
   }
 
+const shareJob = async () => {
+  try {
+    const shareUrl =
+      `${window.location.origin}/share/job/${job._id}`;
+
+    const shareData = {
+      title: `${job.jobTitle} - ${job.companyName}`,
+
+      text:
+        `${job.jobTitle} at ${job.companyName}\n\n` +
+        `${job.jobSummary || "Check out this job opportunity."}\n\n` +
+        `📍 ${job.city}, ${job.state}\n` +
+        `💼 ${job.experience}\n` +
+        `💰 ₹${job.salaryMin?.toLocaleString()} - ₹${job.salaryMax?.toLocaleString()}`,
+
+      url: shareUrl,
+    };
+
+    if (navigator.share) {
+      await navigator.share(shareData);
+    } else {
+      await navigator.clipboard.writeText(shareUrl);
+
+      toast.success("Job share link copied!");
+    }
+
+  } catch (error) {
+
+    if (error.name !== "AbortError") {
+      console.error("Share error:", error);
+      toast.error("Unable to share job.");
+    }
+
+  }
+};
   return (
     <>
       <Navbar />
@@ -225,20 +263,28 @@ export default function JobDescription() {
                   </div>
                 </div>
 
-                <div className="lg:min-w-[190px]">
-                  <button
-                    onClick={applyJob}
-                    disabled={applying}
-                    className="w-full bg-emerald-500 hover:bg-emerald-600 text-white px-7 py-4 rounded-xl font-bold transition flex items-center justify-center gap-3 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-emerald-500/10"
-                  >
-                    {applying ? "Applying..." : "Apply Now"}
-                    {!applying && <FaArrowRight />}
-                  </button>
+             <div className="lg:min-w-[190px] space-y-3">
+  <button
+    onClick={applyJob}
+    disabled={applying}
+    className="w-full bg-emerald-500 hover:bg-emerald-600 text-white px-7 py-4 rounded-xl font-bold transition flex items-center justify-center gap-3 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-emerald-500/10"
+  >
+    {applying ? "Applying..." : "Apply Now"}
+    {!applying && <FaArrowRight />}
+  </button>
 
-                  <p className="text-center text-xs text-slate-500 mt-3">
-                    Apply directly through TechBy
-                  </p>
-                </div>
+  <button
+    onClick={shareJob}
+    className="w-full bg-slate-800 hover:bg-slate-700 border border-slate-700 text-white px-7 py-3.5 rounded-xl font-semibold transition flex items-center justify-center gap-3"
+  >
+    <FaShareAlt />
+    Share Job
+  </button>
+
+  <p className="text-center text-xs text-slate-500">
+    Apply directly through TechBy
+  </p>
+</div>
               </div>
             </div>
           </div>

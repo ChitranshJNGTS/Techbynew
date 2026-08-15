@@ -33,7 +33,7 @@ export default function AdminLogin() {
         formData
       );
 
-      localStorage.setItem("token", res.data.token);
+      localStorage.setItem("adminToken", res.data.token);
 
       alert("Login Successful");
 

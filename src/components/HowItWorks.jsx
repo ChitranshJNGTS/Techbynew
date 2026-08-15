@@ -5,6 +5,8 @@ import {
   FaBriefcase,
 } from "react-icons/fa";
 
+import { motion } from "framer-motion";
+
 const steps = [
   {
     icon: <FaUserPlus />,
@@ -28,15 +30,57 @@ const steps = [
   },
 ];
 
+const containerVariants = {
+  hidden: {},
+  visible: {
+    transition: {
+      staggerChildren: 0.18,
+    },
+  },
+};
+
+const cardVariants = {
+  hidden: {
+    opacity: 0,
+    y: 70,
+    scale: 0.95,
+  },
+  visible: {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    transition: {
+      duration: 0.7,
+      ease: "easeOut",
+    },
+  },
+};
+
 export default function HowItWorks() {
   return (
-    <section className="bg-slate-900 py-24">
+    <section className="bg-slate-900 py-24 overflow-hidden">
       <div className="max-w-7xl mx-auto px-6">
 
-        <div className="text-center mb-20">
-          <span className="text-emerald-400 uppercase tracking-[4px] font-semibold">
+        {/* Heading */}
+        <motion.div
+          initial={{ opacity: 0, y: -40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.3 }}
+          transition={{ duration: 0.7 }}
+          className="text-center mb-20"
+        >
+          <motion.span
+            initial={{ opacity: 0, letterSpacing: "0px" }}
+            whileInView={{
+              opacity: 1,
+              letterSpacing: "4px",
+            }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+            className="text-emerald-400 uppercase font-semibold"
+          >
             Process
-          </span>
+          </motion.span>
 
           <h2 className="text-5xl font-bold text-white mt-4">
             How It Works
@@ -46,33 +90,92 @@ export default function HowItWorks() {
             Finding your dream job has never been easier. Follow these simple
             steps and get hired faster.
           </p>
-        </div>
+        </motion.div>
 
-        <div className="grid lg:grid-cols-4 md:grid-cols-2 gap-8">
+        {/* Cards */}
+        <motion.div
+          variants={containerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{
+            once: true,
+            amount: 0.2,
+          }}
+          className="grid lg:grid-cols-4 md:grid-cols-2 gap-8"
+        >
           {steps.map((step, index) => (
-            <div
+            <motion.div
               key={index}
-              className="relative group bg-slate-950 rounded-3xl p-10 border border-slate-800 hover:border-emerald-500 transition duration-300 hover:-translate-y-2"
+              variants={cardVariants}
+              whileHover={{
+                y: -12,
+                scale: 1.02,
+              }}
+              transition={{
+                type: "spring",
+                stiffness: 250,
+                damping: 18,
+              }}
+              className="relative group bg-slate-950 rounded-3xl p-10 border border-slate-800 hover:border-emerald-500 transition-colors duration-300"
             >
+
               {/* Number */}
-              <div className="absolute top-6 right-6 text-6xl font-bold text-slate-800 group-hover:text-emerald-900 transition">
+              <motion.div
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
+                viewport={{ once: true }}
+                transition={{
+                  delay: 0.3 + index * 0.15,
+                  duration: 0.5,
+                }}
+                className="absolute top-6 right-6 text-6xl font-bold text-slate-800 group-hover:text-emerald-900 transition-colors duration-300"
+              >
                 0{index + 1}
-              </div>
+              </motion.div>
 
-              <div className="w-20 h-20 rounded-2xl bg-emerald-500/10 flex items-center justify-center text-4xl text-emerald-400 group-hover:bg-emerald-500 group-hover:text-white transition">
+              {/* Icon */}
+              <motion.div
+                whileHover={{
+                  rotate: [0, -8, 8, -8, 0],
+                  scale: 1.1,
+                }}
+                transition={{
+                  duration: 0.5,
+                }}
+                className="relative w-20 h-20 rounded-2xl bg-emerald-500/10 flex items-center justify-center text-4xl text-emerald-400 group-hover:bg-emerald-500 group-hover:text-white transition-all duration-300"
+              >
                 {step.icon}
-              </div>
+              </motion.div>
 
-              <h3 className="text-2xl font-bold text-white mt-8">
+              {/* Title */}
+              <motion.h3
+                whileHover={{ x: 5 }}
+                className="text-2xl font-bold text-white mt-8"
+              >
                 {step.title}
-              </h3>
+              </motion.h3>
 
+              {/* Description */}
               <p className="text-slate-400 mt-4 leading-7">
                 {step.desc}
               </p>
-            </div>
+
+              {/* Bottom animated line */}
+              <motion.div
+                initial={{ width: 0 }}
+                whileInView={{ width: "40%" }}
+                viewport={{ once: true }}
+                transition={{
+                  delay: 0.5 + index * 0.15,
+                  duration: 0.6,
+                }}
+                className="h-1 bg-emerald-500 rounded-full mt-8"
+              />
+
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
+
       </div>
     </section>
   );
