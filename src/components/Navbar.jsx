@@ -298,6 +298,10 @@
 //   );
 // } 
 
+
+
+
+
 import { useEffect, useState } from "react";
 
 import {
@@ -309,6 +313,8 @@ import {
   FaBriefcase,
   FaGraduationCap,
   FaVideo,
+  FaInfoCircle,
+  FaPhoneAlt,
 } from "react-icons/fa";
 
 import { Link, useLocation } from "react-router-dom";
@@ -536,6 +542,21 @@ export default function Navbar({ onLoginClick }) {
               <FaBriefcase />
               Jobs
             </Link>
+            <Link
+  to="/about"
+  className="flex items-center gap-2 text-slate-300 hover:text-emerald-400 transition"
+>
+  <FaInfoCircle />
+  About Us
+</Link>
+
+<Link
+  to="/contact"
+  className="flex items-center gap-2 text-slate-300 hover:text-emerald-400 transition"
+>
+  <FaPhoneAlt />
+  Contact Us
+</Link>
 
             {/* Training */}
 
@@ -749,6 +770,24 @@ export default function Navbar({ onLoginClick }) {
             >
               <FaVideo />
               Mock Interview
+            </Link>
+
+            <Link
+              to="/about"
+              onClick={closeMenu}
+              className={navLinkClass("/about")}
+            >
+              <FaInfoCircle />
+              About Us
+            </Link>
+
+            <Link
+              to="/contact"
+              onClick={closeMenu}
+              className={navLinkClass("/contact")}
+            >
+              <FaPhoneAlt />
+              Contact Us
             </Link>
           </div>
         </div>

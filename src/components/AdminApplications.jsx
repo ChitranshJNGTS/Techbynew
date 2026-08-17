@@ -3,108 +3,495 @@ import API from "../Api/JobApi";
 
 export default function AdminApplications() {
   const [applications, setApplications] = useState([]);
+  const [loading, setLoading] = useState(true);
 
+  // Selected resume URL
+  const [selectedResume, setSelectedResume] = useState(null);
+
+  // Fetch applications
   useEffect(() => {
     fetchApplications();
   }, []);
 
   const fetchApplications = async () => {
     try {
+      setLoading(true);
+
       const { data } = await API.get("/applications/all");
 
       if (data.success) {
-        setApplications(data.applications);
+        setApplications(data.applications || []);
       }
-    } catch (err) {
-      console.log(err);
+    } catch (error) {
+      console.error("Fetch Applications Error:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
+  // Open resume
+  const handleViewResume = (resumeUrl) => {
+    if (!resumeUrl) {
+      return;
+    }
+
+    setSelectedResume(resumeUrl);
+  };
+
+  // Close resume viewer
+  const closeResume = () => {
+    setSelectedResume(null);
+  };
+
+  // Open resume in new browser tab
+  const openResumeNewTab = () => {
+    if (!selectedResume) return;
+
+    window.open(selectedResume, "_blank", "noopener,noreferrer");
+  };
+
   return (
-    <div className="min-h-screen bg-slate-950 p-8">
+    <>
+      <div className="min-h-screen bg-slate-950 p-4 sm:p-6 lg:p-8">
 
-      <h1 className="text-3xl font-bold text-white mb-8">
-        Job Applications
-      </h1>
+        {/* ================= HEADER ================= */}
 
-      <div className="overflow-x-auto rounded-xl">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
 
-        <table className="w-full">
+          <div>
+            <h1 className="text-2xl sm:text-3xl font-bold text-white">
+              Job Applications
+            </h1>
 
-          <thead className="bg-emerald-600 text-white">
+            <p className="text-slate-500 mt-2">
+              View candidates who have applied for your jobs.
+            </p>
+          </div>
 
-            <tr>
+          <div className="bg-slate-900 border border-slate-800 px-5 py-3 rounded-xl">
+            <span className="text-slate-400 text-sm">
+              Total Applications
+            </span>
 
-              <th className="p-4">Candidate</th>
+            <p className="text-emerald-400 text-xl font-bold">
+              {applications.length}
+            </p>
+          </div>
 
-              <th className="p-4">Email</th>
+        </div>
 
-              <th className="p-4">Phone</th>
 
-              <th className="p-4">Job</th>
+        {/* ================= LOADING ================= */}
 
-              <th className="p-4">Company</th>
+        {loading && (
+          <div className="flex items-center justify-center py-20">
 
-              <th className="p-4">Resume</th>
+            <div className="text-center">
 
-              <th className="p-4">Applied</th>
+              <div className="w-12 h-12 border-4 border-slate-700 border-t-emerald-500 rounded-full animate-spin mx-auto" />
 
-            </tr>
+              <p className="text-slate-400 mt-4">
+                Loading applications...
+              </p>
 
-          </thead>
+            </div>
 
-         <tbody>
-  {applications.map((item) => (
-    <tr
-      key={item._id}
-      className="border-b border-slate-800 text-center text-white"
-    >
-      <td className="p-4">
-        {item.candidate?.name}
-      </td>
-
-      <td className="p-4">
-        {item.candidate?.email}
-      </td>
-
-      <td className="p-4">
-        {item.candidate?.phone}
-      </td>
-
-      <td className="p-4">
-        {item.job?.jobTitle}
-      </td>
-
-      <td className="p-4">
-        {item.job?.companyName}
-      </td>
-
-      <td className="p-4">
-        {item.candidate?.resume ? (
-          <a
-            href={`http://localhost:5050/${item.candidate.resume.replace(/\\/g, "/")}`}
-            target="_blank"
-            rel="noreferrer"
-            className="text-emerald-400 hover:underline"
-          >
-            View Resume
-          </a>
-        ) : (
-          "No Resume"
+          </div>
         )}
-      </td>
 
-      <td className="p-4">
-        {new Date(item.createdAt).toLocaleDateString()}
-      </td>
-    </tr>
-  ))}
-</tbody>
 
-        </table>
+        {/* ================= NO APPLICATIONS ================= */}
+
+        {!loading && applications.length === 0 && (
+          <div className="bg-slate-900 border border-slate-800 rounded-2xl p-10 text-center">
+
+            <h2 className="text-xl font-semibold text-white">
+              No Applications Yet
+            </h2>
+
+            <p className="text-slate-500 mt-2">
+              Applications will appear here when candidates apply for jobs.
+            </p>
+
+          </div>
+        )}
+
+
+        {/* ================= APPLICATION TABLE ================= */}
+
+        {!loading && applications.length > 0 && (
+          <div className="bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden">
+
+            <div className="overflow-x-auto">
+
+              <table className="w-full min-w-[1100px]">
+
+                {/* TABLE HEADER */}
+
+                <thead className="bg-emerald-600">
+
+                  <tr>
+
+                    <th className="p-4 text-left text-white font-semibold">
+                      Candidate
+                    </th>
+
+                    <th className="p-4 text-left text-white font-semibold">
+                      Email
+                    </th>
+
+                    <th className="p-4 text-left text-white font-semibold">
+                      Phone
+                    </th>
+
+                    <th className="p-4 text-left text-white font-semibold">
+                      Job
+                    </th>
+
+                    <th className="p-4 text-left text-white font-semibold">
+                      Company
+                    </th>
+
+                    <th className="p-4 text-center text-white font-semibold">
+                      Resume
+                    </th>
+
+                    <th className="p-4 text-center text-white font-semibold">
+                      Applied
+                    </th>
+
+                  </tr>
+
+                </thead>
+
+
+                {/* TABLE BODY */}
+
+                <tbody>
+
+                  {applications.map((item) => (
+
+                    <tr
+                      key={item._id}
+                      className="border-b border-slate-800 hover:bg-slate-800/50 transition"
+                    >
+
+                      {/* Candidate */}
+
+                      <td className="p-4">
+
+                        <div className="flex flex-col">
+
+                          <span className="text-white font-semibold">
+                            {item.candidate?.name || "N/A"}
+                          </span>
+
+                          {item.candidate?.city && (
+                            <span className="text-xs text-slate-500 mt-1">
+                              {item.candidate.city}
+                              {item.candidate.state
+                                ? `, ${item.candidate.state}`
+                                : ""}
+                            </span>
+                          )}
+
+                        </div>
+
+                      </td>
+
+
+                      {/* Email */}
+
+                      <td className="p-4">
+
+                        <span className="text-slate-300">
+                          {item.candidate?.email || "N/A"}
+                        </span>
+
+                      </td>
+
+
+                      {/* Phone */}
+
+                      <td className="p-4">
+
+                        <span className="text-slate-300">
+                          {item.candidate?.phone || "N/A"}
+                        </span>
+
+                      </td>
+
+
+                      {/* Job */}
+
+                      <td className="p-4">
+
+                        <div className="flex flex-col">
+
+                          <span className="text-white font-medium">
+                            {item.job?.jobTitle || "N/A"}
+                          </span>
+
+                          {item.job?.city && (
+                            <span className="text-xs text-slate-500 mt-1">
+                              {item.job.city}
+                              {item.job.state
+                                ? `, ${item.job.state}`
+                                : ""}
+                            </span>
+                          )}
+
+                        </div>
+
+                      </td>
+
+
+                      {/* Company */}
+
+                      <td className="p-4">
+
+                        <span className="text-emerald-400 font-medium">
+                          {item.job?.companyName || "N/A"}
+                        </span>
+
+                      </td>
+
+
+                      {/* Resume */}
+
+                      <td className="p-4 text-center">
+
+                        {item.candidate?.resume ? (
+
+                          <button
+                            onClick={() =>
+                              handleViewResume(
+                                item.candidate.resume
+                              )
+                            }
+                            className="inline-flex items-center gap-2 bg-emerald-500 hover:bg-emerald-600 text-white px-4 py-2 rounded-lg font-medium transition"
+                          >
+
+                            {/* PDF Icon */}
+
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              className="w-4 h-4"
+                              fill="none"
+                              viewBox="0 0 24 24"
+                              stroke="currentColor"
+                              strokeWidth="2"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                d="M7 21h10a2 2 0 002-2V9.414a2 2 0 00-.586-1.414l-5.414-5.414A2 2 0 0011.586 2H7a2 2 0 00-2 2v15a2 2 0 002 2z"
+                              />
+
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                d="M13 2v6h6"
+                              />
+                            </svg>
+
+                            View Resume
+
+                          </button>
+
+                        ) : (
+
+                          <span className="text-slate-500">
+                            No Resume
+                          </span>
+
+                        )}
+
+                      </td>
+
+
+                      {/* Applied Date */}
+
+                      <td className="p-4 text-center">
+
+                        <span className="text-slate-400 text-sm">
+
+                          {item.createdAt
+                            ? new Date(
+                                item.createdAt
+                              ).toLocaleDateString()
+                            : "N/A"}
+
+                        </span>
+
+                      </td>
+
+                    </tr>
+
+                  ))}
+
+                </tbody>
+
+              </table>
+
+            </div>
+
+          </div>
+        )}
 
       </div>
 
-    </div>
+
+      {/* ================================================= */}
+      {/* PDF RESUME MODAL */}
+      {/* ================================================= */}
+
+      {selectedResume && (
+
+        <div
+          className="fixed inset-0 z-[9999] bg-black/80 backdrop-blur-sm flex items-center justify-center p-3 sm:p-6"
+          onClick={closeResume}
+        >
+
+          {/* Modal */}
+
+          <div
+            className="relative bg-slate-900 w-full max-w-6xl h-[95vh] rounded-2xl overflow-hidden border border-slate-700 shadow-2xl flex flex-col"
+            onClick={(e) => e.stopPropagation()}
+          >
+
+            {/* ================= MODAL HEADER ================= */}
+
+            <div className="h-16 shrink-0 bg-slate-950 border-b border-slate-800 px-4 sm:px-6 flex items-center justify-between">
+
+              <div className="flex items-center gap-3">
+
+                <div className="w-9 h-9 bg-red-500/10 rounded-lg flex items-center justify-center">
+
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="w-5 h-5 text-red-400"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M7 21h10a2 2 0 002-2V9.414a2 2 0 00-.586-1.414l-5.414-5.414A2 2 0 0011.586 2H7a2 2 0 00-2 2v15a2 2 0 002 2z"
+                    />
+
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M13 2v6h6"
+                    />
+                  </svg>
+
+                </div>
+
+                <div>
+
+                  <h2 className="text-white font-semibold">
+                    Candidate Resume
+                  </h2>
+
+                  <p className="text-xs text-slate-500">
+                    PDF Document
+                  </p>
+
+                </div>
+
+              </div>
+
+
+              {/* Header Buttons */}
+
+              <div className="flex items-center gap-2">
+
+                {/* Open New Tab */}
+
+                <button
+                  onClick={openResumeNewTab}
+                  className="hidden sm:flex items-center gap-2 bg-slate-800 hover:bg-slate-700 text-white px-4 py-2 rounded-lg text-sm transition"
+                >
+
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="w-4 h-4"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4"
+                    />
+
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M14 4h6m0 0v6m0-6L10 14"
+                    />
+
+                  </svg>
+
+                  Open New Tab
+
+                </button>
+
+
+                {/* Close */}
+
+                <button
+                  onClick={closeResume}
+                  className="w-10 h-10 rounded-lg bg-red-500/10 hover:bg-red-500/20 text-red-400 flex items-center justify-center transition"
+                  aria-label="Close resume"
+                >
+
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="w-5 h-5"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M6 18L18 6M6 6l12 12"
+                    />
+                  </svg>
+
+                </button>
+
+              </div>
+
+            </div>
+
+
+            {/* ================= PDF VIEWER ================= */}
+
+            <div className="flex-1 bg-slate-800">
+
+              <iframe
+                src={selectedResume}
+                title="Candidate Resume"
+                className="w-full h-full border-0"
+              />
+
+            </div>
+
+          </div>
+
+        </div>
+
+      )}
+
+    </>
   );
 }
