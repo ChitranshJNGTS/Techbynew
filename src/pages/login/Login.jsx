@@ -1058,9 +1058,9 @@ const handleRegister = async (e) => {
   };
 
   return (
-    <section className="min-h-screen bg-slate-950 flex items-center justify-center py-16 px-4">
+    <section className="min-h-screen bg-slate-950 flex items-center justify-center lg:py-16 lg:px-4">
 
-      <div className="max-w-6xl w-full bg-slate-900 rounded-3xl overflow-hidden shadow-2xl grid lg:grid-cols-2">
+      <div className="max-w-6xl w-full bg-slate-900 lg:rounded-3xl overflow-hidden shadow-2xl grid lg:grid-cols-2">
 
         {/* ================= LEFT SIDE ================= */}
 

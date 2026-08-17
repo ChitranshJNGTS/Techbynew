@@ -387,18 +387,18 @@ const Hero = () => {
 
               </button>
 
-              <span className="hidden sm:block text-slate-700">
+              {/* <span className="hidden sm:block text-slate-700">
                 |
-              </span>
+              </span> */}
 
-              <button
+              {/* <button
                 onClick={() =>
                   navigate("/recruiter/post-job")
                 }
                 className="text-slate-400 hover:text-white transition font-medium"
               >
                 Looking to hire?
-              </button>
+              </button> */}
 
             </div>
 
