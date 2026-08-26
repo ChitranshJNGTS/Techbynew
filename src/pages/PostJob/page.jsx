@@ -11,7 +11,7 @@ export default function PostJob() {
     companyWebsite: "",
     companyEmail: "",
     companyLogo: null,
-
+    applyLink: "",
     jobTitle: "",
     category: "",
     employmentType: "",
@@ -459,6 +459,25 @@ export default function PostJob() {
                   </div>
                 </div>
               </div>
+
+              <div>
+  <label className="block text-slate-300 mb-2">
+    Application Link
+  </label>
+
+  <input
+    type="url"
+    name="applyLink"
+    value={job.applyLink}
+    onChange={handleChange}
+    placeholder="https://company.com/apply"
+    className="w-full bg-slate-800 border border-slate-700 rounded-xl px-5 py-4 text-white outline-none focus:border-emerald-500"
+  />
+
+  <p className="text-slate-500 text-sm mt-2">
+    Candidates will be redirected to this link when they click Apply Now.
+  </p>
+</div>
 
               {/* Required Skills */}
 

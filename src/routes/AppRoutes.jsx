@@ -22,10 +22,11 @@ export default function AppRoutes() {
     <Routes>
       {/* Public Routes */}
       <Route path="/" element={<Home />} />
-      <Route path="/all-jobs" element={<AllJobs />} />
+     <Route path="/all-jobs" element={<AllJobs />} />
+<Route path="/jobs" element={<AllJobs />} />
       <Route path="/mock-interview" element={<DemoInterview />} />
        <Route path="/login" element={<Login />} />
-        <Route path="/jobs/:id" element={<JobDescription />} />
+        <Route path="/jobs/:slug" element={<JobDescription />} />
          <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
             <Route path="/privacy-policy" element={<PrivacyPolicy />} />

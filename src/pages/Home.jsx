@@ -25,11 +25,11 @@ export default function Home() {
 
 {/* <PopularCategories /> */}
       <RecentJobs />
-      <HotJobs/>
+      {/* <HotJobs/> */}
       <DemoInterviewSection/>
       <HowItWorks />
       <WhyChooseUs />
-      <Testimonials />
+      {/* <Testimonials /> */}
       <Footer />
 
       {/* <TrainingProgram/> */}

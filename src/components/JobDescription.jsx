@@ -25,7 +25,7 @@ import Navbar from "./Navbar";
 import Footer from "./Footer";
 
 export default function JobDescription() {
-  const { id } = useParams();
+  const { slug } = useParams();
 
   const [job, setJob] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -34,13 +34,13 @@ export default function JobDescription() {
 
   useEffect(() => {
     getJob();
-  }, [id]);
+  }, [slug]);
 
   const getJob = async () => {
     try {
       setLoading(true);
 
-      const { data } = await API.get(`/jobs/${id}`);
+      const { data } = await API.get(`/jobs/slug/${slug}`);
 
       if (data.success) {
         setJob(data.job);
@@ -55,40 +55,11 @@ export default function JobDescription() {
     }
   };
 
- const applyJob = async () => {
-  try {
-    setApplying(true);
-
-    const firebaseUser = auth.currentUser;
-
-    if (!firebaseUser) {
-      toast.error("Please login to apply for this job.");
-      return;
-    }
-
-    const { data } = await API.post(
-      `/applications/apply/${job._id}`,
-      {}
-    );
-
-    if (data.success) {
-      toast.success(
-        data.message || "Application submitted successfully!"
-      );
-    } else {
-      toast.error(data.message || "Failed to apply.");
-    }
-
-  } catch (error) {
-    console.error("Apply Job Error:", error);
-
-    toast.error(
-      error.response?.data?.message ||
-      "Failed to apply for this job."
-    );
-
-  } finally {
-    setApplying(false);
+const applyJob = () => {
+  if (job?.applyLink) {
+    window.open(job.applyLink, "_blank", "noopener,noreferrer");
+  } else {
+    toast.error("Application link is not available.");
   }
 };
 

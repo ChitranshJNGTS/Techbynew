@@ -195,7 +195,7 @@ export default function HotJobs() {
   const job = jobs[currentIndex];
 
   return (
-    <section className="bg-slate-950 py-20">
+    <section className="bg-slate-950 py-10 md:py-0">
 
       <div className="max-w-7xl mx-auto px-6">
 
