@@ -15,10 +15,10 @@ import { Link } from "react-router-dom";
 const quickLinks = [
   { name: "Home", path: "/" },
   { name: "Browse Jobs", path: "/all-jobs" },
-  { name: "About Us", path: "/about" },
-  { name: "Contact Us", path: "/contact" },
-  { name: "Privacy Policy", path: "/privacy-policy" },
-  { name: "Terms & Conditions", path: "/terms-condition" },
+  // { name: "About Us", path: "/about" },
+  // { name: "Contact Us", path: "/contact" },
+  // { name: "Privacy Policy", path: "/privacy-policy" },
+  // { name: "Terms & Conditions", path: "/terms-condition" },
 ];
 
 const jobCategories = [
@@ -174,24 +174,24 @@ export default function Footer() {
             </div>
 
             {/* Email */}
-            <a
+            {/* <a
               href="mailto:support@techby.in"
               className="flex gap-4 hover:text-emerald-400 transition"
             >
               <FaEnvelope className="text-emerald-400 mt-1 shrink-0" />
 
               <p>support@techby.in</p>
-            </a>
+            </a> */}
 
             {/* Phone */}
-            <a
+            {/* <a
               href="tel:+917879746796"
               className="flex gap-4 hover:text-emerald-400 transition"
             >
               <FaPhoneAlt className="text-emerald-400 mt-1 shrink-0" />
 
               <p>+91 7879746796</p>
-            </a>
+            </a> */}
 
           </div>
 

@@ -1,3 +1,4 @@
+
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 
@@ -7,7 +8,6 @@ import {
   FaSearch,
   FaMapMarkerAlt,
   FaBriefcase,
-  FaMoneyBillWave,
   FaClock,
   FaBookmark,
   FaBuilding,
@@ -16,6 +16,7 @@ import {
 } from "react-icons/fa";
 
 import Navbar from "./Navbar";
+import Footer from "./Footer";
 
 export default function AllJobs() {
   const navigate = useNavigate();
@@ -84,7 +85,6 @@ export default function AllJobs() {
       }
     } catch (err) {
       console.error("Get Jobs Error:", err);
-
       setError("Failed to load jobs.");
     } finally {
       setLoading(false);
@@ -134,18 +134,13 @@ export default function AllJobs() {
       const search = urlKeyword.toLowerCase().trim();
 
       result = result.filter((job) => {
-        const jobTitle =
-          job.jobTitle?.toLowerCase() || "";
+        const jobTitle = job.jobTitle?.toLowerCase() || "";
 
-        const companyName =
-          job.companyName?.toLowerCase() || "";
+        const companyName = job.companyName?.toLowerCase() || "";
 
-        const category =
-          job.category?.toLowerCase() || "";
+        const category = job.category?.toLowerCase() || "";
 
-        const skills = Array.isArray(job.skills)
-          ? job.skills
-          : [];
+        const skills = Array.isArray(job.skills) ? job.skills : [];
 
         return (
           jobTitle.includes(search) ||
@@ -163,18 +158,14 @@ export default function AllJobs() {
     // ==========================
 
     if (urlLocation.trim()) {
-      const searchLocation =
-        urlLocation.toLowerCase().trim();
+      const searchLocation = urlLocation.toLowerCase().trim();
 
       result = result.filter((job) => {
-        const city =
-          job.city?.toLowerCase() || "";
+        const city = job.city?.toLowerCase() || "";
 
-        const state =
-          job.state?.toLowerCase() || "";
+        const state = job.state?.toLowerCase() || "";
 
-        const country =
-          job.country?.toLowerCase() || "";
+        const country = job.country?.toLowerCase() || "";
 
         return (
           city.includes(searchLocation) ||
@@ -189,13 +180,11 @@ export default function AllJobs() {
     // ==========================
 
     if (urlCategory.trim()) {
-      const categorySearch =
-        urlCategory.toLowerCase().trim();
+      const categorySearch = urlCategory.toLowerCase().trim();
 
       result = result.filter((job) => {
         return (
-          job.category?.toLowerCase() ===
-          categorySearch
+          job.category?.toLowerCase() === categorySearch
         );
       });
     }
@@ -279,22 +268,6 @@ export default function AllJobs() {
       );
     }
 
-    if (sortBy === "salaryHigh") {
-      result.sort(
-        (a, b) =>
-          Number(b.salaryMax || 0) -
-          Number(a.salaryMax || 0)
-      );
-    }
-
-    if (sortBy === "salaryLow") {
-      result.sort(
-        (a, b) =>
-          Number(a.salaryMin || 0) -
-          Number(b.salaryMin || 0)
-      );
-    }
-
     return result;
   }, [
     jobsData,
@@ -326,7 +299,6 @@ export default function AllJobs() {
   const clearSearch = () => {
     setKeyword("");
     setLocation("");
-
     setSearchParams({});
   };
 
@@ -344,9 +316,7 @@ export default function AllJobs() {
         "noopener,noreferrer"
       );
     } else {
-      navigate(
-        `/jobs/${job.slug || job._id}`
-      );
+      navigate(`/jobs/${job.slug || job._id}`);
     }
   };
 
@@ -355,9 +325,7 @@ export default function AllJobs() {
   // ==========================
 
   const openJob = (job) => {
-    navigate(
-      `/jobs/${job.slug || job._id}`
-    );
+    navigate(`/jobs/${job.slug || job._id}`);
   };
 
   // ==========================
@@ -370,17 +338,13 @@ export default function AllJobs() {
         <Navbar />
 
         <div className="min-h-screen bg-slate-950 flex items-center justify-center">
-
           <div className="text-center">
-
             <div className="w-10 h-10 border-4 border-slate-700 border-t-emerald-500 rounded-full animate-spin mx-auto" />
 
             <p className="text-white mt-4">
               Loading Jobs...
             </p>
-
           </div>
-
         </div>
       </>
     );
@@ -396,9 +360,7 @@ export default function AllJobs() {
         <Navbar />
 
         <div className="min-h-screen bg-slate-950 flex items-center justify-center">
-
           <div className="text-center">
-
             <p className="text-red-500 text-xl">
               {error}
             </p>
@@ -409,9 +371,7 @@ export default function AllJobs() {
             >
               Try Again
             </button>
-
           </div>
-
         </div>
       </>
     );
@@ -426,7 +386,6 @@ export default function AllJobs() {
       <Navbar />
 
       <section className="min-h-screen bg-slate-950 pt-20 pb-20">
-
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 lg:py-12">
 
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
@@ -444,11 +403,8 @@ export default function AllJobs() {
               <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-7">
 
                 <div>
-
                   <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold text-white">
-
                     {filteredJobs.length} Jobs Found
-
                   </h2>
 
                   {/* ACTIVE FILTER */}
@@ -473,7 +429,6 @@ export default function AllJobs() {
                       Clear Search
                     </button>
                   )}
-
                 </div>
 
                 {/* SORT */}
@@ -485,7 +440,6 @@ export default function AllJobs() {
                   }
                   className="w-full sm:w-52 bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-white text-sm outline-none focus:border-emerald-500"
                 >
-
                   <option value="newest">
                     Newest
                   </option>
@@ -493,17 +447,7 @@ export default function AllJobs() {
                   <option value="oldest">
                     Oldest
                   </option>
-
-                  <option value="salaryHigh">
-                    Highest Salary
-                  </option>
-
-                  <option value="salaryLow">
-                    Lowest Salary
-                  </option>
-
                 </select>
-
               </div>
 
               {/* ==========================
@@ -511,7 +455,6 @@ export default function AllJobs() {
               ========================== */}
 
               {filteredJobs.length === 0 && (
-
                 <div className="bg-slate-900 border border-slate-800 rounded-2xl p-10 text-center">
 
                   <FaBriefcase className="text-slate-600 text-5xl mx-auto" />
@@ -530,9 +473,7 @@ export default function AllJobs() {
                   >
                     Clear Filters
                   </button>
-
                 </div>
-
               )}
 
               {/* ==========================
@@ -542,7 +483,6 @@ export default function AllJobs() {
               <div className="space-y-5">
 
                 {filteredJobs.map((job) => (
-
                   <div
                     key={job._id}
                     onClick={() => openJob(job)}
@@ -584,25 +524,19 @@ export default function AllJobs() {
                           <div className="flex items-start gap-2 flex-wrap">
 
                             <h3 className="text-base sm:text-xl font-bold text-white leading-tight">
-
                               {job.jobTitle}
-
                             </h3>
 
                             {job.featured && (
-
                               <span className="bg-yellow-500 text-black text-[10px] sm:text-xs px-2 py-1 rounded-full font-bold">
                                 Featured
                               </span>
-
                             )}
 
                             {job.urgentHiring && (
-
                               <span className="bg-red-500/10 text-red-400 border border-red-500/20 text-[10px] sm:text-xs px-2 py-1 rounded-full font-semibold">
                                 Urgent Hiring
                               </span>
-
                             )}
 
                           </div>
@@ -628,7 +562,6 @@ export default function AllJobs() {
                             {/* LOCATION */}
 
                             <span className="flex items-center gap-2">
-
                               <FaMapMarkerAlt />
 
                               {job.city || "Location"}
@@ -636,50 +569,20 @@ export default function AllJobs() {
                               {job.state
                                 ? `, ${job.state}`
                                 : ""}
-
                             </span>
 
                             {/* TYPE */}
 
                             <span className="flex items-center gap-2">
-
                               <FaBriefcase />
 
                               {job.employmentType ||
                                 "Job"}
-
-                            </span>
-
-                            {/* SALARY */}
-
-                            <span className="flex items-center gap-2">
-
-                              <FaMoneyBillWave />
-
-                              {job.salaryMin ||
-                              job.salaryMax ? (
-                                <>
-                                  ₹
-                                  {Number(
-                                    job.salaryMin || 0
-                                  ).toLocaleString()}
-
-                                  {" - ₹"}
-
-                                  {Number(
-                                    job.salaryMax || 0
-                                  ).toLocaleString()}
-                                </>
-                              ) : (
-                                "Salary not disclosed"
-                              )}
-
                             </span>
 
                             {/* DATE */}
 
                             <span className="flex items-center gap-2">
-
                               <FaClock />
 
                               {job.createdAt
@@ -694,7 +597,6 @@ export default function AllJobs() {
                                     }
                                   )
                                 : "Recently"}
-
                             </span>
 
                           </div>
@@ -702,50 +604,37 @@ export default function AllJobs() {
                           {/* WORK MODE */}
 
                           {job.workMode && (
-
                             <span className="inline-block mt-3 px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-400 text-xs">
-
                               {job.workMode}
-
                             </span>
-
                           )}
 
                           {/* SKILLS */}
 
                           {job.skills?.length > 0 && (
-
                             <div className="flex flex-wrap gap-2 mt-4">
 
                               {job.skills
                                 .slice(0, 5)
                                 .map((skill) => (
-
                                   <span
                                     key={skill}
                                     className="px-2 sm:px-3 py-1 sm:py-2 rounded-lg bg-slate-800 text-slate-300 text-[11px] sm:text-xs"
                                   >
                                     {skill}
                                   </span>
-
                                 ))}
 
                               {job.skills.length > 5 && (
-
                                 <span className="px-2 py-1 rounded-lg bg-slate-800 text-slate-400 text-xs">
-
                                   +{job.skills.length - 5}
-
                                 </span>
-
                               )}
 
                             </div>
-
                           )}
 
                         </div>
-
                       </div>
 
                       {/* ==========================
@@ -762,44 +651,16 @@ export default function AllJobs() {
                           }
                           className="w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-slate-800 hover:bg-emerald-500 transition flex items-center justify-center text-white"
                         >
-
                           <FaBookmark />
-
                         </button>
 
-                        {/* SALARY */}
+                        {/* EXPERIENCE */}
 
                         <div className="text-left lg:text-right">
-
-                          <p className="text-emerald-400 font-bold text-sm sm:text-lg">
-
-                            {job.salaryMin ||
-                            job.salaryMax ? (
-                              <>
-                                ₹
-                                {Number(
-                                  job.salaryMin || 0
-                                ).toLocaleString()}
-
-                                {" - ₹"}
-
-                                {Number(
-                                  job.salaryMax || 0
-                                ).toLocaleString()}
-                              </>
-                            ) : (
-                              "Not Disclosed"
-                            )}
-
-                          </p>
-
-                          <p className="text-slate-500 text-xs mt-1">
-
+                          <p className="text-slate-400 text-xs sm:text-sm">
                             {job.experience ||
                               "Experience not specified"}
-
                           </p>
-
                         </div>
 
                         {/* APPLY */}
@@ -816,9 +677,7 @@ export default function AllJobs() {
                       </div>
 
                     </div>
-
                   </div>
-
                 ))}
 
               </div>
@@ -838,7 +697,6 @@ export default function AllJobs() {
                 <div className="flex items-center justify-between mb-5">
 
                   <div>
-
                     <h2 className="text-white text-lg font-bold">
                       Recent Jobs
                     </h2>
@@ -846,13 +704,10 @@ export default function AllJobs() {
                     <p className="text-slate-500 text-xs mt-1">
                       Latest opportunities
                     </p>
-
                   </div>
 
                   <div className="w-9 h-9 rounded-lg bg-emerald-500/10 flex items-center justify-center">
-
                     <FaBriefcase className="text-emerald-400 text-sm" />
-
                   </div>
 
                 </div>
@@ -902,15 +757,11 @@ export default function AllJobs() {
                           <div className="min-w-0 flex-1">
 
                             <h3 className="text-white text-sm font-semibold truncate group-hover:text-emerald-400 transition">
-
                               {job.jobTitle}
-
                             </h3>
 
                             <p className="text-slate-400 text-xs truncate mt-1">
-
                               {job.companyName}
-
                             </p>
 
                             <div className="flex items-center gap-1 text-slate-500 text-[11px] mt-2">
@@ -918,11 +769,9 @@ export default function AllJobs() {
                               <FaMapMarkerAlt className="text-[10px]" />
 
                               <span className="truncate">
-
                                 {job.city ||
                                   job.state ||
                                   "Location"}
-
                               </span>
 
                             </div>
@@ -933,20 +782,7 @@ export default function AllJobs() {
 
                         {/* BOTTOM */}
 
-                        <div className="flex items-center justify-between mt-3 pt-3 border-t border-slate-800">
-
-                          <span className="text-emerald-400 text-[11px] font-medium">
-
-                            {job.salaryMin ||
-                            job.salaryMax
-                              ? `₹${Number(
-                                  job.salaryMin || 0
-                                ).toLocaleString()} - ₹${Number(
-                                  job.salaryMax || 0
-                                ).toLocaleString()}`
-                              : "Salary N/A"}
-
-                          </span>
+                        <div className="flex items-center justify-end mt-3 pt-3 border-t border-slate-800">
 
                           <span className="text-slate-500 text-[10px] flex items-center gap-1">
 
@@ -991,11 +827,9 @@ export default function AllJobs() {
                   }}
                   className="w-full mt-5 py-3 rounded-xl border border-slate-700 hover:border-emerald-500 hover:bg-emerald-500/10 text-slate-300 hover:text-emerald-400 text-sm font-semibold transition flex items-center justify-center gap-2"
                 >
-
                   View All Jobs
 
                   <FaArrowRight className="text-xs" />
-
                 </button>
 
               </div>
@@ -1005,8 +839,9 @@ export default function AllJobs() {
           </div>
 
         </div>
-
       </section>
+
+      <Footer />
     </>
   );
 }

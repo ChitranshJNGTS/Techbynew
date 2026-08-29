@@ -37,7 +37,7 @@ export default function AdminLogin() {
 
       alert("Login Successful");
 
-      navigate("/dashboard");
+      navigate("/admin/dashboard");
     } catch (err) {
       alert(
         err.response?.data?.message || "Login Failed"
