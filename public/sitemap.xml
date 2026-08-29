@@ -3,92 +3,60 @@
 <urlset
     xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
-    <!-- Home -->
+    <!-- ================= HOME ================= -->
     <url>
         <loc>https://techby.in/</loc>
-        <lastmod>2026-07-23</lastmod>
+        <lastmod>2026-08-30</lastmod>
         <changefreq>daily</changefreq>
         <priority>1.0</priority>
     </url>
 
-    <!-- Browse Jobs -->
+    <!-- ================= ALL JOBS ================= -->
     <url>
         <loc>https://techby.in/jobs</loc>
-        <lastmod>2026-07-23</lastmod>
+        <lastmod>2026-08-30</lastmod>
         <changefreq>hourly</changefreq>
         <priority>0.9</priority>
     </url>
 
-    <!-- Mock Interview -->
+    <!-- ================= ALL JOBS ALTERNATIVE ================= -->
     <url>
-        <loc>https://techby.in/book-interview</loc>
-        <lastmod>2026-07-23</lastmod>
+        <loc>https://techby.in/all-jobs</loc>
+        <lastmod>2026-08-30</lastmod>
+        <changefreq>hourly</changefreq>
+        <priority>0.8</priority>
+    </url>
+
+    <!-- ================= RECRUITER POST JOB ================= -->
+    <url>
+        <loc>https://techby.in/recruiter/post-job</loc>
+        <lastmod>2026-08-30</lastmod>
         <changefreq>weekly</changefreq>
-        <priority>0.9</priority>
+        <priority>0.7</priority>
     </url>
 
-    <!-- About -->
-    <url>
-        <loc>https://techby.in/about</loc>
-        <lastmod>2026-07-23</lastmod>
-        <changefreq>monthly</changefreq>
-        <priority>0.8</priority>
-    </url>
-
-    <!-- Contact -->
-    <url>
-        <loc>https://techby.in/contact</loc>
-        <lastmod>2026-07-23</lastmod>
-        <changefreq>monthly</changefreq>
-        <priority>0.8</priority>
-    </url>
-
-    <!-- Privacy Policy -->
-    <url>
-        <loc>https://techby.in/privacy-policy</loc>
-        <lastmod>2026-07-23</lastmod>
-        <changefreq>yearly</changefreq>
-        <priority>0.4</priority>
-    </url>
-
-    <!-- Terms & Conditions -->
-    <url>
-        <loc>https://techby.in/terms-and-conditions</loc>
-        <lastmod>2026-07-23</lastmod>
-        <changefreq>yearly</changefreq>
-        <priority>0.4</priority>
-    </url>
-
-    <!-- Login -->
+    <!-- ================= LOGIN ================= -->
     <url>
         <loc>https://techby.in/login</loc>
-        <lastmod>2026-07-23</lastmod>
+        <lastmod>2026-08-30</lastmod>
         <changefreq>monthly</changefreq>
-        <priority>0.5</priority>
+        <priority>0.4</priority>
     </url>
 
-    <!-- Register -->
+    <!-- ================= PRIVACY POLICY ================= -->
     <url>
-        <loc>https://techby.in/register</loc>
-        <lastmod>2026-07-23</lastmod>
-        <changefreq>monthly</changefreq>
-        <priority>0.5</priority>
+        <loc>https://techby.in/privacy-policy</loc>
+        <lastmod>2026-08-30</lastmod>
+        <changefreq>yearly</changefreq>
+        <priority>0.3</priority>
     </url>
 
-    <!-- Recruiter -->
+    <!-- ================= TERMS ================= -->
     <url>
-        <loc>https://techby.in/recruiter</loc>
-        <lastmod>2026-07-23</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.7</priority>
-    </url>
-
-    <!-- Post Job -->
-    <url>
-        <loc>https://techby.in/post-job</loc>
-        <lastmod>2026-07-23</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.7</priority>
+        <loc>https://techby.in/terms-and-conditions</loc>
+        <lastmod>2026-08-30</lastmod>
+        <changefreq>yearly</changefreq>
+        <priority>0.3</priority>
     </url>
 
 </urlset>
