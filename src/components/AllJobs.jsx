@@ -1,6 +1,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
+import JobBanner from "./JobBanner";
 
 import API from "../Api/JobApi";
 
@@ -13,6 +14,7 @@ import {
   FaBuilding,
   FaCheckCircle,
   FaArrowRight,
+  FaMoneyBillWave,
 } from "react-icons/fa";
 
 import Navbar from "./Navbar";
@@ -26,6 +28,7 @@ export default function AllJobs() {
   // ==========================
   // STATE
   // ==========================
+  const urlWorkMode = searchParams.get("workMode") || "";
 
   const [jobsData, setJobsData] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -154,6 +157,20 @@ export default function AllJobs() {
     }
 
     // ==========================
+// WORK MODE
+// ==========================
+
+if (urlWorkMode.trim()) {
+  const workModeSearch = urlWorkMode.toLowerCase().trim();
+
+  result = result.filter((job) => {
+    const workMode = job.workMode?.toLowerCase().trim() || "";
+
+    return workMode === workModeSearch;
+  });
+}
+
+    // ==========================
     // LOCATION
     // ==========================
 
@@ -179,15 +196,18 @@ export default function AllJobs() {
     // CATEGORY
     // ==========================
 
-    if (urlCategory.trim()) {
-      const categorySearch = urlCategory.toLowerCase().trim();
+ if (urlCategory.trim()) {
+  const categorySearch = urlCategory.toLowerCase().trim();
 
-      result = result.filter((job) => {
-        return (
-          job.category?.toLowerCase() === categorySearch
-        );
-      });
-    }
+  result = result.filter((job) => {
+    const category = job.category?.toLowerCase().trim() || "";
+
+    return (
+      category.includes(categorySearch) ||
+      categorySearch.includes(category)
+    );
+  });
+}
 
     // ==========================
     // JOB TYPE
@@ -270,12 +290,13 @@ export default function AllJobs() {
 
     return result;
   }, [
-    jobsData,
-    urlKeyword,
-    urlLocation,
-    urlType,
-    urlCategory,
-    sortBy,
+   jobsData,
+  urlKeyword,
+  urlLocation,
+  urlType,
+  urlCategory,
+  urlWorkMode,
+  sortBy,
   ]);
 
   // ==========================
@@ -328,6 +349,21 @@ export default function AllJobs() {
     navigate(`/jobs/${job.slug || job._id}`);
   };
 
+
+
+  const getExperienceBadge = (job) => {
+  const experience = job.experience?.toLowerCase() || "";
+
+  if (
+    experience.includes("fresher") ||
+    experience.includes("trainee") ||
+    experience.includes("0")
+  ) {
+    return "FRESHERS";
+  }
+
+  return "EXPERIENCED";
+};
   // ==========================
   // LOADING
   // ==========================
@@ -400,6 +436,7 @@ export default function AllJobs() {
                   TOP BAR
               ========================== */}
 
+
               <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-7">
 
                 <div>
@@ -408,6 +445,11 @@ export default function AllJobs() {
                   </h2>
 
                   {/* ACTIVE FILTER */}
+                  {urlWorkMode && (
+  <p className="text-emerald-400 text-sm mt-2 capitalize">
+    Showing {urlWorkMode} jobs
+  </p>
+)}
 
                   {urlType && (
                     <p className="text-emerald-400 text-sm mt-2 capitalize">
@@ -480,207 +522,259 @@ export default function AllJobs() {
                   JOB LIST
               ========================== */}
 
-              <div className="space-y-5">
+             {/* ==========================
+    JOB LIST
+========================== */}
 
-                {filteredJobs.map((job) => (
-                  <div
-                    key={job._id}
-                    onClick={() => openJob(job)}
-                    className="bg-slate-900 border border-slate-800 rounded-2xl p-4 sm:p-6 hover:border-emerald-500 hover:-translate-y-1 transition-all duration-300 cursor-pointer"
-                  >
+<div className="border-t border-slate-800">
 
-                    <div className="flex flex-col lg:flex-row justify-between gap-6">
+  {filteredJobs.map((job) => (
+    <div
+      key={job._id}
+      onClick={() => openJob(job)}
+      className="group block border-b border-slate-800 py-6 sm:py-7 hover:bg-slate-900/40 transition cursor-pointer"
+    >
 
-                      {/* ==========================
-                          LEFT
-                      ========================== */}
+      <div className="grid grid-cols-1 md:grid-cols-[360px_1fr] lg:grid-cols-[440px_1fr] gap-5 md:gap-8 items-center">
 
-                      <div className="flex gap-4 sm:gap-5 min-w-0">
+        {/* ==========================
+            LEFT - JOB BANNER
+        ========================== */}
 
-                        {/* LOGO */}
+        <div className="flex items-center gap-4 min-w-0">
 
-                        <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-xl bg-white flex items-center justify-center p-2 shrink-0">
+          <div
+            className="
+              w-32 h-24
+              sm:w-40 sm:h-28
+              lg:w-[440px] lg:h-[260px]
+              rounded-xl
+              bg-white
+              border border-slate-800
+              flex items-center justify-center
+              overflow-hidden
+              shrink-0
+            "
+          >
+            <JobBanner job={job} />
+          </div>
 
-                          <img
-                            src={
-                              job.companyLogo ||
-                              "https://via.placeholder.com/100"
-                            }
-                            alt={
-                              job.companyName ||
-                              "Company"
-                            }
-                            className="w-full h-full object-contain rounded-lg"
-                          />
+          {/* MOBILE INFO */}
 
-                        </div>
+          <div className="md:hidden min-w-0">
 
-                        {/* DETAILS */}
+            <h3 className="text-lg font-bold text-white leading-snug line-clamp-2">
+              {job.jobTitle}
+            </h3>
 
-                        <div className="min-w-0">
+            <p className="text-emerald-400 text-sm font-medium mt-1 truncate">
+              {job.companyName}
+            </p>
 
-                          {/* TITLE */}
+          </div>
 
-                          <div className="flex items-start gap-2 flex-wrap">
+        </div>
 
-                            <h3 className="text-base sm:text-xl font-bold text-white leading-tight">
-                              {job.jobTitle}
-                            </h3>
 
-                            {job.featured && (
-                              <span className="bg-yellow-500 text-black text-[10px] sm:text-xs px-2 py-1 rounded-full font-bold">
-                                Featured
-                              </span>
-                            )}
+        {/* ==========================
+            RIGHT CONTENT
+        ========================== */}
 
-                            {job.urgentHiring && (
-                              <span className="bg-red-500/10 text-red-400 border border-red-500/20 text-[10px] sm:text-xs px-2 py-1 rounded-full font-semibold">
-                                Urgent Hiring
-                              </span>
-                            )}
+        <div className="min-w-0">
 
-                          </div>
+          {/* BADGES */}
 
-                          {/* COMPANY */}
+          <div className="flex flex-wrap gap-2 mb-2.5">
 
-                          <div className="flex items-center gap-2 mt-2 text-sm text-slate-300">
+            <span className="bg-slate-800 border border-slate-700 text-slate-200 text-[10px] sm:text-[11px] px-2.5 py-1 font-bold rounded-sm tracking-wide">
+              {getExperienceBadge(job)}
+            </span>
 
-                            <FaBuilding className="text-xs shrink-0" />
+            {job.employmentType && (
+              <span className="bg-slate-800 border border-slate-700 text-slate-200 text-[10px] sm:text-[11px] px-2.5 py-1 font-bold rounded-sm tracking-wide">
+                {job.employmentType.toUpperCase()}
+              </span>
+            )}
 
-                            <span className="truncate">
-                              {job.companyName}
-                            </span>
+            {job.workMode && (
+              <span className="bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-[10px] sm:text-[11px] px-2.5 py-1 font-bold rounded-sm tracking-wide">
+                {job.workMode.toUpperCase()}
+              </span>
+            )}
 
-                            <FaCheckCircle className="text-emerald-500 text-xs shrink-0" />
+          </div>
 
-                          </div>
 
-                          {/* META */}
+          {/* TITLE */}
 
-                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-4 text-xs sm:text-sm text-slate-400">
+          <h3 className="hidden md:block text-xl lg:text-2xl font-bold text-white leading-snug group-hover:text-emerald-400 transition">
+            {job.jobTitle}
+          </h3>
 
-                            {/* LOCATION */}
 
-                            <span className="flex items-center gap-2">
-                              <FaMapMarkerAlt />
+          {/* COMPANY */}
 
-                              {job.city || "Location"}
+          <div className="flex items-center gap-2 mt-2">
 
-                              {job.state
-                                ? `, ${job.state}`
-                                : ""}
-                            </span>
+            <span className="text-emerald-400 text-sm font-semibold truncate">
+              {job.companyName}
+            </span>
 
-                            {/* TYPE */}
+            <FaCheckCircle className="text-emerald-500 text-xs shrink-0" />
 
-                            <span className="flex items-center gap-2">
-                              <FaBriefcase />
+          </div>
 
-                              {job.employmentType ||
-                                "Job"}
-                            </span>
 
-                            {/* DATE */}
+          {/* DESCRIPTION */}
 
-                            <span className="flex items-center gap-2">
-                              <FaClock />
+          <p className="text-slate-400 text-sm sm:text-[15px] leading-6 mt-2 line-clamp-2">
+            {job.jobSummary ||
+              job.description?.replace(/<[^>]*>/g, "") ||
+              "Explore this opportunity and discover more details about the role, requirements and application process."}
+          </p>
 
-                              {job.createdAt
-                                ? new Date(
-                                    job.createdAt
-                                  ).toLocaleDateString(
-                                    "en-IN",
-                                    {
-                                      day: "numeric",
-                                      month: "short",
-                                      year: "numeric",
-                                    }
-                                  )
-                                : "Recently"}
-                            </span>
 
-                          </div>
+          {/* AUTHOR + DATE */}
 
-                          {/* WORK MODE */}
+          <div className="flex flex-wrap items-center gap-x-3 gap-y-2 mt-4 text-xs sm:text-sm">
 
-                          {job.workMode && (
-                            <span className="inline-block mt-3 px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-400 text-xs">
-                              {job.workMode}
-                            </span>
-                          )}
+            <span className="flex items-center gap-1.5 text-slate-300 font-medium">
 
-                          {/* SKILLS */}
+              <FaCheckCircle className="text-emerald-500 text-xs" />
 
-                          {job.skills?.length > 0 && (
-                            <div className="flex flex-wrap gap-2 mt-4">
+              {job.recruiterName ||
+                job.postedByName ||
+                "TechBy"}
 
-                              {job.skills
-                                .slice(0, 5)
-                                .map((skill) => (
-                                  <span
-                                    key={skill}
-                                    className="px-2 sm:px-3 py-1 sm:py-2 rounded-lg bg-slate-800 text-slate-300 text-[11px] sm:text-xs"
-                                  >
-                                    {skill}
-                                  </span>
-                                ))}
+            </span>
 
-                              {job.skills.length > 5 && (
-                                <span className="px-2 py-1 rounded-lg bg-slate-800 text-slate-400 text-xs">
-                                  +{job.skills.length - 5}
-                                </span>
-                              )}
+            <span className="text-slate-700">
+              |
+            </span>
 
-                            </div>
-                          )}
+            <span className="flex items-center gap-1.5 text-slate-500">
 
-                        </div>
-                      </div>
+              <FaClock />
 
-                      {/* ==========================
-                          RIGHT
-                      ========================== */}
+              {job.createdAt
+                ? new Date(
+                    job.createdAt
+                  ).toLocaleDateString("en-IN", {
+                    day: "numeric",
+                    month: "long",
+                    year: "numeric",
+                  })
+                : "Recently"}
 
-                      <div className="flex flex-row lg:flex-col justify-between lg:justify-center items-center lg:items-end gap-3 lg:min-w-[150px]">
+            </span>
 
-                        {/* BOOKMARK */}
+          </div>
 
-                        <button
-                          onClick={(e) =>
-                            e.stopPropagation()
-                          }
-                          className="w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-slate-800 hover:bg-emerald-500 transition flex items-center justify-center text-white"
-                        >
-                          <FaBookmark />
-                        </button>
 
-                        {/* EXPERIENCE */}
+          {/* EXTRA INFORMATION */}
 
-                        <div className="text-left lg:text-right">
-                          <p className="text-slate-400 text-xs sm:text-sm">
-                            {job.experience ||
-                              "Experience not specified"}
-                          </p>
-                        </div>
+          <div className="flex flex-wrap gap-x-5 gap-y-2 mt-3 text-xs sm:text-sm text-slate-500">
 
-                        {/* APPLY */}
+            {(job.city || job.state) && (
+              <span className="flex items-center gap-1.5">
 
-                        <button
-                          onClick={(e) =>
-                            handleApply(e, job)
-                          }
-                          className="bg-emerald-500 hover:bg-emerald-600 text-white font-semibold px-4 sm:px-6 py-2.5 sm:py-3 rounded-xl text-sm transition whitespace-nowrap"
-                        >
-                          Apply
-                        </button>
+                <FaMapMarkerAlt />
 
-                      </div>
+                {job.city || "Location"}
 
-                    </div>
-                  </div>
-                ))}
+                {job.state
+                  ? `, ${job.state}`
+                  : ""}
 
-              </div>
+              </span>
+            )}
+
+            {job.workMode && (
+              <span className="text-emerald-400">
+                {job.workMode}
+              </span>
+            )}
+
+            {job.salaryMin || job.salaryMax ? (
+              <span className="flex items-center gap-1.5 text-slate-400">
+
+                <FaMoneyBillWave className="text-emerald-400" />
+
+                ₹{job.salaryMin?.toLocaleString() || "0"}
+
+                {job.salaryMax
+                  ? ` - ₹${job.salaryMax.toLocaleString()}`
+                  : ""}
+
+              </span>
+            ) : null}
+
+          </div>
+
+
+          {/* SKILLS */}
+
+          {job.skills?.length > 0 && (
+            <div className="flex flex-wrap gap-2 mt-4">
+
+              {job.skills.slice(0, 5).map((skill) => (
+                <span
+                  key={skill}
+                  className="px-2 sm:px-3 py-1 sm:py-2 rounded-lg bg-slate-800 text-slate-300 text-[11px] sm:text-xs"
+                >
+                  {skill}
+                </span>
+              ))}
+
+              {job.skills.length > 5 && (
+                <span className="px-2 py-1 rounded-lg bg-slate-800 text-slate-400 text-xs">
+                  +{job.skills.length - 5}
+                </span>
+              )}
+
+            </div>
+          )}
+
+
+          {/* APPLY BUTTON */}
+
+          <div className="flex justify-end mt-4">
+
+            <button
+              onClick={(e) =>
+                handleApply(e, job)
+              }
+              className="
+                bg-emerald-500
+                hover:bg-emerald-600
+                text-white
+                font-semibold
+                px-5
+                py-2.5
+                rounded-xl
+                text-sm
+                transition
+                flex
+                items-center
+                gap-2
+              "
+            >
+              Apply
+
+              <FaArrowRight className="text-xs" />
+
+            </button>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+  ))}
+
+</div>
 
             </main>
 
@@ -722,93 +816,239 @@ export default function AllJobs() {
                       No recent jobs available.
                     </p>
 
-                  ) : (
+                  ) :
+(
+  recentJobs.map((job) => (
 
-                    recentJobs.map((job) => (
+    <div
+      key={job._id}
+      onClick={() => openJob(job)}
+      className="
+        group
+        bg-slate-950
+        border border-slate-800
+        hover:border-emerald-500/60
+        hover:bg-slate-900
+        rounded-xl
+        p-3.5
+        cursor-pointer
+        transition-all
+        duration-200
+      "
+    >
 
-                      <div
-                        key={job._id}
-                        onClick={() => openJob(job)}
-                        className="group bg-slate-950 border border-slate-800 hover:border-emerald-500 rounded-xl p-3 cursor-pointer transition-all duration-200"
-                      >
+      {/* ==========================
+          TOP
+      ========================== */}
 
-                        <div className="flex gap-3">
+      <div className="flex gap-3">
 
-                          {/* LOGO */}
+        {/* LOGO */}
 
-                          <div className="w-11 h-11 rounded-lg bg-white flex items-center justify-center p-1.5 shrink-0">
+        <div
+          className="
+            w-12 h-12
+            rounded-lg
+            bg-white
+            border border-slate-700
+            flex items-center
+            justify-center
+            p-1.5
+            shrink-0
+            overflow-hidden
+          "
+        >
 
-                            <img
-                              src={
-                                job.companyLogo ||
-                                "https://via.placeholder.com/80"
-                              }
-                              alt={
-                                job.companyName ||
-                                "Company"
-                              }
-                              className="w-full h-full object-contain rounded"
-                            />
+          {job.companyLogo ? (
 
-                          </div>
+            <img
+              src={job.companyLogo}
+              alt={job.companyName || "Company"}
+              className="w-full h-full object-contain rounded"
+              onError={(e) => {
+                e.currentTarget.style.display = "none";
+              }}
+            />
 
-                          {/* INFO */}
+          ) : (
 
-                          <div className="min-w-0 flex-1">
+            <FaBuilding className="text-slate-400 text-lg" />
 
-                            <h3 className="text-white text-sm font-semibold truncate group-hover:text-emerald-400 transition">
-                              {job.jobTitle}
-                            </h3>
+          )}
 
-                            <p className="text-slate-400 text-xs truncate mt-1">
-                              {job.companyName}
-                            </p>
+        </div>
 
-                            <div className="flex items-center gap-1 text-slate-500 text-[11px] mt-2">
 
-                              <FaMapMarkerAlt className="text-[10px]" />
+        {/* INFO */}
 
-                              <span className="truncate">
-                                {job.city ||
-                                  job.state ||
-                                  "Location"}
-                              </span>
+        <div className="min-w-0 flex-1">
 
-                            </div>
+          {/* JOB TITLE */}
 
-                          </div>
+          <h3
+            className="
+              text-white
+              text-sm
+              font-bold
+              leading-tight
+              line-clamp-2
+              group-hover:text-emerald-400
+              transition
+            "
+          >
+            {job.jobTitle || "Job Opening"}
+          </h3>
 
-                        </div>
 
-                        {/* BOTTOM */}
+          {/* COMPANY */}
 
-                        <div className="flex items-center justify-end mt-3 pt-3 border-t border-slate-800">
+          <div className="flex items-center gap-1.5 mt-1.5 min-w-0">
 
-                          <span className="text-slate-500 text-[10px] flex items-center gap-1">
+            <p className="text-slate-400 text-xs truncate">
+              {job.companyName || "Company"}
+            </p>
 
-                            <FaClock />
+            <FaCheckCircle
+              className="
+                text-emerald-500
+                text-[10px]
+                shrink-0
+              "
+            />
 
-                            {job.createdAt
-                              ? new Date(
-                                  job.createdAt
-                                ).toLocaleDateString(
-                                  "en-IN",
-                                  {
-                                    day: "numeric",
-                                    month: "short",
-                                  }
-                                )
-                              : "Recent"}
+          </div>
 
-                          </span>
+        </div>
 
-                        </div>
+      </div>
 
-                      </div>
 
-                    ))
+      {/* ==========================
+          JOB META
+      ========================== */}
 
-                  )}
+      <div className="flex items-center gap-3 mt-3 text-[11px]">
+
+        {/* LOCATION */}
+
+        {(job.city || job.state) && (
+
+          <div
+            className="
+              flex
+              items-center
+              gap-1
+              min-w-0
+              text-slate-500
+            "
+          >
+
+            <FaMapMarkerAlt
+              className="
+                text-emerald-500
+                text-[10px]
+                shrink-0
+              "
+            />
+
+            <span className="truncate">
+              {job.city || job.state}
+            </span>
+
+          </div>
+
+        )}
+
+
+        {/* WORK MODE */}
+
+        {job.workMode && (
+
+          <>
+            <span className="text-slate-700">
+              •
+            </span>
+
+            <span className="text-emerald-400 truncate">
+              {job.workMode}
+            </span>
+          </>
+
+        )}
+
+      </div>
+
+
+      {/* ==========================
+          BOTTOM
+      ========================== */}
+
+      <div
+        className="
+          flex
+          items-center
+          justify-between
+          mt-3
+          pt-3
+          border-t
+          border-slate-800
+        "
+      >
+
+        {/* DATE */}
+
+        <span
+          className="
+            text-slate-600
+            text-[10px]
+            flex
+            items-center
+            gap-1
+          "
+        >
+
+          <FaClock />
+
+          {job.createdAt
+            ? new Date(job.createdAt).toLocaleDateString(
+                "en-IN",
+                {
+                  day: "numeric",
+                  month: "short",
+                }
+              )
+            : "Recent"}
+
+        </span>
+
+
+        {/* VIEW */}
+
+        <span
+          className="
+            text-emerald-500
+            text-[10px]
+            font-semibold
+            flex
+            items-center
+            gap-1
+            opacity-0
+            group-hover:opacity-100
+            transition
+          "
+        >
+          View
+          <FaArrowRight className="text-[9px]" />
+        </span>
+
+      </div>
+
+    </div>
+
+  ))
+)
+
+}
 
                 </div>
 

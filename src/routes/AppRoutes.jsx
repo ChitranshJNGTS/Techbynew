@@ -79,7 +79,7 @@ export default function AppRoutes() {
       />
 
       <Route
-        path="/terms-and-conditions"
+        path="/terms-condition"
         element={<TermsAndConditions />}
       />
 

@@ -1107,7 +1107,7 @@ export default function Navbar() {
               {/* WhatsApp */}
 
               <a
-                href="YOUR_WHATSAPP_GROUP_LINK"
+                href="https://chat.whatsapp.com/CimbUfCYdUnGLTAKJLThWR"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center gap-4 bg-slate-800 hover:bg-emerald-500/10 border border-slate-700 hover:border-emerald-500 rounded-2xl p-4 transition"
@@ -1130,30 +1130,7 @@ export default function Navbar() {
               </a>
 
 
-              {/* Telegram */}
-
-              <a
-                href="YOUR_TELEGRAM_GROUP_LINK"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-4 bg-slate-800 hover:bg-emerald-500/10 border border-slate-700 hover:border-emerald-500 rounded-2xl p-4 transition"
-              >
-
-                <div className="w-11 h-11 rounded-xl bg-sky-500 flex items-center justify-center text-white text-xl">
-                  <FaTelegramPlane />
-                </div>
-
-                <div className="text-left">
-                  <h3 className="text-white font-semibold">
-                    Telegram Group
-                  </h3>
-
-                  <p className="text-slate-400 text-sm">
-                    Get instant job notifications
-                  </p>
-                </div>
-
-              </a>
+          
 
 
               {/* Instagram */}
@@ -1185,7 +1162,7 @@ export default function Navbar() {
               {/* LinkedIn */}
 
               <a
-                href="YOUR_LINKEDIN_LINK"
+                href="https://www.linkedin.com/company/techby-consultancy-services/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center gap-4 bg-slate-800 hover:bg-emerald-500/10 border border-slate-700 hover:border-emerald-500 rounded-2xl p-4 transition"
@@ -1208,30 +1185,7 @@ export default function Navbar() {
               </a>
 
 
-              {/* Facebook */}
-
-              <a
-                href="YOUR_FACEBOOK_LINK"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-4 bg-slate-800 hover:bg-emerald-500/10 border border-slate-700 hover:border-emerald-500 rounded-2xl p-4 transition"
-              >
-
-                <div className="w-11 h-11 rounded-xl bg-blue-500 flex items-center justify-center text-white text-xl">
-                  <FaFacebook />
-                </div>
-
-                <div className="text-left">
-                  <h3 className="text-white font-semibold">
-                    Facebook
-                  </h3>
-
-                  <p className="text-slate-400 text-sm">
-                    Follow our latest updates
-                  </p>
-                </div>
-
-              </a>
+            
 
             </div>
 

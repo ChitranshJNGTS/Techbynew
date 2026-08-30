@@ -686,42 +686,45 @@ export default function JobDescription() {
       toast.error("Application link is not available.");
     }
   };
+const shareJob = async () => {
+  try {
+    const shareUrl =
+      `${window.location.origin}/job/${job.slug}`;
 
-  const shareJob = async () => {
-    try {
-      const shareUrl =
-        `${window.location.origin}/share/job/${job._id}`;
+    const shareData = {
+      title: `${job.jobTitle} - ${job.companyName}`,
 
-      const shareData = {
-        title: `${job.jobTitle} - ${job.companyName}`,
+      text:
+        `${job.jobTitle} at ${job.companyName}\n\n` +
+        `${job.jobSummary || "Check out this job opportunity."}\n\n` +
+        `${job.city ? `📍 ${job.city}${job.state ? `, ${job.state}` : ""}\n` : ""}` +
+        `${job.experience ? `💼 ${job.experience}\n` : ""}` +
+        `${
+          job.salaryMin || job.salaryMax
+            ? `💰 ₹${job.salaryMin?.toLocaleString() || ""}${
+                job.salaryMax
+                  ? ` - ₹${job.salaryMax.toLocaleString()}`
+                  : ""
+              }`
+            : ""
+        }`,
 
-        text:
-          `${job.jobTitle} at ${job.companyName}\n\n` +
-          `${job.jobSummary || "Check out this job opportunity."}\n\n` +
-          `${job.city ? `📍 ${job.city}, ${job.state || ""}\n` : ""}` +
-          `${job.experience ? `💼 ${job.experience}\n` : ""}` +
-          `${
-            job.salaryMin || job.salaryMax
-              ? `💰 ₹${job.salaryMin?.toLocaleString() || ""} - ₹${job.salaryMax?.toLocaleString() || ""}`
-              : ""
-          }`,
+      url: shareUrl,
+    };
 
-        url: shareUrl,
-      };
-
-      if (navigator.share) {
-        await navigator.share(shareData);
-      } else {
-        await navigator.clipboard.writeText(shareUrl);
-        toast.success("Job share link copied!");
-      }
-    } catch (error) {
-      if (error.name !== "AbortError") {
-        console.error("Share error:", error);
-        toast.error("Unable to share job.");
-      }
+    if (navigator.share) {
+      await navigator.share(shareData);
+    } else {
+      await navigator.clipboard.writeText(shareUrl);
+      toast.success("Job share link copied!");
     }
-  };
+  } catch (error) {
+    if (error.name !== "AbortError") {
+      console.error("Share error:", error);
+      toast.error("Unable to share job.");
+    }
+  }
+};
 
   if (loading) {
     return (

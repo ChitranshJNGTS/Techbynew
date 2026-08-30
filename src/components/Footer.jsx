@@ -1,14 +1,10 @@
 
 import {
-  FaFacebookF,
-  FaTwitter,
   FaLinkedinIn,
   FaInstagram,
-  FaGithub,
   FaMapMarkerAlt,
-  FaEnvelope,
-  FaPhoneAlt,
   FaArrowRight,
+  FaWhatsapp,
 } from "react-icons/fa";
 import { Link } from "react-router-dom";
 
@@ -56,60 +52,46 @@ export default function Footer() {
             opportunities.
           </p>
 
-          {/* Social Links */}
-          <div className="flex gap-3 mt-8">
+    
+{/* Social Links */}
+<div className="flex gap-3 mt-8">
 
-            <a
-              href="https://facebook.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="Facebook"
-              className="w-11 h-11 rounded-full bg-slate-900 flex items-center justify-center hover:bg-emerald-500 hover:text-white transition"
-            >
-              <FaFacebookF />
-            </a>
+  {/* LinkedIn */}
+  <a
+    href="https://www.linkedin.com/company/techby-consultancy-services/"
+    target="_blank"
+    rel="noopener noreferrer"
+    aria-label="LinkedIn"
+    className="w-11 h-11 rounded-full bg-slate-900 flex items-center justify-center hover:bg-emerald-500 hover:text-white transition"
+  >
+    <FaLinkedinIn />
+  </a>
 
-            <a
-              href="https://twitter.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="Twitter"
-              className="w-11 h-11 rounded-full bg-slate-900 flex items-center justify-center hover:bg-emerald-500 hover:text-white transition"
-            >
-              <FaTwitter />
-            </a>
+  {/* Instagram */}
+  <a
+    href="YOUR_INSTAGRAM_LINK"
+    target="_blank"
+    rel="noopener noreferrer"
+    aria-label="Instagram"
+    className="w-11 h-11 rounded-full bg-slate-900 flex items-center justify-center hover:bg-emerald-500 hover:text-white transition"
+  >
+    <FaInstagram />
+  </a>
 
-            <a
-              href="https://linkedin.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="LinkedIn"
-              className="w-11 h-11 rounded-full bg-slate-900 flex items-center justify-center hover:bg-emerald-500 hover:text-white transition"
-            >
-              <FaLinkedinIn />
-            </a>
+  {/* WhatsApp */}
+  <a
+    href="https://chat.whatsapp.com/CimbUfCYdUnGLTAKJLThWR"
+    target="_blank"
+    rel="noopener noreferrer"
+    aria-label="WhatsApp"
+    className="w-11 h-11 rounded-full bg-slate-900 flex items-center justify-center hover:bg-emerald-500 hover:text-white transition"
+  >
+    <FaWhatsapp />
+  </a>
 
-            <a
-              href="https://instagram.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="Instagram"
-              className="w-11 h-11 rounded-full bg-slate-900 flex items-center justify-center hover:bg-emerald-500 hover:text-white transition"
-            >
-              <FaInstagram />
-            </a>
+</div>
 
-            <a
-              href="https://github.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="GitHub"
-              className="w-11 h-11 rounded-full bg-slate-900 flex items-center justify-center hover:bg-emerald-500 hover:text-white transition"
-            >
-              <FaGithub />
-            </a>
 
-          </div>
         </div>
 
         {/* Quick Links */}
@@ -247,12 +229,7 @@ export default function Footer() {
               Terms & Conditions
             </Link>
 
-            <Link
-              to="/cookie-policy"
-              className="hover:text-emerald-400 transition"
-            >
-              Cookie Policy
-            </Link>
+
 
           </div>
 
