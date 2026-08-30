@@ -27,36 +27,28 @@
         <priority>0.8</priority>
     </url>
 
-    <!-- ================= RECRUITER POST JOB ================= -->
-    <!-- <url>
-        <loc>https://techby.in/recruiter/post-job</loc>
-        <lastmod>2026-08-30</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.7</priority>
-    </url> -->
-
-    <!-- ================= LOGIN ================= -->
-    <!-- <url>
-        <loc>https://techby.in/login</loc>
+    <!-- ================= ABOUT US ================= -->
+    <url>
+        <loc>https://techby.in/about</loc>
         <lastmod>2026-08-30</lastmod>
         <changefreq>monthly</changefreq>
-        <priority>0.4</priority>
-    </url> -->
+        <priority>0.7</priority>
+    </url>
 
     <!-- ================= PRIVACY POLICY ================= -->
-    <!-- <url>
+    <url>
         <loc>https://techby.in/privacy-policy</loc>
         <lastmod>2026-08-30</lastmod>
         <changefreq>yearly</changefreq>
         <priority>0.3</priority>
-    </url> -->
+    </url>
 
     <!-- ================= TERMS ================= -->
-    <!-- <url>
+    <url>
         <loc>https://techby.in/terms-and-conditions</loc>
         <lastmod>2026-08-30</lastmod>
         <changefreq>yearly</changefreq>
         <priority>0.3</priority>
-    </url> -->
+    </url>
 
 </urlset>

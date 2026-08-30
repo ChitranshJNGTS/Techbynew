@@ -41,7 +41,7 @@ const AdminDashboard = () => {
     localStorage.removeItem("adminToken");
     localStorage.removeItem("activeMenu");
 
-    navigate("/admin/login", { replace: true });
+    navigate("/", { replace: true });
   };
 
   // ================= MENU =================

@@ -11,10 +11,10 @@ import { Link } from "react-router-dom";
 const quickLinks = [
   { name: "Home", path: "/" },
   { name: "Browse Jobs", path: "/all-jobs" },
-  // { name: "About Us", path: "/about" },
+  { name: "About Us", path: "/about-us" },
   // { name: "Contact Us", path: "/contact" },
-  // { name: "Privacy Policy", path: "/privacy-policy" },
-  // { name: "Terms & Conditions", path: "/terms-condition" },
+  { name: "Privacy Policy", path: "/privacy-policy" },
+  { name: "Terms & Conditions", path: "/terms-condition" },
 ];
 
 const jobCategories = [
@@ -69,7 +69,7 @@ export default function Footer() {
 
   {/* Instagram */}
   <a
-    href="YOUR_INSTAGRAM_LINK"
+    href="https://www.instagram.com/mr_vansh_s?igsi=MWtvd24yOGxwamlm"
     target="_blank"
     rel="noopener noreferrer"
     aria-label="Instagram"

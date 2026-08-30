@@ -1136,7 +1136,7 @@ export default function Navbar() {
               {/* Instagram */}
 
               <a
-                href="YOUR_INSTAGRAM_LINK"
+                href="https://www.instagram.com/mr_vansh_s?igsi=MWtvd24yOGxwamlm"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center gap-4 bg-slate-800 hover:bg-emerald-500/10 border border-slate-700 hover:border-emerald-500 rounded-2xl p-4 transition"

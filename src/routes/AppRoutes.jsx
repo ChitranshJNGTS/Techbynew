@@ -54,6 +54,7 @@ import TermsAndConditions from "../pages/term&condition/page";
 import PostJob from "../pages/PostJob/page";
 import AdminDashboard from "../pages/admin-Dashboard/page";
 import AdminLogin from "../pages/adminlogin/page";
+import About from "../pages/About/About";
 
 import AdminProtectedRoute from "./AdminProtectedRoute";
 
@@ -68,6 +69,7 @@ export default function AppRoutes() {
       <Route path="/all-jobs" element={<AllJobs />} />
 
       <Route path="/jobs" element={<AllJobs />} />
+      <Route path="/about-us" element={<About />} />
 
       <Route path="/login" element={<Login />} />
 
