@@ -19,6 +19,7 @@ import {
 
 import Navbar from "./Navbar";
 import Footer from "./Footer";
+import MobileBottomBar from "./MobileBottomBar";
 
 export default function AllJobs() {
   const navigate = useNavigate();
@@ -372,6 +373,7 @@ if (urlWorkMode.trim()) {
     return (
       <>
         <Navbar />
+        <MobileBottomBar/>
 
         <div className="min-h-screen bg-slate-950 flex items-center justify-center">
           <div className="text-center">
@@ -394,7 +396,7 @@ if (urlWorkMode.trim()) {
     return (
       <>
         <Navbar />
-
+        <MobileBottomBar/>
         <div className="min-h-screen bg-slate-950 flex items-center justify-center">
           <div className="text-center">
             <p className="text-red-500 text-xl">
@@ -420,7 +422,7 @@ if (urlWorkMode.trim()) {
   return (
     <>
       <Navbar />
-
+      <MobileBottomBar/>
       <section className="min-h-screen bg-slate-950 pt-20 pb-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 lg:py-12">
 

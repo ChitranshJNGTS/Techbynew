@@ -55,7 +55,7 @@ import PostJob from "../pages/PostJob/page";
 import AdminDashboard from "../pages/admin-Dashboard/page";
 import AdminLogin from "../pages/adminlogin/page";
 import About from "../pages/About/About";
-
+import Community from "../pages/Community/page";
 import AdminProtectedRoute from "./AdminProtectedRoute";
 
 export default function AppRoutes() {
@@ -70,6 +70,7 @@ export default function AppRoutes() {
 
       <Route path="/jobs" element={<AllJobs />} />
       <Route path="/about-us" element={<About />} />
+      <Route path="/community" element={<Community />} />
 
       <Route path="/login" element={<Login />} />
 

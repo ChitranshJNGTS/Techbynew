@@ -15,12 +15,14 @@ import DemoInterviewSection from "../components/DemoInterviewSection";
 import Hero from "../components/Hero";
 import TrainingProgram from "../components/TrainingProgram";
 import HotJobs from "../components/HotJobs";
+import MobileBottomBar from "../components/MobileBottomBar";
 
 export default function Home() {
   return (
  <>
     
 <Navbar/>
+<MobileBottomBar/>
 <Hero/>
 
 {/* <PopularCategories /> */}
