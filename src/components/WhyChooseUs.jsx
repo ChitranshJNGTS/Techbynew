@@ -270,6 +270,7 @@ import {
 } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
+import MonetagAds from "./MonetagAds";
 
 const features = [
   "Free Job Listings",
@@ -334,6 +335,7 @@ const itemVariants = {
 export default function WhyChooseUs() {
   return (
     <section className="py-24 bg-slate-950 overflow-hidden">
+      {/* <MonetagAds/> */}
       <div className="max-w-7xl mx-auto px-6">
 
         <div className="grid lg:grid-cols-2 gap-20 items-center">
