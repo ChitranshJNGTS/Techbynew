@@ -650,7 +650,32 @@ import { useParams } from "react-router-dom";
 import API from "../Api/JobApi";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
+  const CompanyLogo = ({
+  logo,
+  companyName,
+  className = "w-full h-full object-contain rounded-xl",
+}) => {
+  const [imageError, setImageError] = useState(false);
 
+  if (!logo || imageError) {
+    return (
+      <div
+        className={`${className} flex items-center justify-center text-center text-slate-900 font-bold px-2 leading-tight`}
+      >
+        {companyName || "Company"}
+      </div>
+    );
+  }
+
+  return (
+    <img
+      src={logo}
+      alt={companyName || "Company"}
+      className={className}
+      onError={() => setImageError(true)}
+    />
+  );
+};
 export default function JobDescription() {
   const { slug } = useParams();
 
@@ -692,6 +717,8 @@ const [resume, setResume] = useState(null);
       setLoading(false);
     }
   };
+
+
 
 const applyJob = () => {
   setShowApplyModal(true);
@@ -952,18 +979,12 @@ const shareJob = async () => {
 
                   {/* Company Logo */}
 
-                  <div className="w-20 h-20 sm:w-24 sm:h-24 md:w-58 md:h-48 rounded-2xl bg-white border border-slate-700 p-3 shrink-0 flex items-center justify-center">
-
-                    <img
-                      src={
-                        job.companyLogo ||
-                        "https://via.placeholder.com/120"
-                      }
-                      alt={job.companyName || "Company"}
-                      className="w-full h-full object-contain rounded-xl"
-                    />
-
-                  </div>
+                 <div className="w-20 h-20 sm:w-24 sm:h-24 md:w-58 md:h-48 rounded-2xl bg-white border border-slate-700 p-3 shrink-0 flex items-center justify-center">
+  <CompanyLogo
+    logo={job.companyLogo}
+    companyName={job.companyName}
+  />
+</div>
 
                   <div className="min-w-0">
 
@@ -1199,17 +1220,13 @@ const shareJob = async () => {
 
                   <div className="flex flex-col sm:flex-row gap-5">
 
-                    {job.companyLogo && (
-                      <div className="w-20 h-20 rounded-2xl bg-white p-3 shrink-0 flex items-center justify-center">
-
-                        <img
-                          src={job.companyLogo}
-                          alt={job.companyName}
-                          className="w-full h-full object-contain"
-                        />
-
-                      </div>
-                    )}
+                   <div className="w-20 h-20 rounded-2xl bg-white p-3 shrink-0 flex items-center justify-center">
+  <CompanyLogo
+    logo={job.companyLogo}
+    companyName={job.companyName}
+    className="w-full h-full object-contain"
+  />
+</div>
 
                     <div>
 
