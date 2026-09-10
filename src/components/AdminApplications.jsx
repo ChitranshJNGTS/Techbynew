@@ -497,9 +497,6 @@
 // } 
 
 
-
-
-
 import { useEffect, useState } from "react";
 import API from "../Api/JobApi";
 
@@ -508,8 +505,12 @@ export default function AdminApplications() {
   const [loading, setLoading] = useState(true);
 
   const [selectedResume, setSelectedResume] = useState(null);
+  const [selectedApplication, setSelectedApplication] = useState(null);
 
-  // Fetch applications
+  // =========================
+  // Fetch Applications
+  // =========================
+
   useEffect(() => {
     fetchApplications();
   }, []);
@@ -524,28 +525,124 @@ export default function AdminApplications() {
         setApplications(data.applications || []);
       }
     } catch (error) {
-      console.error("Fetch Applications Error:", error);
+      console.error(
+        "Fetch Applications Error:",
+        error
+      );
     } finally {
       setLoading(false);
     }
   };
 
-  // Open resume
-  const handleViewResume = (resumeUrl) => {
-    if (!resumeUrl) return;
-    setSelectedResume(resumeUrl);
+  // =========================
+  // Get Candidate Name
+  // Supports old + new applications
+  // =========================
+
+  const getCandidateName = (item) => {
+    return (
+      item.candidateName ||
+      item.candidate?.name ||
+      "N/A"
+    );
   };
 
-  // Close resume viewer
+  // =========================
+  // Get Candidate Email
+  // =========================
+
+  const getCandidateEmail = (item) => {
+    return (
+      item.candidateEmail ||
+      item.candidate?.email ||
+      "N/A"
+    );
+  };
+
+  // =========================
+  // Get Candidate Phone
+  // =========================
+
+  const getCandidatePhone = (item) => {
+    return (
+      item.candidatePhone ||
+      item.candidate?.phone ||
+      "N/A"
+    );
+  };
+
+  // =========================
+  // Get Resume
+  // =========================
+
+  const getResume = (item) => {
+    return (
+      item.resumeUrl ||
+      item.candidate?.resume ||
+      null
+    );
+  };
+
+  // =========================
+  // Open Resume
+  // =========================
+
+  const handleViewResume = (application) => {
+    const resume = getResume(application);
+
+    if (!resume) return;
+
+    setSelectedResume(resume);
+    setSelectedApplication(application);
+  };
+
+  // =========================
+  // Close Resume
+  // =========================
+
   const closeResume = () => {
     setSelectedResume(null);
+    setSelectedApplication(null);
   };
 
-  // Open resume in new browser tab
+  // =========================
+  // Open Resume New Tab
+  // =========================
+
   const openResumeNewTab = () => {
     if (!selectedResume) return;
 
-    window.open(selectedResume, "_blank", "noopener,noreferrer");
+    window.open(
+      selectedResume,
+      "_blank",
+      "noopener,noreferrer"
+    );
+  };
+
+  // =========================
+  // Status Color
+  // =========================
+
+  const getStatusClass = (status) => {
+    switch (status) {
+      case "Shortlisted":
+        return "bg-blue-50 text-blue-600 border-blue-200";
+
+      case "Interview Scheduled":
+        return "bg-purple-50 text-purple-600 border-purple-200";
+
+      case "Selected":
+        return "bg-emerald-50 text-emerald-600 border-emerald-200";
+
+      case "Rejected":
+        return "bg-red-50 text-red-600 border-red-200";
+
+      case "Reviewed":
+        return "bg-yellow-50 text-yellow-600 border-yellow-200";
+
+      default:
+        return "bg-slate-50 text-slate-600 border-slate-200";
+    }
   };
 
   return (
@@ -562,7 +659,7 @@ export default function AdminApplications() {
             </h1>
 
             <p className="text-slate-500 mt-2">
-              View candidates who have applied for your jobs.
+              View and manage candidates who have applied for your jobs.
             </p>
           </div>
 
@@ -657,9 +754,9 @@ export default function AdminApplications() {
 
             <div className="overflow-x-auto">
 
-              <table className="w-full min-w-[1100px]">
+              <table className="w-full min-w-[1250px]">
 
-                {/* TABLE HEADER */}
+                {/* HEADER */}
 
                 <thead className="bg-emerald-600">
 
@@ -670,11 +767,7 @@ export default function AdminApplications() {
                     </th>
 
                     <th className="p-4 text-left text-white font-semibold">
-                      Email
-                    </th>
-
-                    <th className="p-4 text-left text-white font-semibold">
-                      Phone
+                      Contact
                     </th>
 
                     <th className="p-4 text-left text-white font-semibold">
@@ -685,8 +778,16 @@ export default function AdminApplications() {
                       Company
                     </th>
 
+                    <th className="p-4 text-left text-white font-semibold">
+                      Experience
+                    </th>
+
                     <th className="p-4 text-center text-white font-semibold">
                       Resume
+                    </th>
+
+                    <th className="p-4 text-center text-white font-semibold">
+                      Status
                     </th>
 
                     <th className="p-4 text-center text-white font-semibold">
@@ -698,170 +799,206 @@ export default function AdminApplications() {
                 </thead>
 
 
-                {/* TABLE BODY */}
+                {/* BODY */}
 
                 <tbody>
 
-                  {applications.map((item) => (
+                  {applications.map((item) => {
 
-                    <tr
-                      key={item._id}
-                      className="border-b border-slate-100 hover:bg-emerald-50/40 transition"
-                    >
+                    const candidateName =
+                      getCandidateName(item);
 
-                      {/* Candidate */}
+                    const candidateEmail =
+                      getCandidateEmail(item);
 
-                      <td className="p-4">
+                    const candidatePhone =
+                      getCandidatePhone(item);
 
-                        <div className="flex flex-col">
+                    const resume =
+                      getResume(item);
 
-                          <span className="text-slate-900 font-semibold">
-                            {item.candidate?.name || "N/A"}
+                    return (
+                      <tr
+                        key={item._id}
+                        className="border-b border-slate-100 hover:bg-emerald-50/40 transition"
+                      >
+
+                        {/* Candidate */}
+
+                        <td className="p-4">
+
+                          <div className="flex flex-col">
+
+                            <span className="text-slate-900 font-semibold">
+                              {candidateName}
+                            </span>
+
+                            {item.candidate?.city && (
+                              <span className="text-xs text-slate-500 mt-1">
+                                {item.candidate.city}
+                                {item.candidate.state
+                                  ? `, ${item.candidate.state}`
+                                  : ""}
+                              </span>
+                            )}
+
+                          </div>
+
+                        </td>
+
+
+                        {/* Contact */}
+
+                        <td className="p-4">
+
+                          <div className="flex flex-col gap-1">
+
+                            <span className="text-slate-600 text-sm">
+                              {candidateEmail}
+                            </span>
+
+                            <span className="text-slate-500 text-sm">
+                              {candidatePhone}
+                            </span>
+
+                          </div>
+
+                        </td>
+
+
+                        {/* Job */}
+
+                        <td className="p-4">
+
+                          <div className="flex flex-col">
+
+                            <span className="text-slate-900 font-medium">
+                              {item.job?.jobTitle || "N/A"}
+                            </span>
+
+                            {item.job?.city && (
+                              <span className="text-xs text-slate-500 mt-1">
+                                {item.job.city}
+                                {item.job.state
+                                  ? `, ${item.job.state}`
+                                  : ""}
+                              </span>
+                            )}
+
+                          </div>
+
+                        </td>
+
+
+                        {/* Company */}
+
+                        <td className="p-4">
+
+                          <span className="text-emerald-600 font-medium">
+                            {item.job?.companyName || "N/A"}
                           </span>
 
-                          {item.candidate?.city && (
-                            <span className="text-xs text-slate-500 mt-1">
-                              {item.candidate.city}
-                              {item.candidate.state
-                                ? `, ${item.candidate.state}`
-                                : ""}
-                            </span>
-                          )}
-
-                        </div>
-
-                      </td>
+                        </td>
 
 
-                      {/* Email */}
+                        {/* Experience */}
 
-                      <td className="p-4">
+                        <td className="p-4">
 
-                        <span className="text-slate-600">
-                          {item.candidate?.email || "N/A"}
-                        </span>
-
-                      </td>
-
-
-                      {/* Phone */}
-
-                      <td className="p-4">
-
-                        <span className="text-slate-600">
-                          {item.candidate?.phone || "N/A"}
-                        </span>
-
-                      </td>
-
-
-                      {/* Job */}
-
-                      <td className="p-4">
-
-                        <div className="flex flex-col">
-
-                          <span className="text-slate-900 font-medium">
-                            {item.job?.jobTitle || "N/A"}
+                          <span className="text-slate-600 text-sm">
+                            {item.experience ||
+                              item.candidate?.experience ||
+                              "Not specified"}
                           </span>
 
-                          {item.job?.city && (
-                            <span className="text-xs text-slate-500 mt-1">
-                              {item.job.city}
-                              {item.job.state
-                                ? `, ${item.job.state}`
-                                : ""}
-                            </span>
-                          )}
-
-                        </div>
-
-                      </td>
+                        </td>
 
 
-                      {/* Company */}
+                        {/* Resume */}
 
-                      <td className="p-4">
+                        <td className="p-4 text-center">
 
-                        <span className="text-emerald-600 font-medium">
-                          {item.job?.companyName || "N/A"}
-                        </span>
+                          {resume ? (
 
-                      </td>
-
-
-                      {/* Resume */}
-
-                      <td className="p-4 text-center">
-
-                        {item.candidate?.resume ? (
-
-                          <button
-                            onClick={() =>
-                              handleViewResume(item.candidate.resume)
-                            }
-                            className="inline-flex items-center gap-2 bg-emerald-500 hover:bg-emerald-600 text-white px-4 py-2 rounded-lg font-medium transition shadow-sm"
-                          >
-
-                            {/* PDF Icon */}
-
-                            <svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              className="w-4 h-4"
-                              fill="none"
-                              viewBox="0 0 24 24"
-                              stroke="currentColor"
-                              strokeWidth="2"
+                            <button
+                              onClick={() =>
+                                handleViewResume(item)
+                              }
+                              className="inline-flex items-center gap-2 bg-emerald-500 hover:bg-emerald-600 text-white px-4 py-2 rounded-lg font-medium transition shadow-sm"
                             >
 
-                              <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                d="M7 21h10a2 2 0 002-2V9.414a2 2 0 00-.586-1.414l-5.414-5.414A2 2 0 0011.586 2H7a2 2 0 00-2 2v15a2 2 0 002 2z"
-                              />
+                              <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                className="w-4 h-4"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke="currentColor"
+                                strokeWidth="2"
+                              >
 
-                              <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                d="M13 2v6h6"
-                              />
+                                <path
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  d="M7 21h10a2 2 0 002-2V9.414a2 2 0 00-.586-1.414l-5.414-5.414A2 2 0 0011.586 2H7a2 2 0 00-2 2v15a2 2 0 002 2z"
+                                />
 
-                            </svg>
+                                <path
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  d="M13 2v6h6"
+                                />
 
-                            View Resume
+                              </svg>
 
-                          </button>
+                              View Resume
 
-                        ) : (
+                            </button>
 
-                          <span className="text-slate-400">
-                            No Resume
+                          ) : (
+
+                            <span className="text-slate-400">
+                              No Resume
+                            </span>
+
+                          )}
+
+                        </td>
+
+
+                        {/* Status */}
+
+                        <td className="p-4 text-center">
+
+                          <span
+                            className={`inline-flex px-3 py-1.5 rounded-full border text-xs font-semibold ${getStatusClass(
+                              item.status
+                            )}`}
+                          >
+                            {item.status || "Pending"}
                           </span>
 
-                        )}
-
-                      </td>
+                        </td>
 
 
-                      {/* Applied Date */}
+                        {/* Applied */}
 
-                      <td className="p-4 text-center">
+                        <td className="p-4 text-center">
 
-                        <span className="text-slate-500 text-sm">
+                          <span className="text-slate-500 text-sm">
 
-                          {item.createdAt
-                            ? new Date(
-                                item.createdAt
-                              ).toLocaleDateString()
-                            : "N/A"}
+                            {item.createdAt
+                              ? new Date(
+                                  item.createdAt
+                                ).toLocaleDateString()
+                              : "N/A"}
 
-                        </span>
+                          </span>
 
-                      </td>
+                        </td>
 
-                    </tr>
-
-                  ))}
+                      </tr>
+                    );
+                  })}
 
                 </tbody>
 
@@ -876,7 +1013,7 @@ export default function AdminApplications() {
 
 
       {/* ================================================= */}
-      {/* PDF RESUME MODAL */}
+      {/* RESUME MODAL */}
       {/* ================================================= */}
 
       {selectedResume && (
@@ -886,14 +1023,12 @@ export default function AdminApplications() {
           onClick={closeResume}
         >
 
-          {/* Modal */}
-
           <div
             className="relative bg-white w-full max-w-6xl h-[95vh] rounded-2xl overflow-hidden border border-slate-200 shadow-2xl flex flex-col"
             onClick={(e) => e.stopPropagation()}
           >
 
-            {/* ================= MODAL HEADER ================= */}
+            {/* ================= HEADER ================= */}
 
             <div className="h-16 shrink-0 bg-white border-b border-slate-200 px-4 sm:px-6 flex items-center justify-between">
 
@@ -930,11 +1065,15 @@ export default function AdminApplications() {
                 <div>
 
                   <h2 className="text-slate-900 font-semibold">
-                    Candidate Resume
+                    {selectedApplication
+                      ? getCandidateName(
+                          selectedApplication
+                        )
+                      : "Candidate Resume"}
                   </h2>
 
                   <p className="text-xs text-slate-500">
-                    PDF Document
+                    Candidate Resume
                   </p>
 
                 </div>
@@ -942,11 +1081,9 @@ export default function AdminApplications() {
               </div>
 
 
-              {/* Header Buttons */}
+              {/* BUTTONS */}
 
               <div className="flex items-center gap-2">
-
-                {/* Open New Tab */}
 
                 <button
                   onClick={openResumeNewTab}
@@ -981,8 +1118,6 @@ export default function AdminApplications() {
                 </button>
 
 
-                {/* Close */}
-
                 <button
                   onClick={closeResume}
                   className="w-10 h-10 rounded-lg bg-red-50 hover:bg-red-100 text-red-500 flex items-center justify-center transition"
@@ -1013,7 +1148,7 @@ export default function AdminApplications() {
             </div>
 
 
-            {/* ================= PDF VIEWER ================= */}
+            {/* ================= PDF / DOCUMENT VIEWER ================= */}
 
             <div className="flex-1 bg-slate-100">
 
@@ -1034,4 +1169,3 @@ export default function AdminApplications() {
     </>
   );
 }
-

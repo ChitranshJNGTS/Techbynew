@@ -640,6 +640,9 @@ import {
   FaLaptopHouse,
   FaBolt,
   FaShareAlt,
+  FaFileAlt,
+  FaUpload,
+  FaTimes,
 } from "react-icons/fa";
 import { toast } from "react-toastify";
 import { useEffect, useState } from "react";
@@ -654,7 +657,18 @@ export default function JobDescription() {
   const [job, setJob] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const [applying, setApplying] = useState(false);
+  const [showApplyModal, setShowApplyModal] = useState(false);
+const [submittingApplication, setSubmittingApplication] = useState(false);
+
+const [applicationForm, setApplicationForm] = useState({
+  name: "",
+  email: "",
+  phone: "",
+  experience: "",
+  coverLetter: "",
+});
+
+const [resume, setResume] = useState(null);
 
   useEffect(() => {
     getJob();
@@ -679,13 +693,142 @@ export default function JobDescription() {
     }
   };
 
-  const applyJob = () => {
-    if (job?.applyLink) {
-      window.open(job.applyLink, "_blank", "noopener,noreferrer");
-    } else {
-      toast.error("Application link is not available.");
+const applyJob = () => {
+  setShowApplyModal(true);
+};
+const handleApplicationChange = (e) => {
+  const { name, value } = e.target;
+
+  setApplicationForm((prev) => ({
+    ...prev,
+    [name]: value,
+  }));
+};
+
+
+const handleResumeChange = (e) => {
+  const file = e.target.files?.[0];
+
+  if (!file) return;
+
+  const allowedTypes = [
+    "application/pdf",
+    "application/msword",
+    "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+  ];
+
+  if (!allowedTypes.includes(file.type)) {
+    toast.error("Only PDF, DOC and DOCX files are allowed.");
+    e.target.value = "";
+    return;
+  }
+
+  if (file.size > 5 * 1024 * 1024) {
+    toast.error("Resume must be less than 5 MB.");
+    e.target.value = "";
+    return;
+  }
+
+  setResume(file);
+};
+
+
+const submitApplication = async (e) => {
+  e.preventDefault();
+
+  if (!applicationForm.name.trim()) {
+    toast.error("Please enter your name.");
+    return;
+  }
+
+  if (!applicationForm.email.trim()) {
+    toast.error("Please enter your email.");
+    return;
+  }
+
+  if (!applicationForm.phone.trim()) {
+    toast.error("Please enter your phone number.");
+    return;
+  }
+
+  if (!resume) {
+    toast.error("Please upload your resume.");
+    return;
+  }
+
+  try {
+    setSubmittingApplication(true);
+
+    const formData = new FormData();
+
+    formData.append(
+      "name",
+      applicationForm.name
+    );
+
+    formData.append(
+      "email",
+      applicationForm.email
+    );
+
+    formData.append(
+      "phone",
+      applicationForm.phone
+    );
+
+    formData.append(
+      "experience",
+      applicationForm.experience
+    );
+
+    formData.append(
+      "coverLetter",
+      applicationForm.coverLetter
+    );
+
+    formData.append(
+      "resume",
+      resume
+    );
+
+    const { data } = await API.post(
+      `/applications/apply/${job._id}`,
+      formData
+    );
+
+    if (data.success) {
+      toast.success(
+        "Application submitted successfully!"
+      );
+
+      setShowApplyModal(false);
+
+      setApplicationForm({
+        name: "",
+        email: "",
+        phone: "",
+        experience: "",
+        coverLetter: "",
+      });
+
+      setResume(null);
     }
-  };
+
+  } catch (error) {
+    console.error(
+      "Application error:",
+      error
+    );
+
+    toast.error(
+      error.response?.data?.message ||
+        "Failed to submit application."
+    );
+
+  } finally {
+    setSubmittingApplication(false);
+  }
+};
 const shareJob = async () => {
   try {
     const shareUrl =
@@ -917,14 +1060,12 @@ const shareJob = async () => {
                 <div className="lg:min-w-[190px] space-y-3">
 
                   <button
-                    onClick={applyJob}
-                    disabled={applying}
-                    className="w-full bg-emerald-500 hover:bg-emerald-600 text-white px-7 py-4 rounded-xl font-bold transition flex items-center justify-center gap-3 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-emerald-500/10"
-                  >
-                    {applying ? "Applying..." : "Apply Now"}
-
-                    {!applying && <FaArrowRight />}
-                  </button>
+  onClick={applyJob}
+  className="w-full bg-emerald-500 hover:bg-emerald-600 text-white px-7 py-4 rounded-xl font-bold transition flex items-center justify-center gap-3 shadow-lg shadow-emerald-500/10"
+>
+  Apply Now
+  <FaArrowRight />
+</button>
 
                   <button
                     onClick={shareJob}
@@ -1228,12 +1369,12 @@ const shareJob = async () => {
 
                   <button
                     onClick={applyJob}
-                    disabled={applying}
+                    disabled={submittingApplication}
                     className="w-full mt-7 bg-emerald-500 hover:bg-emerald-600 text-white py-4 rounded-xl font-bold transition flex items-center justify-center gap-2 disabled:opacity-50"
                   >
-                    {applying ? "Applying..." : "Apply for this Job"}
+                    {submittingApplication ? "Submitting..." : "Apply for this Job"}
 
-                    {!applying && <FaArrowRight />}
+                    {!submittingApplication && <FaArrowRight />}
                   </button>
 
                 </div>
@@ -1344,10 +1485,10 @@ const shareJob = async () => {
 
                   <button
                     onClick={applyJob}
-                    disabled={applying}
+                   disabled={submittingApplication}
                     className="w-full mt-5 bg-white text-emerald-600 hover:bg-emerald-50 py-3.5 rounded-xl font-bold transition disabled:opacity-50"
                   >
-                    {applying ? "Applying..." : "Apply Now"}
+                    Apply
                   </button>
 
                 </div>
@@ -1360,7 +1501,232 @@ const shareJob = async () => {
         </section>
 
       </main>
+{showApplyModal && (
+  <div className="fixed inset-0 z-[9999] bg-black/70 backdrop-blur-sm flex items-center justify-center p-4">
 
+    <div className="w-full max-w-2xl max-h-[90vh] overflow-y-auto bg-slate-900 border border-slate-800 rounded-2xl shadow-2xl">
+
+      {/* Header */}
+
+      <div className="sticky top-0 z-10 bg-slate-900 border-b border-slate-800 px-6 py-5 flex items-center justify-between">
+
+        <div>
+          <h2 className="text-xl sm:text-2xl font-bold text-white">
+            Apply for this Job
+          </h2>
+
+          <p className="text-sm text-slate-500 mt-1">
+            {job.jobTitle} at {job.companyName}
+          </p>
+        </div>
+
+        <button
+          type="button"
+          onClick={() => setShowApplyModal(false)}
+          className="w-10 h-10 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white flex items-center justify-center transition"
+        >
+          <FaTimes />
+        </button>
+
+      </div>
+
+
+      {/* Form */}
+
+      <form
+        onSubmit={submitApplication}
+        className="p-6 space-y-5"
+      >
+
+        {/* Name */}
+
+        <div>
+          <label className="block text-sm font-medium text-slate-300 mb-2">
+            Full Name *
+          </label>
+
+          <input
+            type="text"
+            name="name"
+            value={applicationForm.name}
+            onChange={handleApplicationChange}
+            placeholder="Enter your full name"
+            className="w-full bg-slate-950 border border-slate-700 rounded-xl px-4 py-3 text-white placeholder-slate-600 focus:outline-none focus:border-emerald-500"
+            required
+          />
+        </div>
+
+
+        {/* Email */}
+
+        <div>
+          <label className="block text-sm font-medium text-slate-300 mb-2">
+            Email Address *
+          </label>
+
+          <input
+            type="email"
+            name="email"
+            value={applicationForm.email}
+            onChange={handleApplicationChange}
+            placeholder="Enter your email"
+            className="w-full bg-slate-950 border border-slate-700 rounded-xl px-4 py-3 text-white placeholder-slate-600 focus:outline-none focus:border-emerald-500"
+            required
+          />
+        </div>
+
+
+        {/* Phone */}
+
+        <div>
+          <label className="block text-sm font-medium text-slate-300 mb-2">
+            Phone Number *
+          </label>
+
+          <input
+            type="tel"
+            name="phone"
+            value={applicationForm.phone}
+            onChange={handleApplicationChange}
+            placeholder="Enter your phone number"
+            maxLength={15}
+            className="w-full bg-slate-950 border border-slate-700 rounded-xl px-4 py-3 text-white placeholder-slate-600 focus:outline-none focus:border-emerald-500"
+            required
+          />
+        </div>
+
+
+        {/* Experience */}
+
+        <div>
+          <label className="block text-sm font-medium text-slate-300 mb-2">
+            Experience
+          </label>
+
+          <input
+            type="text"
+            name="experience"
+            value={applicationForm.experience}
+            onChange={handleApplicationChange}
+            placeholder="e.g. Fresher, 1 year, 2 years"
+            className="w-full bg-slate-950 border border-slate-700 rounded-xl px-4 py-3 text-white placeholder-slate-600 focus:outline-none focus:border-emerald-500"
+          />
+        </div>
+
+
+        {/* Resume */}
+
+        <div>
+          <label className="block text-sm font-medium text-slate-300 mb-2">
+            Resume *
+          </label>
+
+          <label className="block cursor-pointer">
+
+            <div className="border-2 border-dashed border-slate-700 hover:border-emerald-500 rounded-xl p-6 text-center transition">
+
+              {resume ? (
+                <>
+                  <FaFileAlt className="text-emerald-400 text-3xl mx-auto mb-3" />
+
+                  <p className="text-white font-medium break-all">
+                    {resume.name}
+                  </p>
+
+                  <p className="text-xs text-slate-500 mt-1">
+                    {(resume.size / 1024 / 1024).toFixed(2)} MB
+                  </p>
+                </>
+              ) : (
+                <>
+                  <FaUpload className="text-emerald-400 text-3xl mx-auto mb-3" />
+
+                  <p className="text-white font-medium">
+                    Upload your resume
+                  </p>
+
+                  <p className="text-xs text-slate-500 mt-1">
+                    PDF, DOC or DOCX • Maximum 5 MB
+                  </p>
+                </>
+              )}
+
+            </div>
+
+            <input
+              type="file"
+              accept=".pdf,.doc,.docx"
+              onChange={handleResumeChange}
+              className="hidden"
+            />
+
+          </label>
+        </div>
+
+
+        {/* Cover Letter */}
+
+        <div>
+          <label className="block text-sm font-medium text-slate-300 mb-2">
+            Message / Cover Letter
+            <span className="text-slate-600 ml-1">
+              (Optional)
+            </span>
+          </label>
+
+          <textarea
+            name="coverLetter"
+            value={applicationForm.coverLetter}
+            onChange={handleApplicationChange}
+            rows={5}
+            placeholder="Tell the employer why you are interested in this job..."
+            className="w-full bg-slate-950 border border-slate-700 rounded-xl px-4 py-3 text-white placeholder-slate-600 focus:outline-none focus:border-emerald-500 resize-none"
+          />
+        </div>
+
+
+        {/* Privacy text */}
+
+        <div className="bg-slate-950 border border-slate-800 rounded-xl p-4">
+
+          <p className="text-xs text-slate-500 leading-5">
+            By submitting this application, you agree that TechBy may
+            share your application details and resume with the employer
+            for recruitment purposes.
+          </p>
+
+        </div>
+
+
+        {/* Submit */}
+
+        <button
+          type="submit"
+          disabled={submittingApplication}
+          className="w-full bg-emerald-500 hover:bg-emerald-600 disabled:opacity-50 disabled:cursor-not-allowed text-white py-4 rounded-xl font-bold transition flex items-center justify-center gap-2"
+        >
+
+          {submittingApplication ? (
+            <>
+              <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+
+              Submitting...
+            </>
+          ) : (
+            <>
+              Submit Application
+              <FaArrowRight />
+            </>
+          )}
+
+        </button>
+
+      </form>
+
+    </div>
+
+  </div>
+)}
       <Footer />
     </>
   );

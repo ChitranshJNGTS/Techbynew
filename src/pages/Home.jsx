@@ -16,6 +16,7 @@ import Hero from "../components/Hero";
 import TrainingProgram from "../components/TrainingProgram";
 import HotJobs from "../components/HotJobs";
 import MobileBottomBar from "../components/MobileBottomBar";
+import LinkedInHome from "../components/LinkDinHome";
 
 export default function Home() {
   return (
@@ -33,6 +34,7 @@ export default function Home() {
       <WhyChooseUs />
       {/* <Testimonials /> */}
       <Footer />
+      <LinkedInHome/>
 
       {/* <TrainingProgram/> */}
 
