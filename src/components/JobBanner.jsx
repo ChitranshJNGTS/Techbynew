@@ -494,75 +494,79 @@ export default function JobBanner({ job: jobProp }) {
         {/* =====================================
             LEFT - COMPANY LOGO
         ===================================== */}
+{/* =====================================
+    LEFT - COMPANY LOGO
+===================================== */}
+<div
+  className="
+    w-[38%]
+    sm:w-[45%]
+    h-full
+    flex
+    items-center
+    justify-center
+    pr-1
+    sm:pr-2
+  "
+>
+  <div
+    className="
+      w-[58px]
+      h-[42px]
+      xs:w-[68px]
+      xs:h-[48px]
+      sm:w-[105px]
+      sm:h-[70px]
+      md:w-[140px]
+      md:h-[90px]
+      flex
+      items-center
+      justify-center
+    "
+  >
+    {companyLogo ? (
+      <img
+        src={companyLogo}
+        alt={companyName}
+        className="
+          max-w-full
+          max-h-full
+          w-auto
+          h-auto
+          object-contain
+        "
+        onError={(e) => {
+          // Hide broken image
+          e.currentTarget.style.display = "none";
 
-        <div
-          className="
-            w-[38%]
-            sm:w-[45%]
+          // Show company name
+          const fallback = e.currentTarget.nextElementSibling;
+          if (fallback) {
+            fallback.style.display = "block";
+          }
+        }}
+      />
+    ) : null}
 
-            h-full
-
-            flex
-            items-center
-            justify-center
-
-            pr-1
-            sm:pr-2
-          "
-        >
-          <div
-            className="
-              w-[58px]
-              h-[42px]
-
-              xs:w-[68px]
-              xs:h-[48px]
-
-              sm:w-[105px]
-              sm:h-[70px]
-
-              md:w-[140px]
-              md:h-[90px]
-
-              flex
-              items-center
-              justify-center
-            "
-          >
-            {companyLogo ? (
-              <img
-                src={companyLogo}
-                alt={companyName}
-                className="
-                  max-w-full
-                  max-h-full
-                  w-auto
-                  h-auto
-                  object-contain
-                "
-                onError={(e) => {
-                  e.currentTarget.style.display = "none";
-                }}
-              />
-            ) : (
-              <div
-                className="
-                  text-center
-                  text-[7px]
-                  xs:text-[8px]
-                  sm:text-sm
-                  md:text-base
-                  font-bold
-                  text-slate-900
-                  leading-tight
-                  line-clamp-2
-                "
-              >
-                {companyName}
-              </div>
-            )}
-          </div>
-        </div>
+    {/* Company name fallback */}
+    <div
+      className={`
+        text-center
+        text-[7px]
+        xs:text-[8px]
+        sm:text-sm
+        md:text-base
+        font-bold
+        text-slate-900
+        leading-tight
+        line-clamp-2
+        ${companyLogo ? "hidden" : "block"}
+      `}
+    >
+      {companyName}
+    </div>
+  </div>
+</div>
 
         {/* =====================================
             RIGHT - JOB INFORMATION
