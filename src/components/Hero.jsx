@@ -257,81 +257,7 @@ const Hero = () => {
 
             {/* ================= TRUST / STATS ================= */}
 
-            <div className="mt-12 flex flex-wrap justify-center gap-8 sm:gap-12">
-
-              {/* JOBS */}
-
-              <div className="flex items-center gap-3">
-
-                <div className="w-11 h-11 rounded-xl bg-white/10 backdrop-blur-md flex items-center justify-center">
-
-                  <FaBriefcase className="text-emerald-400" />
-
-                </div>
-
-                <div>
-
-                  <p className="text-white font-bold text-lg">
-                    1,000+
-                  </p>
-
-                  <p className="text-slate-400 text-xs">
-                    Job Opportunities
-                  </p>
-
-                </div>
-
-              </div>
-
-              {/* EMPLOYERS */}
-
-              <div className="flex items-center gap-3">
-
-                <div className="w-11 h-11 rounded-xl bg-white/10 backdrop-blur-md flex items-center justify-center">
-
-                  <FaBuilding className="text-emerald-400" />
-
-                </div>
-
-                <div>
-
-                  <p className="text-white font-bold text-lg">
-                    500+
-                  </p>
-
-                  <p className="text-slate-400 text-xs">
-                    Hiring Companies
-                  </p>
-
-                </div>
-
-              </div>
-
-              {/* CANDIDATES */}
-
-              <div className="flex items-center gap-3">
-
-                <div className="w-11 h-11 rounded-xl bg-white/10 backdrop-blur-md flex items-center justify-center">
-
-                  <FaUsers className="text-emerald-400" />
-
-                </div>
-
-                <div>
-
-                  <p className="text-white font-bold text-lg">
-                    10K+
-                  </p>
-
-                  <p className="text-slate-400 text-xs">
-                    Job Seekers
-                  </p>
-
-                </div>
-
-              </div>
-
-            </div>
+          
 
             {/* ================= BOTTOM CTA ================= */}
 
@@ -361,3 +287,104 @@ const Hero = () => {
 };
 
 export default Hero;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  // <div className="mt-12 flex flex-wrap justify-center gap-8 sm:gap-12">
+
+  //             {/* JOBS */}
+
+  //             <div className="flex items-center gap-3">
+
+  //               <div className="w-11 h-11 rounded-xl bg-white/10 backdrop-blur-md flex items-center justify-center">
+
+  //                 <FaBriefcase className="text-emerald-400" />
+
+  //               </div>
+
+  //               <div>
+
+  //                 <p className="text-white font-bold text-lg">
+  //                   1,000+
+  //                 </p>
+
+  //                 <p className="text-slate-400 text-xs">
+  //                   Job Opportunities
+  //                 </p>
+
+  //               </div>
+
+  //             </div>
+
+  //             {/* EMPLOYERS */}
+
+  //             <div className="flex items-center gap-3">
+
+  //               <div className="w-11 h-11 rounded-xl bg-white/10 backdrop-blur-md flex items-center justify-center">
+
+  //                 <FaBuilding className="text-emerald-400" />
+
+  //               </div>
+
+  //               <div>
+
+  //                 <p className="text-white font-bold text-lg">
+  //                   500+
+  //                 </p>
+
+  //                 <p className="text-slate-400 text-xs">
+  //                   Hiring Companies
+  //                 </p>
+
+  //               </div>
+
+  //             </div>
+
+  //             {/* CANDIDATES */}
+
+  //             <div className="flex items-center gap-3">
+
+  //               <div className="w-11 h-11 rounded-xl bg-white/10 backdrop-blur-md flex items-center justify-center">
+
+  //                 <FaUsers className="text-emerald-400" />
+
+  //               </div>
+
+  //               <div>
+
+  //                 <p className="text-white font-bold text-lg">
+  //                   10K+
+  //                 </p>
+
+  //                 <p className="text-slate-400 text-xs">
+  //                   Job Seekers
+  //                 </p>
+
+  //               </div>
+
+  //             </div>
+
+  //           </div>
