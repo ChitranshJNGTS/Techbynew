@@ -34,7 +34,7 @@ export default function Home() {
       <WhyChooseUs />
       {/* <Testimonials /> */}
       <Footer />
-      <LinkedInHome/>
+      {/* <LinkedInHome/> */}
 
       {/* <TrainingProgram/> */}
 
