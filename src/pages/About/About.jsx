@@ -12,6 +12,7 @@ import { Link } from "react-router-dom";
 import Footer from "../../components/Footer";
 import Navbar from "../../components/Navbar";
 import WhatWeDo from "../../components/WhatWeDo";
+import Ads from "../../components/Ads";
 
 export default function About() {
 const stats = [
@@ -63,7 +64,11 @@ return (
     {/* Hero */}
 
     <section className="relative overflow-hidden">
-
+ <div className="relative max-w-7xl mx-auto px-2 sm:px-6 lg:px-8 pt-24">
+    <div className="w-full flex justify-center items-center overflow-hidden">
+      <Ads type="728x90" />
+    </div>
+  </div>
       <div className="absolute inset-0 bg-gradient-to-r from-emerald-500/10 via-transparent to-transparent" />
 
       <div className="max-w-7xl mx-auto px-6 py-28 relative">

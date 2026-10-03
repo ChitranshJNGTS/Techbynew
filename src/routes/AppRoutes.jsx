@@ -57,6 +57,8 @@ import AdminLogin from "../pages/adminlogin/page";
 import About from "../pages/About/About";
 import Community from "../pages/Community/page";
 import AdminProtectedRoute from "./AdminProtectedRoute";
+import JobNews from "../components/JobNews";
+import NewsDetails from "../components/NewsDetails";
 
 export default function AppRoutes() {
   return (
@@ -86,7 +88,8 @@ export default function AppRoutes() {
         element={<TermsAndConditions />}
       />
 
-     
+     <Route path="/job-news" element={<JobNews />} />
+<Route path="/job-news/:slug" element={<NewsDetails />} />
       {/* ================= ADMIN LOGIN ================= */}
 
       <Route

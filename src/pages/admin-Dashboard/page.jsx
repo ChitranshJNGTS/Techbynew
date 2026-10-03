@@ -9,6 +9,7 @@ import {
   FaTruck,
   FaShoppingCart,
   FaHeadset,
+  FaNewspaper,
   FaVideo,
 } from "react-icons/fa";
 
@@ -17,6 +18,7 @@ import { useNavigate } from "react-router-dom";
 import PostJob from "../PostJob/page";
 import AdminApplications from "../../components/AdminApplications";
 import AdminCreateInterview from "../../components/AdminCreateInterview";
+import AdminCreateNews from "../../components/AdminCreateNews";
 
 const AdminDashboard = () => {
   const navigate = useNavigate();
@@ -63,18 +65,15 @@ const AdminDashboard = () => {
       name: "Create Interview",
       icon: <FaVideo />,
     },
-    {
-      name: "Book Delivery",
-      icon: <FaTruck />,
-    },
-    {
-      name: "Buy Pack",
-      icon: <FaShoppingCart />,
-    },
+
     {
       name: "Help & Support",
       icon: <FaHeadset />,
     },
+    {
+  name: "Post News",
+  icon: <FaNewspaper />,
+},
   ];
 
   const handleMenuClick = (menuName) => {
@@ -147,44 +146,9 @@ const AdminDashboard = () => {
           </div>
         );
 
-      case "Book Delivery":
-        return (
-          <div className="bg-white rounded-2xl p-8">
-            <h2 className="text-2xl font-bold">
-              Book Delivery
-            </h2>
+   case "Post News":
+  return <AdminCreateNews />;
 
-            <p className="text-gray-500 mt-2">
-              Delivery management will appear here.
-            </p>
-          </div>
-        );
-
-      case "Buy Pack":
-        return (
-          <div className="bg-white rounded-2xl p-8">
-            <h2 className="text-2xl font-bold">
-              Buy Pack
-            </h2>
-
-            <p className="text-gray-500 mt-2">
-              Pack management will appear here.
-            </p>
-          </div>
-        );
-
-      case "Help & Support":
-        return (
-          <div className="bg-white rounded-2xl p-8">
-            <h2 className="text-2xl font-bold">
-              Help & Support
-            </h2>
-
-            <p className="text-gray-500 mt-2">
-              Support section will appear here.
-            </p>
-          </div>
-        );
 
       default:
         return null;

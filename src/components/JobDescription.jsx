@@ -650,6 +650,7 @@ import { useParams } from "react-router-dom";
 import API from "../Api/JobApi";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
+import Ads from "./Ads";
   const CompanyLogo = ({
   logo,
   companyName,
@@ -721,6 +722,15 @@ const [resume, setResume] = useState(null);
 
 
 const applyJob = () => {
+  const applyLink = job?.applyLink?.trim();
+
+  // 1. If external apply link exists → open it
+  if (applyLink) {
+    window.open(applyLink, "_blank", "noopener,noreferrer");
+    return;
+  }
+
+  // 2. If no external apply link → open TechBy application form
   setShowApplyModal(true);
 };
 const handleApplicationChange = (e) => {
@@ -731,6 +741,7 @@ const handleApplicationChange = (e) => {
     [name]: value,
   }));
 };
+
 
 
 const handleResumeChange = (e) => {
@@ -958,9 +969,24 @@ const shareJob = async () => {
         <section className="relative overflow-hidden border-b border-slate-800">
 
           <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/10 via-transparent to-blue-500/5 pointer-events-none"></div>
+ {/* ================= BANNER AD ================= */}
+<div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-24">
+  <div className="w-full flex justify-center items-center overflow-hidden">
+    
+    {/* Desktop */}
+    <div className="hidden sm:block">
+      <Ads type="728x90" />
+    </div>
 
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-28 pb-12 relative">
+    {/* Mobile */}
+    <div className="block sm:hidden">
+      <Ads type="320x50" />
+    </div>
 
+  </div>
+</div>
+
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-12 relative">
             <div className="flex items-center gap-2 text-sm text-slate-500 mb-8">
               <span>Jobs</span>
 
@@ -1510,7 +1536,17 @@ const shareJob = async () => {
 
                 </div>
               )}
+{/* ================= BOTTOM SIDEBAR AD ================= */}
 
+<div className="bg-slate-900 border border-slate-800 rounded-2xl p-4 flex flex-col items-center">
+  <p className="text-[10px] text-slate-600 mb-3 uppercase tracking-wider">
+    Advertisement
+  </p>
+
+  <div className="w-[320px] h-[50px] flex items-center justify-center overflow-hidden">
+    <Ads type="320x50" />
+  </div>
+</div>
             </aside>
 
           </div>

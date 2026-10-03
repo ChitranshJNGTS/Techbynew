@@ -278,6 +278,7 @@ import {
 import { Link } from "react-router-dom";
 import API from "../Api/JobApi";
 import JobBanner from "./JobBanner";
+import Ads from "./Ads";
 
 export default function RecentJobs() {
   const [jobs, setJobs] = useState([]);
@@ -403,6 +404,25 @@ export default function RecentJobs() {
 
   return (
     <section className="bg-slate-950 py-12 sm:py-16">
+     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 my-6">
+  <div className="w-full bg-slate-900 border border-slate-800 rounded-2xl p-4 flex flex-col items-center justify-center overflow-hidden">
+
+    <p className="text-[10px] text-slate-500 mb-3 uppercase tracking-wider">
+      Advertisement
+    </p>
+
+    {/* Desktop / Tablet */}
+    <div className="hidden sm:flex w-full justify-center items-center overflow-hidden">
+      <Ads type="728x90" />
+    </div>
+
+    {/* Mobile */}
+    <div className="flex sm:hidden w-full justify-center items-center overflow-hidden">
+      <Ads type="320x50" />
+    </div>
+
+  </div>
+</div>
 
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
 
@@ -570,6 +590,7 @@ export default function RecentJobs() {
           ))}
 
         </div>
+        
 
         {/* ==========================
             VIEW ALL
