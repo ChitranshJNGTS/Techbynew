@@ -46,13 +46,13 @@ export default function Home() {
 {/* <PopularCategories /> */}
       <RecentJobs />
       {/* <HotJobs/> */}
-      <DemoInterviewSection/>
       {/* <Ads type="320x50" /> */}
-      <HowItWorks />
-      <WhyChooseUs />
+      {/* <DemoInterviewSection/> */}
+      {/* <HowItWorks /> */}
+      {/* <WhyChooseUs /> */}
       {/* <Ads type="profit-1" /> */}
       {/* <Testimonials /> */}
-      {/* <JobNewsSection/> */}
+      <JobNewsSection/>
       {/* <JobNews/> */}
       <Footer />
 

@@ -798,14 +798,6 @@
 
 
 
-
-
-
-
-
-
-
-
 import { useState } from "react";
 
 import {
@@ -813,241 +805,1013 @@ import {
   FaTimes,
   FaHome,
   FaBriefcase,
-  FaInfoCircle,
-  FaPhoneAlt,
   FaUsers,
   FaWhatsapp,
-  FaTelegramPlane,
   FaInstagram,
   FaLinkedin,
-  FaFacebook,
+  FaGraduationCap,
+  FaLaptopHouse,
+  FaLayerGroup,
+  FaSearch,
 } from "react-icons/fa";
 
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+
+import logo from "../assets/logo.png";
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [socialOpen, setSocialOpen] = useState(false);
+  const [search, setSearch] = useState("");
 
   const location = useLocation();
+  const navigate = useNavigate();
+
+  /*
+  ============================================================
+  ACTIVE HELPERS
+  ============================================================
+  */
 
   const isActive = (path) => location.pathname === path;
 
-  const navLinkClass = (path) =>
-    `flex items-center gap-2 transition px-3 py-2 rounded-lg ${
-      isActive(path)
-        ? "text-emerald-400 bg-emerald-500/10"
-        : "text-slate-300 hover:text-emerald-400 hover:bg-slate-800"
-    }`;
+  const isQueryActive = (query) =>
+    location.pathname === "/jobs" && location.search === query;
+
+  /*
+  ============================================================
+  CLOSE MOBILE MENU
+  ============================================================
+  */
 
   const closeMenu = () => {
     setMenuOpen(false);
   };
 
+  /*
+  ============================================================
+  SEARCH JOBS
+  ============================================================
+  */
+
+  const handleSearch = (e) => {
+    e.preventDefault();
+
+    const keyword = search.trim();
+
+    if (!keyword) return;
+
+    navigate(`/jobs?keyword=${encodeURIComponent(keyword)}`);
+
+    setSearch("");
+    closeMenu();
+  };
+
+  /*
+  ============================================================
+  DESKTOP NAV ITEM
+  ============================================================
+  */
+
+  const navItem = (active = false) =>
+    `group relative flex items-center gap-2.5 px-4 py-3 rounded-xl text-[15px] xl:text-[16px] font-semibold tracking-[-0.01em] transition-all duration-200 ${
+      active
+        ? "bg-emerald-50 text-emerald-700 shadow-sm"
+        : "text-slate-700 hover:text-emerald-700 hover:bg-slate-50"
+    }`;
+
+  /*
+  ============================================================
+  MOBILE NAV ITEM
+  ============================================================
+  */
+
+  const mobileItem = (active = false) =>
+    `flex items-center gap-3 px-4 py-3.5 rounded-xl text-[15px] font-semibold transition-all duration-200 ${
+      active
+        ? "bg-emerald-50 text-emerald-700"
+        : "text-slate-700 hover:bg-slate-100 hover:text-emerald-600"
+    }`;
+
+  /*
+  ============================================================
+  JOBS ACTIVE STATE
+  ============================================================
+  */
+
+  const jobsActive =
+    location.pathname.startsWith("/jobs") ||
+    location.pathname === "/all-jobs";
+
+  /*
+  ============================================================
+  RETURN
+  ============================================================
+  */
+
   return (
     <>
-      {/* ================= NAVBAR ================= */}
+      {/* =====================================================
+          NAVBAR
+      ===================================================== */}
 
-      <nav className="fixed top-0 left-0 right-0 z-50 bg-slate-950/95 backdrop-blur-md border-b border-slate-800">
+      <nav
+        aria-label="Main navigation"
+        className="fixed top-0 left-0 right-0 z-50"
+      >
+        {/* ===================================================
+            NAVBAR BACKGROUND
+        =================================================== */}
 
-        <div className="max-w-7xl mx-auto px-6">
+        <div className="bg-white/95 backdrop-blur-xl border-b border-slate-200/80 shadow-[0_3px_18px_rgba(15,23,42,0.06)]">
 
-          <div className="h-20 flex items-center justify-between">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6">
 
-            {/* ================= LOGO ================= */}
+            {/* =================================================
+                MAIN NAVBAR
+            ================================================= */}
 
-            <Link
-              to="/"
-              className="flex items-center gap-3"
-            >
-              <div className="w-10 h-10 lg:w-12 lg:h-12 rounded-full border-4 border-green-500 flex items-center justify-center">
-                <span className="text-green-500 font-bold text-xl lg:text-2xl">
-                  TB
-                </span>
-              </div>
+            <div className="h-[78px] lg:h-[100px] flex items-center justify-between gap-3">
 
-              <h1 className="text-2xl lg:text-4xl font-semibold text-white">
-                Tech<span className="font-light">By</span>
-              </h1>
-            </Link>
-
-
-            {/* ================= DESKTOP MENU ================= */}
-
-            <div className="hidden lg:flex items-center gap-1">
+              {/* =================================================
+                  LOGO
+              ================================================= */}
 
               <Link
                 to="/"
-                className={navLinkClass("/")}
+                onClick={closeMenu}
+                className="group flex items-center shrink-0"
               >
-                <FaHome />
-                Home
+                <img
+                  src={logo}
+                  alt="TechBy"
+                  className="h-10 sm:h-11 lg:h-20 w-auto object-contain transition-transform duration-200 group-hover:scale-[1.02]"
+                />
               </Link>
 
-              <Link
-                to="/all-jobs"
-                className={navLinkClass("/all-jobs")}
-              >
-                <FaBriefcase />
-                New Jobs
-              </Link>
+              {/* =================================================
+                  DESKTOP NAVIGATION
+              ================================================= */}
 
-              <Link
-                to="/jobs?type=freshers"
-                className="flex items-center gap-2 px-3 py-2 rounded-lg text-slate-300 hover:text-emerald-400 hover:bg-slate-800 transition"
-              >
-                Freshers
-              </Link>
+              <div className="hidden lg:flex items-center ml-7">
 
-              <Link
-                to="/jobs?type=experienced"
-                className="flex items-center gap-2 px-3 py-2 rounded-lg text-slate-300 hover:text-emerald-400 hover:bg-slate-800 transition"
-              >
-                Experienced
-              </Link>
+                <div className="flex items-center gap-1">
 
-              <Link
-                to="/jobs?type=internship"
-                className="flex items-center gap-2 px-3 py-2 rounded-lg text-slate-300 hover:text-emerald-400 hover:bg-slate-800 transition"
-              >
-                Internship
-              </Link>
+                  {/* =================================================
+                      HOME
+                  ================================================= */}
 
-              <Link
-                to="/jobs?workMode=Remote"
-                className="flex items-center gap-2 px-3 py-2 rounded-lg text-slate-300 hover:text-emerald-400 hover:bg-slate-800 transition"
-              >
-                Remote
-              </Link>
+                  <Link
+                    to="/"
+                    aria-current={
+                      isActive("/") ? "page" : undefined
+                    }
+                    className={navItem(isActive("/"))}
+                  >
+                    <FaHome
+                      className={`text-[14px] transition-colors ${
+                        isActive("/")
+                          ? "text-emerald-600"
+                          : "text-slate-400 group-hover:text-emerald-600"
+                      }`}
+                    />
 
-              <Link
-                to="/jobs?workMode=Hybrid"
-                className="flex items-center gap-2 px-3 py-2 rounded-lg text-slate-300 hover:text-emerald-400 hover:bg-slate-800 transition"
+                    <span>Home</span>
+
+                    {isActive("/") && (
+                      <span className="absolute bottom-1 left-1/2 -translate-x-1/2 w-6 h-[2px] rounded-full bg-emerald-500" />
+                    )}
+                  </Link>
+
+                  {/* =================================================
+                      JOBS DROPDOWN
+                  ================================================= */}
+
+                  <div className="relative group">
+
+                    {/* MAIN JOBS BUTTON */}
+
+                    <button
+                      type="button"
+                      className={`
+                        relative flex items-center gap-2.5
+                        px-4 py-3 rounded-xl
+                        text-[15px] xl:text-[16px]
+                        font-semibold tracking-[-0.01em]
+                        transition-all duration-200
+                        ${
+                          jobsActive
+                            ? "bg-emerald-50 text-emerald-700"
+                            : "text-slate-700 hover:text-emerald-700 hover:bg-slate-50"
+                        }
+                      `}
+                    >
+
+                      <FaBriefcase
+                        className={`text-[14px] ${
+                          jobsActive
+                            ? "text-emerald-600"
+                            : "text-slate-400 group-hover:text-emerald-600"
+                        }`}
+                      />
+
+                      <span>Jobs</span>
+
+                      {/* DROPDOWN ARROW */}
+
+                      <span className="text-[10px] ml-0.5 transition-transform duration-200 group-hover:rotate-180">
+                        ▼
+                      </span>
+
+                      {/* NEW BADGE */}
+
+                      <span
+                        className="
+                          absolute -top-2 -right-1
+                          text-[9px] leading-none
+                          font-bold px-1.5 py-1
+                          rounded-full
+                          bg-emerald-500 text-white
+                          shadow-sm
+                        "
+                      >
+                        NEW
+                      </span>
+
+                    </button>
+
+                    {/* =================================================
+                        JOBS DROPDOWN
+                    ================================================= */}
+
+                    <div
+                      className="
+                        absolute left-0 top-full
+                        pt-3
+                        invisible opacity-0 translate-y-2
+                        group-hover:visible group-hover:opacity-100
+                        group-hover:translate-y-0
+                        transition-all duration-200
+                        z-50
+                      "
+                    >
+
+                      <div
+                        className="
+                          w-64
+                          bg-white
+                          border border-slate-200
+                          rounded-2xl
+                          shadow-xl
+                          shadow-slate-900/10
+                          p-2
+                        "
+                      >
+
+                        {/* =================================================
+                            NEW JOBS
+                        ================================================= */}
+
+                        <Link
+                          to="/all-jobs"
+                          className={`
+                            flex items-center gap-3
+                            px-3 py-3
+                            rounded-xl
+                            transition
+                            ${
+                              isActive("/all-jobs")
+                                ? "bg-emerald-50 text-emerald-700"
+                                : "text-slate-700 hover:bg-emerald-50 hover:text-emerald-700"
+                            }
+                          `}
+                        >
+
+                          <span className="w-9 h-9 rounded-lg bg-emerald-50 flex items-center justify-center">
+                            <FaBriefcase className="text-emerald-500" />
+                          </span>
+
+                          <div>
+                            <p className="font-semibold text-sm">
+                              New Jobs
+                            </p>
+
+                            <p className="text-[11px] text-slate-400">
+                              Latest job openings
+                            </p>
+                          </div>
+
+                        </Link>
+
+                        {/* =================================================
+                            FRESHERS
+                        ================================================= */}
+
+                        <Link
+                          to="/jobs?type=freshers"
+                          className={`
+                            flex items-center gap-3
+                            px-3 py-3
+                            rounded-xl
+                            transition
+                            ${
+                              isQueryActive("?type=freshers")
+                                ? "bg-emerald-50 text-emerald-700"
+                                : "text-slate-700 hover:bg-emerald-50 hover:text-emerald-700"
+                            }
+                          `}
+                        >
+
+                          <span className="w-9 h-9 rounded-lg bg-slate-50 flex items-center justify-center">
+                            <FaGraduationCap className="text-emerald-500" />
+                          </span>
+
+                          <div>
+                            <p className="font-semibold text-sm">
+                              Freshers
+                            </p>
+
+                            <p className="text-[11px] text-slate-400">
+                              Jobs for fresh graduates
+                            </p>
+                          </div>
+
+                        </Link>
+
+                        {/* =================================================
+                            EXPERIENCED
+                        ================================================= */}
+
+                        <Link
+                          to="/jobs?type=experienced"
+                          className={`
+                            flex items-center gap-3
+                            px-3 py-3
+                            rounded-xl
+                            transition
+                            ${
+                              isQueryActive("?type=experienced")
+                                ? "bg-emerald-50 text-emerald-700"
+                                : "text-slate-700 hover:bg-emerald-50 hover:text-emerald-700"
+                            }
+                          `}
+                        >
+
+                          <span className="w-9 h-9 rounded-lg bg-slate-50 flex items-center justify-center">
+                            <FaUsers className="text-emerald-500" />
+                          </span>
+
+                          <div>
+                            <p className="font-semibold text-sm">
+                              Experienced
+                            </p>
+
+                            <p className="text-[11px] text-slate-400">
+                              Jobs for professionals
+                            </p>
+                          </div>
+
+                        </Link>
+
+                        {/* =================================================
+                            INTERNSHIP
+                        ================================================= */}
+
+                        <Link
+                          to="/jobs?type=internship"
+                          className={`
+                            flex items-center gap-3
+                            px-3 py-3
+                            rounded-xl
+                            transition
+                            ${
+                              isQueryActive("?type=internship")
+                                ? "bg-emerald-50 text-emerald-700"
+                                : "text-slate-700 hover:bg-emerald-50 hover:text-emerald-700"
+                            }
+                          `}
+                        >
+
+                          <span className="w-9 h-9 rounded-lg bg-slate-50 flex items-center justify-center">
+                            <FaLayerGroup className="text-emerald-500" />
+                          </span>
+
+                          <div>
+                            <p className="font-semibold text-sm">
+                              Internship
+                            </p>
+
+                            <p className="text-[11px] text-slate-400">
+                              Internship opportunities
+                            </p>
+                          </div>
+
+                        </Link>
+
+                        {/* =================================================
+                            REMOTE
+                        ================================================= */}
+
+                        <Link
+                          to="/jobs?workMode=Remote"
+                          className={`
+                            flex items-center gap-3
+                            px-3 py-3
+                            rounded-xl
+                            transition
+                            ${
+                              isQueryActive("?workMode=Remote")
+                                ? "bg-emerald-50 text-emerald-700"
+                                : "text-slate-700 hover:bg-emerald-50 hover:text-emerald-700"
+                            }
+                          `}
+                        >
+
+                          <span className="w-9 h-9 rounded-lg bg-slate-50 flex items-center justify-center">
+                            <FaLaptopHouse className="text-emerald-500" />
+                          </span>
+
+                          <div>
+                            <p className="font-semibold text-sm">
+                              Remote
+                            </p>
+
+                            <p className="text-[11px] text-slate-400">
+                              Work from anywhere
+                            </p>
+                          </div>
+
+                        </Link>
+
+                        {/* =================================================
+                            HYBRID
+                        ================================================= */}
+
+                        <Link
+                          to="/jobs?workMode=Hybrid"
+                          className={`
+                            flex items-center gap-3
+                            px-3 py-3
+                            rounded-xl
+                            transition
+                            ${
+                              isQueryActive("?workMode=Hybrid")
+                                ? "bg-emerald-50 text-emerald-700"
+                                : "text-slate-700 hover:bg-emerald-50 hover:text-emerald-700"
+                            }
+                          `}
+                        >
+
+                          <span className="w-9 h-9 rounded-lg bg-slate-50 flex items-center justify-center">
+                            <FaLaptopHouse className="text-emerald-500" />
+                          </span>
+
+                          <div>
+                            <p className="font-semibold text-sm">
+                              Hybrid
+                            </p>
+
+                            <p className="text-[11px] text-slate-400">
+                              Flexible work opportunities
+                            </p>
+                          </div>
+
+                        </Link>
+
+                      </div>
+
+                    </div>
+
+                  </div>
+
+                  {/* =================================================
+                      GOVT JOBS & NEWS
+                  ================================================= */}
+
+                  <Link
+                    to="/job-news"
+                    aria-current={
+                      location.pathname.startsWith("/job-news")
+                        ? "page"
+                        : undefined
+                    }
+                    className={navItem(
+                      location.pathname.startsWith("/job-news")
+                    )}
+                  >
+
+                    <FaGraduationCap
+                      className={`text-[14px] ${
+                        location.pathname.startsWith("/job-news")
+                          ? "text-emerald-600"
+                          : "text-slate-400 group-hover:text-emerald-600"
+                      }`}
+                    />
+
+                    <span>Govt Jobs & News</span>
+
+                    {location.pathname.startsWith("/job-news") && (
+                      <span className="absolute bottom-1 left-1/2 -translate-x-1/2 w-6 h-[2px] rounded-full bg-emerald-500" />
+                    )}
+
+                  </Link>
+
+                </div>
+
+              </div>
+
+              {/* =================================================
+                  DESKTOP SEARCH
+              ================================================= */}
+
+              <form
+                onSubmit={handleSearch}
+                className="
+                  hidden xl:flex
+                  relative
+                  w-[260px]
+                  2xl:w-[300px]
+                  ml-auto
+                "
               >
-                Hybrid
-              </Link>
+
+                <FaSearch
+                  className="
+                    absolute
+                    left-3.5
+                    top-1/2
+                    -translate-y-1/2
+                    text-slate-400
+                    text-sm
+                    pointer-events-none
+                  "
+                />
+
+                <input
+                  type="text"
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
+                  placeholder="Search jobs..."
+                  aria-label="Search jobs"
+                  className="
+                    w-full
+                    h-11
+                    pl-10
+                    pr-11
+                    rounded-xl
+                    bg-slate-50
+                    border
+                    border-slate-200
+                    text-sm
+                    text-slate-800
+                    placeholder:text-slate-400
+                    outline-none
+                    transition-all
+                    focus:bg-white
+                    focus:border-emerald-400
+                    focus:ring-4
+                    focus:ring-emerald-500/10
+                  "
+                />
+
+                <button
+                  type="submit"
+                  aria-label="Search jobs"
+                  className="
+                    absolute
+                    right-1.5
+                    top-1/2
+                    -translate-y-1/2
+                    w-8
+                    h-8
+                    rounded-lg
+                    bg-emerald-500
+                    hover:bg-emerald-600
+                    text-white
+                    flex
+                    items-center
+                    justify-center
+                    transition
+                  "
+                >
+                  <FaSearch className="text-xs" />
+                </button>
+
+              </form>
+
+              {/* =================================================
+                  DESKTOP JOIN BUTTON
+              ================================================= */}
+
+              <div className="hidden lg:flex items-center ml-auto xl:ml-4">
+
+                <button
+                  type="button"
+                  onClick={() => setSocialOpen(true)}
+                  className="
+                    group
+                    relative
+                    flex
+                    items-center
+                    gap-2.5
+                    px-5
+                    py-3
+                    rounded-xl
+                    bg-gradient-to-r
+                    from-emerald-500
+                    to-emerald-600
+                    hover:from-emerald-600
+                    hover:to-emerald-700
+                    text-white
+                    text-[15px]
+                    font-semibold
+                    shadow-md
+                    shadow-emerald-500/20
+                    hover:shadow-lg
+                    hover:shadow-emerald-500/25
+                    transition-all
+                    duration-200
+                  "
+                >
+
+                  <span className="flex items-center justify-center w-7 h-7 rounded-lg bg-white/15">
+                    <FaUsers className="text-sm" />
+                  </span>
+
+                  <span>Join Our Groups</span>
+
+                  <span className="absolute -top-1.5 -right-1.5 w-2.5 h-2.5 bg-emerald-400 rounded-full ring-2 ring-white" />
+
+                </button>
+
+              </div>
+
+              {/* =================================================
+                  MOBILE SEARCH
+              ================================================= */}
+
+              <form
+                onSubmit={handleSearch}
+                className="
+                  lg:hidden
+                  flex
+                  items-center
+                  flex-1
+                  max-w-[250px]
+                  sm:max-w-[320px]
+                "
+              >
+
+                <div className="relative w-full">
+
+                  <FaSearch
+                    className="
+                      absolute
+                      left-3.5
+                      top-1/2
+                      -translate-y-1/2
+                      text-slate-400
+                      text-sm
+                      pointer-events-none
+                    "
+                  />
+
+                  <input
+                    type="text"
+                    value={search}
+                    onChange={(e) => setSearch(e.target.value)}
+                    placeholder="Search jobs..."
+                    aria-label="Search jobs"
+                    className="
+                      w-full
+                      h-11
+                      pl-10
+                      pr-11
+                      rounded-xl
+                      bg-slate-50
+                      border
+                      border-slate-200
+                      text-sm
+                      text-slate-800
+                      placeholder:text-slate-400
+                      outline-none
+                      transition-all
+                      focus:bg-white
+                      focus:border-emerald-400
+                      focus:ring-4
+                      focus:ring-emerald-500/10
+                    "
+                  />
+
+                  <button
+                    type="submit"
+                    aria-label="Search jobs"
+                    className="
+                      absolute
+                      right-1.5
+                      top-1/2
+                      -translate-y-1/2
+                      w-8
+                      h-8
+                      rounded-lg
+                      bg-emerald-500
+                      hover:bg-emerald-600
+                      text-white
+                      flex
+                      items-center
+                      justify-center
+                      transition
+                    "
+                  >
+                    <FaSearch className="text-xs" />
+                  </button>
+
+                </div>
+
+              </form>
+
+              {/* =================================================
+                  MOBILE MENU BUTTON
+              ================================================= */}
+
+              {/* <button
+                type="button"
+                aria-label={
+                  menuOpen
+                    ? "Close navigation menu"
+                    : "Open navigation menu"
+                }
+                aria-expanded={menuOpen}
+                onClick={() => setMenuOpen(!menuOpen)}
+                className="
+                  lg:hidden
+                  shrink-0
+                  flex
+                  items-center
+                  justify-center
+                  w-11
+                  h-11
+                  rounded-xl
+                  bg-slate-50
+                  border
+                  border-slate-200
+                  text-slate-700
+                  hover:text-emerald-600
+                  hover:border-emerald-200
+                  hover:bg-emerald-50
+                  transition-all
+                  duration-200
+                "
+              >
+                {menuOpen ? (
+                  <FaTimes className="text-xl" />
+                ) : (
+                  <FaBars className="text-xl" />
+                )}
+              </button> */}
 
             </div>
-
-
-            {/* ================= DESKTOP JOIN BUTTON ================= */}
-
-            <div className="hidden lg:flex items-center">
-
-              <button
-                onClick={() => setSocialOpen(true)}
-                className="flex items-center gap-2 bg-emerald-500 hover:bg-emerald-600 text-white px-5 py-3 rounded-xl font-semibold transition"
-              >
-                <FaUsers />
-                Join Our Groups
-              </button>
-
-            </div>
-
-
-            {/* ================= MOBILE BUTTON ================= */}
-
-            <button
-              className="lg:hidden text-white text-2xl"
-              onClick={() => setMenuOpen(!menuOpen)}
-            >
-              {menuOpen ? <FaTimes /> : <FaBars />}
-            </button>
 
           </div>
 
         </div>
 
-
-        {/* ================= MOBILE MENU ================= */}
+        {/* =====================================================
+            MOBILE MENU
+        ===================================================== */}
 
         <div
-          className={`lg:hidden overflow-hidden transition-all duration-300 bg-slate-900/95 backdrop-blur-md ${
-            menuOpen ? "max-h-[700px]" : "max-h-0"
+          className={`lg:hidden overflow-hidden transition-all duration-300 ${
+            menuOpen
+              ? "max-h-[800px] opacity-100"
+              : "max-h-0 opacity-0 pointer-events-none"
           }`}
         >
 
-          <div className="px-6 py-5">
+          <div className="bg-white border-b border-slate-200 shadow-xl">
 
-            <div className="flex flex-col gap-2">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4">
 
-              <Link
-                to="/"
-                onClick={closeMenu}
-                className={navLinkClass("/")}
-              >
-                <FaHome />
-                Home
-              </Link>
+              <div className="bg-slate-50 border border-slate-200 rounded-2xl p-2">
 
+                {/* =================================================
+                    HOME
+                ================================================= */}
 
-              <Link
-                to="/all-jobs"
-                onClick={closeMenu}
-                className={navLinkClass("/all-jobs")}
-              >
-                <FaBriefcase />
-                New Jobs
-              </Link>
+                <Link
+                  to="/"
+                  onClick={closeMenu}
+                  aria-current={
+                    isActive("/") ? "page" : undefined
+                  }
+                  className={mobileItem(isActive("/"))}
+                >
 
+                  <span className="w-10 h-10 rounded-xl bg-white border border-slate-200 flex items-center justify-center">
+                    <FaHome className="text-emerald-500 text-base" />
+                  </span>
 
-              <Link
-                to="/jobs?type=freshers"
-                onClick={closeMenu}
-                className="flex items-center gap-2 px-3 py-3 rounded-lg text-slate-300 hover:text-emerald-400 hover:bg-slate-800 transition"
-              >
-                Freshers
-              </Link>
+                  <span>Home</span>
 
+                </Link>
 
-              <Link
-                to="/jobs?type=experienced"
-                onClick={closeMenu}
-                className="flex items-center gap-2 px-3 py-3 rounded-lg text-slate-300 hover:text-emerald-400 hover:bg-slate-800 transition"
-              >
-                Experienced
-              </Link>
+                {/* =================================================
+                    NEW JOBS
+                ================================================= */}
 
+                <Link
+                  to="/all-jobs"
+                  onClick={closeMenu}
+                  aria-current={
+                    isActive("/all-jobs")
+                      ? "page"
+                      : undefined
+                  }
+                  className={mobileItem(
+                    isActive("/all-jobs")
+                  )}
+                >
 
-              <Link
-                to="/jobs?type=internship"
-                onClick={closeMenu}
-                className="flex items-center gap-2 px-3 py-3 rounded-lg text-slate-300 hover:text-emerald-400 hover:bg-slate-800 transition"
-              >
-                Internship
-              </Link>
+                  <span className="w-10 h-10 rounded-xl bg-emerald-500 text-white flex items-center justify-center shadow-sm">
+                    <FaBriefcase className="text-base" />
+                  </span>
 
+                  <span className="flex-1">
+                    New Jobs
+                  </span>
 
-              <Link
-                to="/jobs?workMode=Remote"
-                onClick={closeMenu}
-                className="flex items-center gap-2 px-3 py-3 rounded-lg text-slate-300 hover:text-emerald-400 hover:bg-slate-800 transition"
-              >
-                Remote
-              </Link>
+                  <span className="text-[9px] font-bold bg-emerald-500 text-white px-2 py-1 rounded-full">
+                    NEW
+                  </span>
 
+                </Link>
 
-              <Link
-                to="/jobs?workMode=Hybrid"
-                onClick={closeMenu}
-                className="flex items-center gap-2 px-3 py-3 rounded-lg text-slate-300 hover:text-emerald-400 hover:bg-slate-800 transition"
-              >
-                Hybrid
-              </Link>
+                {/* =================================================
+                    FRESHERS
+                ================================================= */}
 
+                <Link
+                  to="/jobs?type=freshers"
+                  onClick={closeMenu}
+                  className={mobileItem(
+                    isQueryActive("?type=freshers")
+                  )}
+                >
 
-              {/* Join Groups */}
+                  <span className="w-10 h-10 rounded-xl bg-white border border-slate-200 flex items-center justify-center">
+                    <FaGraduationCap className="text-emerald-500 text-base" />
+                  </span>
 
-              <button
-                onClick={() => {
-                  setSocialOpen(true);
-                  closeMenu();
-                }}
-                className="mt-3 w-full flex items-center justify-center gap-2 bg-emerald-500 hover:bg-emerald-600 text-white py-3 rounded-xl font-semibold transition"
-              >
-                <FaUsers />
-                Join Our Groups
-              </button>
+                  <span>Freshers</span>
+
+                </Link>
+
+                {/* =================================================
+                    EXPERIENCED
+                ================================================= */}
+
+                <Link
+                  to="/jobs?type=experienced"
+                  onClick={closeMenu}
+                  className={mobileItem(
+                    isQueryActive("?type=experienced")
+                  )}
+                >
+
+                  <span className="w-10 h-10 rounded-xl bg-white border border-slate-200 flex items-center justify-center">
+                    <FaUsers className="text-emerald-500 text-base" />
+                  </span>
+
+                  <span>Experienced</span>
+
+                </Link>
+
+                {/* =================================================
+                    INTERNSHIP
+                ================================================= */}
+
+                <Link
+                  to="/jobs?type=internship"
+                  onClick={closeMenu}
+                  className={mobileItem(
+                    isQueryActive("?type=internship")
+                  )}
+                >
+
+                  <span className="w-10 h-10 rounded-xl bg-white border border-slate-200 flex items-center justify-center">
+                    <FaLayerGroup className="text-emerald-500 text-base" />
+                  </span>
+
+                  <span>Internship</span>
+
+                </Link>
+
+                {/* =================================================
+                    REMOTE
+                ================================================= */}
+
+                <Link
+                  to="/jobs?workMode=Remote"
+                  onClick={closeMenu}
+                  className={mobileItem(
+                    isQueryActive("?workMode=Remote")
+                  )}
+                >
+
+                  <span className="w-10 h-10 rounded-xl bg-white border border-slate-200 flex items-center justify-center">
+                    <FaLaptopHouse className="text-emerald-500 text-base" />
+                  </span>
+
+                  <span>Remote</span>
+
+                </Link>
+
+                {/* =================================================
+                    HYBRID
+                ================================================= */}
+
+                <Link
+                  to="/jobs?workMode=Hybrid"
+                  onClick={closeMenu}
+                  className={mobileItem(
+                    isQueryActive("?workMode=Hybrid")
+                  )}
+                >
+
+                  <span className="w-10 h-10 rounded-xl bg-white border border-slate-200 flex items-center justify-center">
+                    <FaLaptopHouse className="text-emerald-500 text-base" />
+                  </span>
+
+                  <span>Hybrid</span>
+
+                </Link>
+
+                {/* =================================================
+                    GOVT JOBS & NEWS
+                ================================================= */}
+
+                <Link
+                  to="/job-news"
+                  onClick={closeMenu}
+                  className={mobileItem(
+                    location.pathname.startsWith("/job-news")
+                  )}
+                >
+
+                  <span className="w-10 h-10 rounded-xl bg-white border border-slate-200 flex items-center justify-center">
+                    <FaGraduationCap className="text-emerald-500 text-base" />
+                  </span>
+
+                  <span>Govt Jobs & News</span>
+
+                </Link>
+
+                {/* =================================================
+                    DIVIDER
+                ================================================= */}
+
+                <div className="my-2 border-t border-slate-200" />
+
+                {/* =================================================
+                    JOIN GROUPS
+                ================================================= */}
+
+                <button
+                  type="button"
+                  onClick={() => {
+                    setSocialOpen(true);
+                    closeMenu();
+                  }}
+                  className="
+                    w-full
+                    flex
+                    items-center
+                    justify-center
+                    gap-2.5
+                    bg-gradient-to-r
+                    from-emerald-500
+                    to-emerald-600
+                    hover:from-emerald-600
+                    hover:to-emerald-700
+                    text-white
+                    py-3.5
+                    rounded-xl
+                    text-[15px]
+                    font-semibold
+                    shadow-md
+                    shadow-emerald-500/20
+                    transition-all
+                    duration-200
+                  "
+                >
+
+                  <FaUsers />
+
+                  Join Our Groups
+
+                </button>
+
+              </div>
 
             </div>
 
@@ -1057,144 +1821,252 @@ export default function Navbar() {
 
       </nav>
 
-
-      {/* ================= SOCIAL POPUP ================= */}
+      {/* =====================================================
+          SOCIAL POPUP
+      ===================================================== */}
 
       {socialOpen && (
         <div
-          className="fixed inset-0 z-[100] bg-black/70 backdrop-blur-sm flex items-center justify-center px-5"
+          className="
+            fixed
+            inset-0
+            z-[100]
+            bg-slate-950/50
+            backdrop-blur-sm
+            flex
+            items-center
+            justify-center
+            px-5
+          "
           onClick={() => setSocialOpen(false)}
         >
 
           <div
             onClick={(e) => e.stopPropagation()}
-            className="relative w-full max-w-md bg-slate-900 border border-slate-800 rounded-3xl p-7 shadow-2xl"
+            className="
+              relative
+              w-full
+              max-w-md
+              bg-white
+              border
+              border-slate-200
+              rounded-3xl
+              p-7
+              shadow-2xl
+            "
           >
 
-            {/* Close Button */}
+            {/* =================================================
+                CLOSE
+            ================================================= */}
 
             <button
+              type="button"
               onClick={() => setSocialOpen(false)}
-              className="absolute top-5 right-5 text-slate-400 hover:text-white text-xl"
+              aria-label="Close community popup"
+              className="
+                absolute
+                top-5
+                right-5
+                w-9
+                h-9
+                flex
+                items-center
+                justify-center
+                rounded-xl
+                text-slate-400
+                hover:text-slate-700
+                hover:bg-slate-100
+                transition
+              "
             >
               <FaTimes />
             </button>
 
-
-            {/* Heading */}
+            {/* =================================================
+                HEADER
+            ================================================= */}
 
             <div className="text-center mb-7">
 
-              <div className="w-16 h-16 mx-auto rounded-2xl bg-emerald-500/10 flex items-center justify-center">
-                <FaUsers className="text-emerald-400 text-3xl" />
+              <div className="relative w-16 h-16 mx-auto">
+
+                <div className="absolute inset-0 rounded-2xl bg-emerald-100 animate-pulse opacity-50" />
+
+                <div className="relative w-16 h-16 rounded-2xl bg-emerald-50 border border-emerald-100 flex items-center justify-center">
+
+                  <FaUsers className="text-emerald-500 text-3xl" />
+
+                </div>
+
               </div>
 
-              <h2 className="text-2xl font-bold text-white mt-4">
+              <h2 className="text-2xl font-bold text-slate-900 mt-4">
                 Join Our Job Community
               </h2>
 
-              <p className="text-slate-400 mt-2">
-                Get the latest job updates directly on your favorite platform.
+              <p className="text-slate-500 mt-2 text-sm leading-6 max-w-sm mx-auto">
+                Get the latest job updates directly
+                on your favorite platform.
               </p>
 
             </div>
 
-
-            {/* Social Links */}
+            {/* =================================================
+                SOCIAL LINKS
+            ================================================= */}
 
             <div className="space-y-3">
 
-              {/* WhatsApp */}
+              {/* WHATSAPP */}
 
               <a
                 href="https://chat.whatsapp.com/CimbUfCYdUnGLTAKJLThWR"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-4 bg-slate-800 hover:bg-emerald-500/10 border border-slate-700 hover:border-emerald-500 rounded-2xl p-4 transition"
+                className="
+                  group
+                  flex
+                  items-center
+                  gap-4
+                  bg-slate-50
+                  hover:bg-emerald-50
+                  border
+                  border-slate-200
+                  hover:border-emerald-300
+                  rounded-2xl
+                  p-4
+                  transition-all
+                  duration-200
+                "
               >
 
-                <div className="w-11 h-11 rounded-xl bg-green-500 flex items-center justify-center text-white text-xl">
+                <div className="w-11 h-11 shrink-0 rounded-xl bg-green-500 flex items-center justify-center text-white text-xl shadow-sm">
                   <FaWhatsapp />
                 </div>
 
-                <div className="text-left">
-                  <h3 className="text-white font-semibold">
+                <div className="text-left flex-1">
+
+                  <h3 className="text-slate-900 font-semibold">
                     WhatsApp Group
                   </h3>
 
-                  <p className="text-slate-400 text-sm">
+                  <p className="text-slate-500 text-sm mt-0.5">
                     Get job updates on WhatsApp
                   </p>
+
                 </div>
+
+                <span className="text-slate-300 group-hover:text-emerald-500 text-lg transition">
+                  →
+                </span>
 
               </a>
 
-
-          
-
-
-              {/* Instagram */}
+              {/* INSTAGRAM */}
 
               <a
                 href="https://www.instagram.com/mr_vansh_s?igsi=MWtvd24yOGxwamlm"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-4 bg-slate-800 hover:bg-emerald-500/10 border border-slate-700 hover:border-emerald-500 rounded-2xl p-4 transition"
+                className="
+                  group
+                  flex
+                  items-center
+                  gap-4
+                  bg-slate-50
+                  hover:bg-pink-50
+                  border
+                  border-slate-200
+                  hover:border-pink-200
+                  rounded-2xl
+                  p-4
+                  transition-all
+                  duration-200
+                "
               >
 
-                <div className="w-11 h-11 rounded-xl bg-pink-500 flex items-center justify-center text-white text-xl">
+                <div className="w-11 h-11 shrink-0 rounded-xl bg-gradient-to-br from-pink-500 to-purple-600 flex items-center justify-center text-white text-xl shadow-sm">
                   <FaInstagram />
                 </div>
 
-                <div className="text-left">
-                  <h3 className="text-white font-semibold">
+                <div className="text-left flex-1">
+
+                  <h3 className="text-slate-900 font-semibold">
                     Instagram
                   </h3>
 
-                  <p className="text-slate-400 text-sm">
+                  <p className="text-slate-500 text-sm mt-0.5">
                     Follow us for job updates
                   </p>
+
                 </div>
+
+                <span className="text-slate-300 group-hover:text-pink-500 text-lg transition">
+                  →
+                </span>
 
               </a>
 
-
-              {/* LinkedIn */}
+              {/* LINKEDIN */}
 
               <a
                 href="https://www.linkedin.com/company/techby-consultancy-services/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-4 bg-slate-800 hover:bg-emerald-500/10 border border-slate-700 hover:border-emerald-500 rounded-2xl p-4 transition"
+                className="
+                  group
+                  flex
+                  items-center
+                  gap-4
+                  bg-slate-50
+                  hover:bg-blue-50
+                  border
+                  border-slate-200
+                  hover:border-blue-200
+                  rounded-2xl
+                  p-4
+                  transition-all
+                  duration-200
+                "
               >
 
-                <div className="w-11 h-11 rounded-xl bg-blue-600 flex items-center justify-center text-white text-xl">
+                <div className="w-11 h-11 shrink-0 rounded-xl bg-blue-600 flex items-center justify-center text-white text-xl shadow-sm">
                   <FaLinkedin />
                 </div>
 
-                <div className="text-left">
-                  <h3 className="text-white font-semibold">
+                <div className="text-left flex-1">
+
+                  <h3 className="text-slate-900 font-semibold">
                     LinkedIn
                   </h3>
 
-                  <p className="text-slate-400 text-sm">
+                  <p className="text-slate-500 text-sm mt-0.5">
                     Follow our professional updates
                   </p>
+
                 </div>
+
+                <span className="text-slate-300 group-hover:text-blue-500 text-lg transition">
+                  →
+                </span>
 
               </a>
 
-
-            
-
             </div>
 
+            {/* =================================================
+                FOOTER
+            ================================================= */}
 
-            {/* Bottom */}
+            <div className="mt-6 pt-5 border-t border-slate-100">
 
-            <p className="text-center text-slate-500 text-xs mt-6">
-              Join our communities and never miss a job opportunity.
-            </p>
+              <p className="text-center text-slate-400 text-xs">
+                Join our communities and never miss a
+                job opportunity.
+              </p>
+
+            </div>
 
           </div>
 

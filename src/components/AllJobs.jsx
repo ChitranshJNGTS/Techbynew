@@ -1,16 +1,15 @@
-
-// import { useEffect, useMemo, useState } from "react";
+// import { Fragment, useEffect, useMemo, useState } from "react";
 // import { useNavigate, useSearchParams } from "react-router-dom";
+
 // import JobBanner from "./JobBanner";
+// import Ads from "./Ads";
 
 // import API from "../Api/JobApi";
 
 // import {
-//   FaSearch,
 //   FaMapMarkerAlt,
 //   FaBriefcase,
 //   FaClock,
-//   FaBookmark,
 //   FaBuilding,
 //   FaCheckCircle,
 //   FaArrowRight,
@@ -29,6 +28,7 @@
 //   // ==========================
 //   // STATE
 //   // ==========================
+
 //   const urlWorkMode = searchParams.get("workMode") || "";
 
 //   const [jobsData, setJobsData] = useState([]);
@@ -120,6 +120,11 @@
 //       params.category = urlCategory;
 //     }
 
+//     // Preserve work mode
+//     if (urlWorkMode) {
+//       params.workMode = urlWorkMode;
+//     }
+
 //     setSearchParams(params);
 //   };
 
@@ -140,11 +145,15 @@
 //       result = result.filter((job) => {
 //         const jobTitle = job.jobTitle?.toLowerCase() || "";
 
-//         const companyName = job.companyName?.toLowerCase() || "";
+//         const companyName =
+//           job.companyName?.toLowerCase() || "";
 
-//         const category = job.category?.toLowerCase() || "";
+//         const category =
+//           job.category?.toLowerCase() || "";
 
-//         const skills = Array.isArray(job.skills) ? job.skills : [];
+//         const skills = Array.isArray(job.skills)
+//           ? job.skills
+//           : [];
 
 //         return (
 //           jobTitle.includes(search) ||
@@ -158,32 +167,36 @@
 //     }
 
 //     // ==========================
-// // WORK MODE
-// // ==========================
+//     // WORK MODE
+//     // ==========================
 
-// if (urlWorkMode.trim()) {
-//   const workModeSearch = urlWorkMode.toLowerCase().trim();
+//     if (urlWorkMode.trim()) {
+//       const workModeSearch =
+//         urlWorkMode.toLowerCase().trim();
 
-//   result = result.filter((job) => {
-//     const workMode = job.workMode?.toLowerCase().trim() || "";
+//       result = result.filter((job) => {
+//         const workMode =
+//           job.workMode?.toLowerCase().trim() || "";
 
-//     return workMode === workModeSearch;
-//   });
-// }
+//         return workMode === workModeSearch;
+//       });
+//     }
 
 //     // ==========================
 //     // LOCATION
 //     // ==========================
 
 //     if (urlLocation.trim()) {
-//       const searchLocation = urlLocation.toLowerCase().trim();
+//       const searchLocation =
+//         urlLocation.toLowerCase().trim();
 
 //       result = result.filter((job) => {
 //         const city = job.city?.toLowerCase() || "";
 
 //         const state = job.state?.toLowerCase() || "";
 
-//         const country = job.country?.toLowerCase() || "";
+//         const country =
+//           job.country?.toLowerCase() || "";
 
 //         return (
 //           city.includes(searchLocation) ||
@@ -197,18 +210,20 @@
 //     // CATEGORY
 //     // ==========================
 
-//  if (urlCategory.trim()) {
-//   const categorySearch = urlCategory.toLowerCase().trim();
+//     if (urlCategory.trim()) {
+//       const categorySearch =
+//         urlCategory.toLowerCase().trim();
 
-//   result = result.filter((job) => {
-//     const category = job.category?.toLowerCase().trim() || "";
+//       result = result.filter((job) => {
+//         const category =
+//           job.category?.toLowerCase().trim() || "";
 
-//     return (
-//       category.includes(categorySearch) ||
-//       categorySearch.includes(category)
-//     );
-//   });
-// }
+//         return (
+//           category.includes(categorySearch) ||
+//           categorySearch.includes(category)
+//         );
+//       });
+//     }
 
 //     // ==========================
 //     // JOB TYPE
@@ -269,35 +284,17 @@
 //       });
 //     }
 
-//     // ==========================
-//     // SORTING
-//     // ==========================
 
-//     if (sortBy === "newest") {
-//       result.sort(
-//         (a, b) =>
-//           new Date(b.createdAt || 0) -
-//           new Date(a.createdAt || 0)
-//       );
-//     }
-
-//     if (sortBy === "oldest") {
-//       result.sort(
-//         (a, b) =>
-//           new Date(a.createdAt || 0) -
-//           new Date(b.createdAt || 0)
-//       );
-//     }
 
 //     return result;
 //   }, [
-//    jobsData,
-//   urlKeyword,
-//   urlLocation,
-//   urlType,
-//   urlCategory,
-//   urlWorkMode,
-//   sortBy,
+//     jobsData,
+//     urlKeyword,
+//     urlLocation,
+//     urlType,
+//     urlCategory,
+//     urlWorkMode,
+   
 //   ]);
 
 //   // ==========================
@@ -328,19 +325,7 @@
 //   // APPLY JOB
 //   // ==========================
 
-//   const handleApply = (e, job) => {
-//     e.stopPropagation();
 
-//     if (job.applyLink) {
-//       window.open(
-//         job.applyLink,
-//         "_blank",
-//         "noopener,noreferrer"
-//       );
-//     } else {
-//       navigate(`/jobs/${job.slug || job._id}`);
-//     }
-//   };
 
 //   // ==========================
 //   // OPEN JOB
@@ -350,21 +335,25 @@
 //     navigate(`/jobs/${job.slug || job._id}`);
 //   };
 
-
+//   // ==========================
+//   // EXPERIENCE BADGE
+//   // ==========================
 
 //   const getExperienceBadge = (job) => {
-//   const experience = job.experience?.toLowerCase() || "";
+//     const experience =
+//       job.experience?.toLowerCase() || "";
 
-//   if (
-//     experience.includes("fresher") ||
-//     experience.includes("trainee") ||
-//     experience.includes("0")
-//   ) {
-//     return "FRESHERS";
-//   }
+//     if (
+//       experience.includes("fresher") ||
+//       experience.includes("trainee") ||
+//       experience.includes("0")
+//     ) {
+//       return "FRESHERS";
+//     }
 
-//   return "EXPERIENCED";
-// };
+//     return "EXPERIENCED";
+//   };
+
 //   // ==========================
 //   // LOADING
 //   // ==========================
@@ -373,7 +362,8 @@
 //     return (
 //       <>
 //         <Navbar />
-//         <MobileBottomBar/>
+
+//         <MobileBottomBar />
 
 //         <div className="min-h-screen bg-slate-950 flex items-center justify-center">
 //           <div className="text-center">
@@ -396,7 +386,9 @@
 //     return (
 //       <>
 //         <Navbar />
-//         <MobileBottomBar/>
+
+//         <MobileBottomBar />
+
 //         <div className="min-h-screen bg-slate-950 flex items-center justify-center">
 //           <div className="text-center">
 //             <p className="text-red-500 text-xl">
@@ -422,8 +414,29 @@
 //   return (
 //     <>
 //       <Navbar />
-//       <MobileBottomBar/>
+
+//       <MobileBottomBar />
+
 //       <section className="min-h-screen bg-slate-950 pt-20 pb-20">
+//          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 my-6">
+//   <div className="w-full bg-slate-900 border border-slate-800 rounded-2xl p-4 flex flex-col items-center justify-center overflow-hidden">
+
+//     <p className="text-[10px] text-slate-500 mb-3 uppercase tracking-wider">
+//       Advertisement
+//     </p>
+
+//     {/* Desktop / Tablet */}
+//     <div className="hidden sm:flex w-full justify-center items-center overflow-hidden">
+//       <Ads type="728x90" />
+//     </div>
+
+//     {/* Mobile */}
+//     <div className="flex sm:hidden w-full justify-center items-center overflow-hidden">
+//       <Ads type="320x50" />
+//     </div>
+
+//   </div>
+// </div>
 //         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 lg:py-12">
 
 //           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
@@ -438,7 +451,6 @@
 //                   TOP BAR
 //               ========================== */}
 
-
 //               <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-7">
 
 //                 <div>
@@ -446,12 +458,15 @@
 //                     {filteredJobs.length} Jobs Found
 //                   </h2>
 
-//                   {/* ACTIVE FILTER */}
+//                   {/* WORK MODE */}
+
 //                   {urlWorkMode && (
-//   <p className="text-emerald-400 text-sm mt-2 capitalize">
-//     Showing {urlWorkMode} jobs
-//   </p>
-// )}
+//                     <p className="text-emerald-400 text-sm mt-2 capitalize">
+//                       Showing {urlWorkMode} jobs
+//                     </p>
+//                   )}
+
+//                   {/* TYPE */}
 
 //                   {urlType && (
 //                     <p className="text-emerald-400 text-sm mt-2 capitalize">
@@ -459,11 +474,15 @@
 //                     </p>
 //                   )}
 
+//                   {/* CATEGORY */}
+
 //                   {urlCategory && (
 //                     <p className="text-emerald-400 text-sm mt-2 capitalize">
 //                       Category: {urlCategory}
 //                     </p>
 //                   )}
+
+//                   {/* SEARCH */}
 
 //                   {(urlKeyword || urlLocation) && (
 //                     <button
@@ -475,23 +494,7 @@
 //                   )}
 //                 </div>
 
-//                 {/* SORT */}
 
-//                 <select
-//                   value={sortBy}
-//                   onChange={(e) =>
-//                     setSortBy(e.target.value)
-//                   }
-//                   className="w-full sm:w-52 bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-white text-sm outline-none focus:border-emerald-500"
-//                 >
-//                   <option value="newest">
-//                     Newest
-//                   </option>
-
-//                   <option value="oldest">
-//                     Oldest
-//                   </option>
-//                 </select>
 //               </div>
 
 //               {/* ==========================
@@ -517,6 +520,7 @@
 //                   >
 //                     Clear Filters
 //                   </button>
+
 //                 </div>
 //               )}
 
@@ -524,259 +528,243 @@
 //                   JOB LIST
 //               ========================== */}
 
-//              {/* ==========================
-//     JOB LIST
-// ========================== */}
+//               <div className="border-t border-slate-800">
 
-// <div className="border-t border-slate-800">
+//                 {filteredJobs.map((job, index) => (
+//                   <Fragment key={job._id}>
 
-//   {filteredJobs.map((job) => (
-//     <div
-//       key={job._id}
-//       onClick={() => openJob(job)}
-//       className="group block border-b border-slate-800 py-6 sm:py-7 hover:bg-slate-900/40 transition cursor-pointer"
-//     >
+//                     {/* ==========================
+//                         JOB CARD
+//                     ========================== */}
 
-//       <div className="grid grid-cols-1 md:grid-cols-[360px_1fr] lg:grid-cols-[440px_1fr] gap-5 md:gap-8 items-center">
+//                     <div
+//                       onClick={() => openJob(job)}
+//                       className="group block border-b border-slate-800 py-6 sm:py-7 hover:bg-slate-900/40 transition cursor-pointer"
+//                     >
 
-//         {/* ==========================
-//             LEFT - JOB BANNER
-//         ========================== */}
+//                       <div className="grid grid-cols-1 md:grid-cols-[360px_1fr] lg:grid-cols-[440px_1fr] gap-5 md:gap-8 items-center">
 
-//         <div className="flex items-center gap-4 min-w-0">
+//                         {/* ==========================
+//                             LEFT - JOB BANNER
+//                         ========================== */}
 
-//           <div
-//             className="
-//               w-32 h-24
-//               sm:w-40 sm:h-28
-//               lg:w-[440px] lg:h-[260px]
-//               rounded-xl
-//               bg-white
-//               border border-slate-800
-//               flex items-center justify-center
-//               overflow-hidden
-//               shrink-0
-//             "
-//           >
-//             <JobBanner job={job} />
-//           </div>
+//                         <div className="flex items-center gap-4 min-w-0">
 
-//           {/* MOBILE INFO */}
+//                           <div
+//                             className="
+//                               w-32 h-24
+//                               sm:w-40 sm:h-28
+//                               lg:w-[440px] lg:h-[260px]
+//                               rounded-xl
+//                               bg-white
+//                               border border-slate-800
+//                               flex items-center justify-center
+//                               overflow-hidden
+//                               shrink-0
+//                             "
+//                           >
+//                             <JobBanner job={job} />
+//                           </div>
 
-//           <div className="md:hidden min-w-0">
+//                           {/* MOBILE INFO */}
 
-//             <h3 className="text-lg font-bold text-white leading-snug line-clamp-2">
-//               {job.jobTitle}
-//             </h3>
+//                           <div className="md:hidden min-w-0">
 
-//             <p className="text-emerald-400 text-sm font-medium mt-1 truncate">
-//               {job.companyName}
-//             </p>
+//                             <h3 className="text-lg font-bold text-white leading-snug line-clamp-2">
+//                               {job.jobTitle}
+//                             </h3>
 
-//           </div>
+//                             <p className="text-emerald-400 text-sm font-medium mt-1 truncate">
+//                               {job.companyName}
+//                             </p>
 
-//         </div>
+//                           </div>
 
+//                         </div>
 
-//         {/* ==========================
-//             RIGHT CONTENT
-//         ========================== */}
+//                         {/* ==========================
+//                             RIGHT CONTENT
+//                         ========================== */}
 
-//         <div className="min-w-0">
+//                         <div className="min-w-0">
 
-//           {/* BADGES */}
+//                           {/* BADGES */}
 
-//           <div className="flex flex-wrap gap-2 mb-2.5">
+//                           <div className="flex flex-wrap gap-2 mb-2.5">
 
-//             <span className="bg-slate-800 border border-slate-700 text-slate-200 text-[10px] sm:text-[11px] px-2.5 py-1 font-bold rounded-sm tracking-wide">
-//               {getExperienceBadge(job)}
-//             </span>
+//                             <span className="bg-slate-800 border border-slate-700 text-slate-200 text-[10px] sm:text-[11px] px-2.5 py-1 font-bold rounded-sm tracking-wide">
+//                               {getExperienceBadge(job)}
+//                             </span>
 
-//             {job.employmentType && (
-//               <span className="bg-slate-800 border border-slate-700 text-slate-200 text-[10px] sm:text-[11px] px-2.5 py-1 font-bold rounded-sm tracking-wide">
-//                 {job.employmentType.toUpperCase()}
-//               </span>
-//             )}
+//                             {job.employmentType && (
+//                               <span className="bg-slate-800 border border-slate-700 text-slate-200 text-[10px] sm:text-[11px] px-2.5 py-1 font-bold rounded-sm tracking-wide">
+//                                 {job.employmentType.toUpperCase()}
+//                               </span>
+//                             )}
 
-//             {job.workMode && (
-//               <span className="bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-[10px] sm:text-[11px] px-2.5 py-1 font-bold rounded-sm tracking-wide">
-//                 {job.workMode.toUpperCase()}
-//               </span>
-//             )}
+//                             {job.workMode && (
+//                               <span className="bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-[10px] sm:text-[11px] px-2.5 py-1 font-bold rounded-sm tracking-wide">
+//                                 {job.workMode.toUpperCase()}
+//                               </span>
+//                             )}
 
-//           </div>
+//                           </div>
 
+//                           {/* TITLE */}
 
-//           {/* TITLE */}
+//                           <h3 className="hidden md:block text-xl lg:text-2xl font-bold text-white leading-snug group-hover:text-emerald-400 transition">
+//                             {job.jobTitle}
+//                           </h3>
 
-//           <h3 className="hidden md:block text-xl lg:text-2xl font-bold text-white leading-snug group-hover:text-emerald-400 transition">
-//             {job.jobTitle}
-//           </h3>
+//                           {/* COMPANY */}
 
+//                           <div className="flex items-center gap-2 mt-2">
 
-//           {/* COMPANY */}
+//                             <span className="text-emerald-400 text-sm font-semibold truncate">
+//                               {job.companyName}
+//                             </span>
 
-//           <div className="flex items-center gap-2 mt-2">
+//                             <FaCheckCircle className="text-emerald-500 text-xs shrink-0" />
 
-//             <span className="text-emerald-400 text-sm font-semibold truncate">
-//               {job.companyName}
-//             </span>
+//                           </div>
 
-//             <FaCheckCircle className="text-emerald-500 text-xs shrink-0" />
+//                           {/* DESCRIPTION */}
 
-//           </div>
+//                           <p className="text-slate-400 text-sm sm:text-[15px] leading-6 mt-2 line-clamp-2">
+//                             {job.jobSummary ||
+//                               job.description?.replace(/<[^>]*>/g, "") ||
+//                               "Explore this opportunity and discover more details about the role, requirements and application process."}
+//                           </p>
 
+//                           {/* AUTHOR + DATE */}
 
-//           {/* DESCRIPTION */}
+//                           <div className="flex flex-wrap items-center gap-x-3 gap-y-2 mt-4 text-xs sm:text-sm">
 
-//           <p className="text-slate-400 text-sm sm:text-[15px] leading-6 mt-2 line-clamp-2">
-//             {job.jobSummary ||
-//               job.description?.replace(/<[^>]*>/g, "") ||
-//               "Explore this opportunity and discover more details about the role, requirements and application process."}
-//           </p>
+//                             <span className="flex items-center gap-1.5 text-slate-300 font-medium">
 
+//                               <FaCheckCircle className="text-emerald-500 text-xs" />
 
-//           {/* AUTHOR + DATE */}
+//                               {job.recruiterName ||
+//                                 job.postedByName ||
+//                                 "TechBy"}
 
-//           <div className="flex flex-wrap items-center gap-x-3 gap-y-2 mt-4 text-xs sm:text-sm">
+//                             </span>
 
-//             <span className="flex items-center gap-1.5 text-slate-300 font-medium">
+//                             <span className="text-slate-700">
+//                               |
+//                             </span>
 
-//               <FaCheckCircle className="text-emerald-500 text-xs" />
+//                             <span className="flex items-center gap-1.5 text-slate-500">
 
-//               {job.recruiterName ||
-//                 job.postedByName ||
-//                 "TechBy"}
+//                               <FaClock />
 
-//             </span>
+//                               {job.createdAt
+//                                 ? new Date(
+//                                     job.createdAt
+//                                   ).toLocaleDateString(
+//                                     "en-IN",
+//                                     {
+//                                       day: "numeric",
+//                                       month: "long",
+//                                       year: "numeric",
+//                                     }
+//                                   )
+//                                 : "Recently"}
 
-//             <span className="text-slate-700">
-//               |
-//             </span>
+//                             </span>
 
-//             <span className="flex items-center gap-1.5 text-slate-500">
+//                           </div>
 
-//               <FaClock />
+//                           {/* EXTRA INFORMATION */}
 
-//               {job.createdAt
-//                 ? new Date(
-//                     job.createdAt
-//                   ).toLocaleDateString("en-IN", {
-//                     day: "numeric",
-//                     month: "long",
-//                     year: "numeric",
-//                   })
-//                 : "Recently"}
+//                           <div className="flex flex-wrap gap-x-5 gap-y-2 mt-3 text-xs sm:text-sm text-slate-500">
 
-//             </span>
+//                             {(job.city || job.state) && (
+//                               <span className="flex items-center gap-1.5">
 
-//           </div>
+//                                 <FaMapMarkerAlt />
 
+//                                 {job.city || "Location"}
 
-//           {/* EXTRA INFORMATION */}
+//                                 {job.state
+//                                   ? `, ${job.state}`
+//                                   : ""}
 
-//           <div className="flex flex-wrap gap-x-5 gap-y-2 mt-3 text-xs sm:text-sm text-slate-500">
+//                               </span>
+//                             )}
 
-//             {(job.city || job.state) && (
-//               <span className="flex items-center gap-1.5">
+//                             {job.workMode && (
+//                               <span className="text-emerald-400">
+//                                 {job.workMode}
+//                               </span>
+//                             )}
 
-//                 <FaMapMarkerAlt />
+//                             {job.salaryMin || job.salaryMax ? (
+//                               <span className="flex items-center gap-1.5 text-slate-400">
 
-//                 {job.city || "Location"}
+//                                 <FaMoneyBillWave className="text-emerald-400" />
 
-//                 {job.state
-//                   ? `, ${job.state}`
-//                   : ""}
+//                                 ₹
+//                                 {job.salaryMin?.toLocaleString() ||
+//                                   "0"}
 
-//               </span>
-//             )}
+//                                 {job.salaryMax
+//                                   ? ` - ₹${job.salaryMax.toLocaleString()}`
+//                                   : ""}
 
-//             {job.workMode && (
-//               <span className="text-emerald-400">
-//                 {job.workMode}
-//               </span>
-//             )}
+//                               </span>
+//                             ) : null}
 
-//             {job.salaryMin || job.salaryMax ? (
-//               <span className="flex items-center gap-1.5 text-slate-400">
+//                           </div>
 
-//                 <FaMoneyBillWave className="text-emerald-400" />
+//                           {/* SKILLS */}
 
-//                 ₹{job.salaryMin?.toLocaleString() || "0"}
+//                           {job.skills?.length > 0 && (
+//                             <div className="flex flex-wrap gap-2 mt-4">
 
-//                 {job.salaryMax
-//                   ? ` - ₹${job.salaryMax.toLocaleString()}`
-//                   : ""}
+//                               {job.skills
+//                                 .slice(0, 5)
+//                                 .map((skill) => (
+//                                   <span
+//                                     key={skill}
+//                                     className="px-2 sm:px-3 py-1 sm:py-2 rounded-lg bg-slate-800 text-slate-300 text-[11px] sm:text-xs"
+//                                   >
+//                                     {skill}
+//                                   </span>
+//                                 ))}
 
-//               </span>
-//             ) : null}
+//                               {job.skills.length > 5 && (
+//                                 <span className="px-2 py-1 rounded-lg bg-slate-800 text-slate-400 text-xs">
+//                                   +
+//                                   {job.skills.length - 5}
+//                                 </span>
+//                               )}
 
-//           </div>
+//                             </div>
+//                           )}
 
 
-//           {/* SKILLS */}
+//                         </div>
 
-//           {job.skills?.length > 0 && (
-//             <div className="flex flex-wrap gap-2 mt-4">
+//                       </div>
 
-//               {job.skills.slice(0, 5).map((skill) => (
-//                 <span
-//                   key={skill}
-//                   className="px-2 sm:px-3 py-1 sm:py-2 rounded-lg bg-slate-800 text-slate-300 text-[11px] sm:text-xs"
-//                 >
-//                   {skill}
-//                 </span>
-//               ))}
+//                     </div>
 
-//               {job.skills.length > 5 && (
-//                 <span className="px-2 py-1 rounded-lg bg-slate-800 text-slate-400 text-xs">
-//                   +{job.skills.length - 5}
-//                 </span>
-//               )}
+//                     {/* ==========================
+//                         DUMMY AD
+//                         AFTER EVERY 5 JOBS
+//                     ========================== */}
 
-//             </div>
-//           )}
+//                     {(index + 1) % 3 === 0 && (
+//                       <div className="w-full flex justify-center py-6">
+//                         <Ads type="320x50" />
+//                       </div>
+//                     )}
 
+//                   </Fragment>
+//                 ))}
 
-//           {/* APPLY BUTTON */}
-
-//           <div className="flex justify-end mt-4">
-
-//             <button
-//               onClick={(e) =>
-//                 handleApply(e, job)
-//               }
-//               className="
-//                 bg-emerald-500
-//                 hover:bg-emerald-600
-//                 text-white
-//                 font-semibold
-//                 px-5
-//                 py-2.5
-//                 rounded-xl
-//                 text-sm
-//                 transition
-//                 flex
-//                 items-center
-//                 gap-2
-//               "
-//             >
-//               Apply
-
-//               <FaArrowRight className="text-xs" />
-
-//             </button>
-
-//           </div>
-
-//         </div>
-
-//       </div>
-
-//     </div>
-//   ))}
-
-// </div>
+//               </div>
 
 //             </main>
 
@@ -784,299 +772,720 @@
 //                 RIGHT - RECENT JOBS
 //             ================================= */}
 
-//             <aside className="lg:col-span-4 xl:col-span-3">
+//          <aside className="lg:col-span-4 xl:col-span-3">
 
-//               <div className="bg-slate-900 border border-slate-800 rounded-2xl p-5 sticky top-24">
+//   <div className="space-y-5">
 
-//                 {/* HEADER */}
+//     {/* =====================================================
+//         RECENT JOBS
+//     ====================================================== */}
 
-//                 <div className="flex items-center justify-between mb-5">
+//     <div className="bg-slate-900 border border-slate-800 rounded-2xl p-5">
 
-//                   <div>
-//                     <h2 className="text-white text-lg font-bold">
-//                       Recent Jobs
-//                     </h2>
+//       {/* HEADER */}
 
-//                     <p className="text-slate-500 text-xs mt-1">
-//                       Latest opportunities
+//       <div className="flex items-center justify-between mb-5">
+
+//         <div>
+//           <h2 className="text-white text-lg font-bold">
+//             Recent Jobs
+//           </h2>
+
+//           <p className="text-slate-500 text-xs mt-1">
+//             Latest opportunities
+//           </p>
+//         </div>
+
+//         <div className="w-9 h-9 rounded-lg bg-emerald-500/10 flex items-center justify-center">
+//           <FaBriefcase className="text-emerald-400 text-sm" />
+//         </div>
+
+//       </div>
+
+//       {/* RECENT JOBS */}
+
+//       <div className="space-y-3">
+
+//         {recentJobs.length === 0 ? (
+//           <p className="text-slate-500 text-sm">
+//             No recent jobs available.
+//           </p>
+//         ) : (
+//           recentJobs.map((job) => (
+
+//             <div
+//               key={job._id}
+//               onClick={() => openJob(job)}
+//               className="
+//                 group
+//                 bg-slate-950
+//                 border border-slate-800
+//                 hover:border-emerald-500/60
+//                 hover:bg-slate-900
+//                 rounded-xl
+//                 p-3.5
+//                 cursor-pointer
+//                 transition-all
+//                 duration-200
+//               "
+//             >
+
+//               {/* TOP */}
+
+//               <div className="flex gap-3">
+
+//                 {/* LOGO */}
+
+//                 <div
+//                   className="
+//                     w-12 h-12
+//                     rounded-lg
+//                     bg-white
+//                     border border-slate-700
+//                     flex items-center
+//                     justify-center
+//                     p-1.5
+//                     shrink-0
+//                     overflow-hidden
+//                   "
+//                 >
+
+//                   {job.companyLogo ? (
+//                     <img
+//                       src={job.companyLogo}
+//                       alt={
+//                         job.companyName ||
+//                         "Company"
+//                       }
+//                       className="w-full h-full object-contain rounded"
+//                       onError={(e) => {
+//                         e.currentTarget.style.display =
+//                           "none";
+//                       }}
+//                     />
+//                   ) : (
+//                     <FaBuilding className="text-slate-400 text-lg" />
+//                   )}
+
+//                 </div>
+
+//                 {/* INFO */}
+
+//                 <div className="min-w-0 flex-1">
+
+//                   {/* JOB TITLE */}
+
+//                   <h3
+//                     className="
+//                       text-white
+//                       text-sm
+//                       font-bold
+//                       leading-tight
+//                       line-clamp-2
+//                       group-hover:text-emerald-400
+//                       transition
+//                     "
+//                   >
+//                     {job.jobTitle ||
+//                       job.title ||
+//                       "Job Opening"}
+//                   </h3>
+
+//                   {/* COMPANY */}
+
+//                   <div className="flex items-center gap-1.5 mt-1.5 min-w-0">
+
+//                     <p className="text-slate-400 text-xs truncate">
+//                       {job.companyName ||
+//                         job.company?.name ||
+//                         "Company"}
 //                     </p>
-//                   </div>
 
-//                   <div className="w-9 h-9 rounded-lg bg-emerald-500/10 flex items-center justify-center">
-//                     <FaBriefcase className="text-emerald-400 text-sm" />
+//                     <FaCheckCircle
+//                       className="
+//                         text-emerald-500
+//                         text-[10px]
+//                         shrink-0
+//                       "
+//                     />
+
 //                   </div>
 
 //                 </div>
 
-//                 {/* RECENT JOBS */}
+//               </div>
 
-//                 <div className="space-y-3">
+//               {/* JOB META */}
 
-//                   {recentJobs.length === 0 ? (
+//               <div className="flex items-center gap-3 mt-3 text-[11px]">
 
-//                     <p className="text-slate-500 text-sm">
-//                       No recent jobs available.
-//                     </p>
+//                 {/* LOCATION */}
 
-//                   ) :
-// (
-//   recentJobs.map((job) => (
+//                 {(job.city ||
+//                   job.state ||
+//                   job.location) && (
+
+//                   <div
+//                     className="
+//                       flex
+//                       items-center
+//                       gap-1
+//                       min-w-0
+//                       text-slate-500
+//                     "
+//                   >
+
+//                     <FaMapMarkerAlt
+//                       className="
+//                         text-emerald-500
+//                         text-[10px]
+//                         shrink-0
+//                       "
+//                     />
+
+//                     <span className="truncate">
+//                       {job.city ||
+//                         job.state ||
+//                         (typeof job.location ===
+//                         "string"
+//                           ? job.location
+//                           : job.location?.city ||
+//                             job.location?.state) ||
+//                         "Location"}
+//                     </span>
+
+//                   </div>
+
+//                 )}
+
+//                 {/* WORK MODE */}
+
+//                 {job.workMode && (
+//                   <>
+//                     <span className="text-slate-700">
+//                       •
+//                     </span>
+
+//                     <span className="text-emerald-400 truncate">
+//                       {job.workMode}
+//                     </span>
+//                   </>
+//                 )}
+
+//               </div>
+
+//               {/* BOTTOM */}
+
+//               <div
+//                 className="
+//                   flex
+//                   items-center
+//                   justify-between
+//                   mt-3
+//                   pt-3
+//                   border-t
+//                   border-slate-800
+//                 "
+//               >
+
+//                 {/* DATE */}
+
+//                 <span
+//                   className="
+//                     text-slate-600
+//                     text-[10px]
+//                     flex
+//                     items-center
+//                     gap-1
+//                   "
+//                 >
+
+//                   <FaClock />
+
+//                   {job.createdAt
+//                     ? new Date(
+//                         job.createdAt
+//                       ).toLocaleDateString(
+//                         "en-IN",
+//                         {
+//                           day: "numeric",
+//                           month: "short",
+//                         }
+//                       )
+//                     : "Recent"}
+
+//                 </span>
+
+//                 {/* VIEW */}
+
+//                 <span
+//                   className="
+//                     text-emerald-500
+//                     text-[10px]
+//                     font-semibold
+//                     flex
+//                     items-center
+//                     gap-1
+//                     opacity-0
+//                     group-hover:opacity-100
+//                     transition
+//                   "
+//                 >
+//                   View
+
+//                   <FaArrowRight className="text-[9px]" />
+//                 </span>
+
+//               </div>
+
+//             </div>
+
+//           ))
+//         )}
+
+//       </div>
+
+//       {/* VIEW ALL */}
+
+//       <button
+//         onClick={() => {
+//           setKeyword("");
+//           setLocation("");
+//           setSearchParams({});
+
+//           window.scrollTo({
+//             top: 0,
+//             behavior: "smooth",
+//           });
+//         }}
+//         className="
+//           w-full
+//           mt-5
+//           py-3
+//           rounded-xl
+//           border
+//           border-slate-700
+//           hover:border-emerald-500
+//           hover:bg-emerald-500/10
+//           text-slate-300
+//           hover:text-emerald-400
+//           text-sm
+//           font-semibold
+//           transition
+//           flex
+//           items-center
+//           justify-center
+//           gap-2
+//         "
+//       >
+//         View All Jobs
+
+//         <FaArrowRight className="text-xs" />
+
+//       </button>
+
+//     </div>
+
+
+//     {/* =====================================================
+//         VERTICAL AD
+//     ====================================================== */}
 
 //     <div
-//       key={job._id}
-//       onClick={() => openJob(job)}
 //       className="
-//         group
-//         bg-slate-950
-//         border border-slate-800
-//         hover:border-emerald-500/60
-//         hover:bg-slate-900
-//         rounded-xl
-//         p-3.5
-//         cursor-pointer
-//         transition-all
-//         duration-200
+//         bg-slate-900
+//         border
+//         border-slate-800
+//         rounded-2xl
+//         p-4
+//         overflow-hidden
 //       "
 //     >
 
-//       {/* ==========================
-//           TOP
-//       ========================== */}
+//       <p className="
+//         text-[10px]
+//         text-slate-600
+//         text-center
+//         uppercase
+//         tracking-widest
+//         mb-3
+//       ">
+//         Advertisement
+//       </p>
 
-//       <div className="flex gap-3">
+//       <div className="flex justify-center items-center w-full overflow-hidden">
 
-//         {/* LOGO */}
-
-//         <div
-//           className="
-//             w-12 h-12
-//             rounded-lg
-//             bg-white
-//             border border-slate-700
-//             flex items-center
-//             justify-center
-//             p-1.5
-//             shrink-0
-//             overflow-hidden
-//           "
-//         >
-
-//           {job.companyLogo ? (
-
-//             <img
-//               src={job.companyLogo}
-//               alt={job.companyName || "Company"}
-//               className="w-full h-full object-contain rounded"
-//               onError={(e) => {
-//                 e.currentTarget.style.display = "none";
-//               }}
-//             />
-
-//           ) : (
-
-//             <FaBuilding className="text-slate-400 text-lg" />
-
-//           )}
-
-//         </div>
-
-
-//         {/* INFO */}
-
-//         <div className="min-w-0 flex-1">
-
-//           {/* JOB TITLE */}
-
-//           <h3
-//             className="
-//               text-white
-//               text-sm
-//               font-bold
-//               leading-tight
-//               line-clamp-2
-//               group-hover:text-emerald-400
-//               transition
-//             "
-//           >
-//             {job.jobTitle || "Job Opening"}
-//           </h3>
-
-
-//           {/* COMPANY */}
-
-//           <div className="flex items-center gap-1.5 mt-1.5 min-w-0">
-
-//             <p className="text-slate-400 text-xs truncate">
-//               {job.companyName || "Company"}
-//             </p>
-
-//             <FaCheckCircle
-//               className="
-//                 text-emerald-500
-//                 text-[10px]
-//                 shrink-0
-//               "
-//             />
-
-//           </div>
-
-//         </div>
-
-//       </div>
-
-
-//       {/* ==========================
-//           JOB META
-//       ========================== */}
-
-//       <div className="flex items-center gap-3 mt-3 text-[11px]">
-
-//         {/* LOCATION */}
-
-//         {(job.city || job.state) && (
-
-//           <div
-//             className="
-//               flex
-//               items-center
-//               gap-1
-//               min-w-0
-//               text-slate-500
-//             "
-//           >
-
-//             <FaMapMarkerAlt
-//               className="
-//                 text-emerald-500
-//                 text-[10px]
-//                 shrink-0
-//               "
-//             />
-
-//             <span className="truncate">
-//               {job.city || job.state}
-//             </span>
-
-//           </div>
-
-//         )}
-
-
-//         {/* WORK MODE */}
-
-//         {job.workMode && (
-
-//           <>
-//             <span className="text-slate-700">
-//               •
-//             </span>
-
-//             <span className="text-emerald-400 truncate">
-//               {job.workMode}
-//             </span>
-//           </>
-
-//         )}
-
-//       </div>
-
-
-//       {/* ==========================
-//           BOTTOM
-//       ========================== */}
-
-//       <div
-//         className="
-//           flex
-//           items-center
-//           justify-between
-//           mt-3
-//           pt-3
-//           border-t
-//           border-slate-800
-//         "
-//       >
-
-//         {/* DATE */}
-
-//         <span
-//           className="
-//             text-slate-600
-//             text-[10px]
-//             flex
-//             items-center
-//             gap-1
-//           "
-//         >
-
-//           <FaClock />
-
-//           {job.createdAt
-//             ? new Date(job.createdAt).toLocaleDateString(
-//                 "en-IN",
-//                 {
-//                   day: "numeric",
-//                   month: "short",
-//                 }
-//               )
-//             : "Recent"}
-
-//         </span>
-
-
-//         {/* VIEW */}
-
-//         <span
-//           className="
-//             text-emerald-500
-//             text-[10px]
-//             font-semibold
-//             flex
-//             items-center
-//             gap-1
-//             opacity-0
-//             group-hover:opacity-100
-//             transition
-//           "
-//         >
-//           View
-//           <FaArrowRight className="text-[9px]" />
-//         </span>
+//         <Ads type="160x300" />
 
 //       </div>
 
 //     </div>
 
-//   ))
-// )
 
-// }
+//     {/* =====================================================
+//         SMART LINKS
+//     ====================================================== */}
 
-//                 </div>
+//     <div
+//       className="
+//         bg-slate-900
+//         border
+//         border-slate-800
+//         rounded-2xl
+//         p-5
+//       "
+//     >
 
-//                 {/* VIEW ALL */}
+//       {/* HEADER */}
 
-//                 <button
-//                   onClick={() => {
-//                     setKeyword("");
-//                     setLocation("");
-//                     setSearchParams({});
+//       <div className="flex items-center justify-between mb-4">
 
-//                     window.scrollTo({
-//                       top: 0,
-//                       behavior: "smooth",
-//                     });
-//                   }}
-//                   className="w-full mt-5 py-3 rounded-xl border border-slate-700 hover:border-emerald-500 hover:bg-emerald-500/10 text-slate-300 hover:text-emerald-400 text-sm font-semibold transition flex items-center justify-center gap-2"
-//                 >
-//                   View All Jobs
+//         <div>
 
-//                   <FaArrowRight className="text-xs" />
-//                 </button>
+//           <h2 className="text-white text-lg font-bold">
+//             Smart Links
+//           </h2>
 
-//               </div>
+//           <p className="text-slate-500 text-xs mt-1">
+//             Quick access
+//           </p>
 
-//             </aside>
+//         </div>
+
+//         <div
+//           className="
+//             w-9 h-9
+//             rounded-lg
+//             bg-emerald-500/10
+//             flex
+//             items-center
+//             justify-center
+//           "
+//         >
+//           <FaArrowRight className="text-emerald-400 text-sm" />
+//         </div>
+
+//       </div>
+
+
+//       {/* LINKS */}
+
+//       <div className="space-y-2">
+
+//         {/* FRESHER JOBS */}
+
+//         <button
+//           onClick={() => {
+//             setSearchParams({
+//               type: "freshers",
+//               page: "1",
+//             });
+
+//             window.scrollTo({
+//               top: 0,
+//               behavior: "smooth",
+//             });
+//           }}
+//           className="
+//             w-full
+//             flex
+//             items-center
+//             justify-between
+//             gap-3
+//             p-3
+//             rounded-xl
+//             bg-slate-950
+//             border
+//             border-slate-800
+//             hover:border-emerald-500/50
+//             hover:bg-emerald-500/5
+//             transition
+//             group
+//             text-left
+//           "
+//         >
+
+//           <div className="flex items-center gap-3 min-w-0">
+
+//             <div
+//               className="
+//                 w-9 h-9
+//                 rounded-lg
+//                 bg-emerald-500/10
+//                 flex
+//                 items-center
+//                 justify-center
+//                 shrink-0
+//               "
+//             >
+//               <FaBriefcase className="text-emerald-400 text-sm" />
+//             </div>
+
+//             <div className="min-w-0">
+
+//               <p className="text-white text-sm font-semibold">
+//                 Fresher Jobs
+//               </p>
+
+//               <p className="text-slate-600 text-[10px] mt-0.5">
+//                 Jobs for freshers
+//               </p>
+
+//             </div>
+
+//           </div>
+
+//           <FaArrowRight
+//             className="
+//               text-slate-600
+//               group-hover:text-emerald-400
+//               group-hover:translate-x-1
+//               transition
+//               text-xs
+//               shrink-0
+//             "
+//           />
+
+//         </button>
+
+
+//         {/* INTERNSHIPS */}
+
+//         <button
+//           onClick={() => {
+//             setSearchParams({
+//               type: "internship",
+//               page: "1",
+//             });
+
+//             window.scrollTo({
+//               top: 0,
+//               behavior: "smooth",
+//             });
+//           }}
+//           className="
+//             w-full
+//             flex
+//             items-center
+//             justify-between
+//             gap-3
+//             p-3
+//             rounded-xl
+//             bg-slate-950
+//             border
+//             border-slate-800
+//             hover:border-blue-500/50
+//             hover:bg-blue-500/5
+//             transition
+//             group
+//             text-left
+//           "
+//         >
+
+//           <div className="flex items-center gap-3 min-w-0">
+
+//             <div
+//               className="
+//                 w-9 h-9
+//                 rounded-lg
+//                 bg-blue-500/10
+//                 flex
+//                 items-center
+//                 justify-center
+//                 shrink-0
+//               "
+//             >
+//               <FaClock className="text-blue-400 text-sm" />
+//             </div>
+
+//             <div className="min-w-0">
+
+//               <p className="text-white text-sm font-semibold">
+//                 Internships
+//               </p>
+
+//               <p className="text-slate-600 text-[10px] mt-0.5">
+//                 Start your career
+//               </p>
+
+//             </div>
+
+//           </div>
+
+//           <FaArrowRight
+//             className="
+//               text-slate-600
+//               group-hover:text-blue-400
+//               group-hover:translate-x-1
+//               transition
+//               text-xs
+//               shrink-0
+//             "
+//           />
+
+//         </button>
+
+
+//         {/* WORK FROM HOME */}
+
+//         <button
+//           onClick={() => {
+//             setSearchParams({
+//               workMode: "remote",
+//               page: "1",
+//             });
+
+//             window.scrollTo({
+//               top: 0,
+//               behavior: "smooth",
+//             });
+//           }}
+//           className="
+//             w-full
+//             flex
+//             items-center
+//             justify-between
+//             gap-3
+//             p-3
+//             rounded-xl
+//             bg-slate-950
+//             border
+//             border-slate-800
+//             hover:border-purple-500/50
+//             hover:bg-purple-500/5
+//             transition
+//             group
+//             text-left
+//           "
+//         >
+
+//           <div className="flex items-center gap-3 min-w-0">
+
+//             <div
+//               className="
+//                 w-9 h-9
+//                 rounded-lg
+//                 bg-purple-500/10
+//                 flex
+//                 items-center
+//                 justify-center
+//                 shrink-0
+//               "
+//             >
+//               <FaBuilding className="text-purple-400 text-sm" />
+//             </div>
+
+//             <div className="min-w-0">
+
+//               <p className="text-white text-sm font-semibold">
+//                 Remote Jobs
+//               </p>
+
+//               <p className="text-slate-600 text-[10px] mt-0.5">
+//                 Work from anywhere
+//               </p>
+
+//             </div>
+
+//           </div>
+
+//           <FaArrowRight
+//             className="
+//               text-slate-600
+//               group-hover:text-purple-400
+//               group-hover:translate-x-1
+//               transition
+//               text-xs
+//               shrink-0
+//             "
+//           />
+
+//         </button>
+
+
+//         {/* IT JOBS */}
+
+//         <button
+//           onClick={() => {
+//             setSearchParams({
+//               category: "IT",
+//               page: "1",
+//             });
+
+//             window.scrollTo({
+//               top: 0,
+//               behavior: "smooth",
+//             });
+//           }}
+//           className="
+//             w-full
+//             flex
+//             items-center
+//             justify-between
+//             gap-3
+//             p-3
+//             rounded-xl
+//             bg-slate-950
+//             border
+//             border-slate-800
+//             hover:border-orange-500/50
+//             hover:bg-orange-500/5
+//             transition
+//             group
+//             text-left
+//           "
+//         >
+
+//           <div className="flex items-center gap-3 min-w-0">
+
+//             <div
+//               className="
+//                 w-9 h-9
+//                 rounded-lg
+//                 bg-orange-500/10
+//                 flex
+//                 items-center
+//                 justify-center
+//                 shrink-0
+//               "
+//             >
+//               <FaArrowRight className="text-orange-400 text-sm" />
+//             </div>
+
+//             <div className="min-w-0">
+
+//               <p className="text-white text-sm font-semibold">
+//                 IT Jobs
+//               </p>
+
+//               <p className="text-slate-600 text-[10px] mt-0.5">
+//                 Technology opportunities
+//               </p>
+
+//             </div>
+
+//           </div>
+
+//           <FaArrowRight
+//             className="
+//               text-slate-600
+//               group-hover:text-orange-400
+//               group-hover:translate-x-1
+//               transition
+//               text-xs
+//               shrink-0
+//             "
+//           />
+
+//         </button>
+
+//       </div>
+
+//     </div>
+
+//   </div>
+
+// </aside>
 
 //           </div>
 
@@ -1087,33 +1496,6 @@
 //     </>
 //   );
 // }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -1403,8 +1785,6 @@ export default function AllJobs() {
       });
     }
 
-
-
     return result;
   }, [
     jobsData,
@@ -1413,7 +1793,6 @@ export default function AllJobs() {
     urlType,
     urlCategory,
     urlWorkMode,
-   
   ]);
 
   // ==========================
@@ -1439,12 +1818,6 @@ export default function AllJobs() {
     setLocation("");
     setSearchParams({});
   };
-
-  // ==========================
-  // APPLY JOB
-  // ==========================
-
-
 
   // ==========================
   // OPEN JOB
@@ -1484,11 +1857,11 @@ export default function AllJobs() {
 
         <MobileBottomBar />
 
-        <div className="min-h-screen bg-slate-950 flex items-center justify-center">
+        <div className="min-h-screen bg-slate-50 flex items-center justify-center">
           <div className="text-center">
-            <div className="w-10 h-10 border-4 border-slate-700 border-t-emerald-500 rounded-full animate-spin mx-auto" />
+            <div className="w-10 h-10 border-4 border-slate-200 border-t-emerald-600 rounded-full animate-spin mx-auto" />
 
-            <p className="text-white mt-4">
+            <p className="text-slate-700 mt-4 font-medium">
               Loading Jobs...
             </p>
           </div>
@@ -1508,15 +1881,25 @@ export default function AllJobs() {
 
         <MobileBottomBar />
 
-        <div className="min-h-screen bg-slate-950 flex items-center justify-center">
-          <div className="text-center">
-            <p className="text-red-500 text-xl">
+        <div className="min-h-screen bg-slate-50 flex items-center justify-center px-4">
+          <div className="text-center bg-white border border-slate-200 rounded-2xl shadow-sm p-8">
+            <p className="text-red-600 text-xl font-semibold">
               {error}
             </p>
 
             <button
               onClick={getJobs}
-              className="mt-5 px-5 py-3 bg-emerald-500 hover:bg-emerald-600 text-white rounded-xl"
+              className="
+                mt-5
+                px-5
+                py-3
+                bg-emerald-600
+                hover:bg-emerald-700
+                text-white
+                rounded-xl
+                font-semibold
+                transition
+              "
             >
               Try Again
             </button>
@@ -1536,26 +1919,64 @@ export default function AllJobs() {
 
       <MobileBottomBar />
 
-      <section className="min-h-screen bg-slate-950 pt-20 pb-20">
-         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 my-6">
-  <div className="w-full bg-slate-900 border border-slate-800 rounded-2xl p-4 flex flex-col items-center justify-center overflow-hidden">
+      <section className="min-h-screen bg-slate-50 pt-20 pb-20">
 
-    <p className="text-[10px] text-slate-500 mb-3 uppercase tracking-wider">
-      Advertisement
-    </p>
+        {/* =====================================================
+            TOP ADVERTISEMENT
+        ====================================================== */}
 
-    {/* Desktop / Tablet */}
-    <div className="hidden sm:flex w-full justify-center items-center overflow-hidden">
-      <Ads type="728x90" />
-    </div>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 my-6">
 
-    {/* Mobile */}
-    <div className="flex sm:hidden w-full justify-center items-center overflow-hidden">
-      <Ads type="320x50" />
-    </div>
+          <div
+            className="
+              w-full
+              bg-white
+              border
+              border-slate-200
+              rounded-2xl
+              p-4
+              flex
+              flex-col
+              items-center
+              justify-center
+              overflow-hidden
+              shadow-sm
+            "
+          >
 
-  </div>
-</div>
+            <p
+              className="
+                text-[10px]
+                text-slate-400
+                mb-3
+                uppercase
+                tracking-wider
+                font-medium
+              "
+            >
+              Advertisement
+            </p>
+
+            {/* Desktop / Tablet */}
+
+            <div className="hidden sm:flex w-full justify-center items-center overflow-hidden">
+              <Ads type="728x90" />
+            </div>
+
+            {/* Mobile */}
+
+            <div className="flex sm:hidden w-full justify-center items-center overflow-hidden">
+              <Ads type="320x50" />
+            </div>
+
+          </div>
+
+        </div>
+
+        {/* =====================================================
+            MAIN CONTENT
+        ====================================================== */}
+
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 lg:py-12">
 
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
@@ -1573,14 +1994,15 @@ export default function AllJobs() {
               <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-7">
 
                 <div>
-                  <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold text-white">
+
+                  <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold text-slate-900">
                     {filteredJobs.length} Jobs Found
                   </h2>
 
                   {/* WORK MODE */}
 
                   {urlWorkMode && (
-                    <p className="text-emerald-400 text-sm mt-2 capitalize">
+                    <p className="text-emerald-600 text-sm mt-2 capitalize font-medium">
                       Showing {urlWorkMode} jobs
                     </p>
                   )}
@@ -1588,7 +2010,7 @@ export default function AllJobs() {
                   {/* TYPE */}
 
                   {urlType && (
-                    <p className="text-emerald-400 text-sm mt-2 capitalize">
+                    <p className="text-emerald-600 text-sm mt-2 capitalize font-medium">
                       Showing {urlType} jobs
                     </p>
                   )}
@@ -1596,7 +2018,7 @@ export default function AllJobs() {
                   {/* CATEGORY */}
 
                   {urlCategory && (
-                    <p className="text-emerald-400 text-sm mt-2 capitalize">
+                    <p className="text-emerald-600 text-sm mt-2 capitalize font-medium">
                       Category: {urlCategory}
                     </p>
                   )}
@@ -1606,13 +2028,20 @@ export default function AllJobs() {
                   {(urlKeyword || urlLocation) && (
                     <button
                       onClick={clearSearch}
-                      className="text-sm text-emerald-400 hover:text-emerald-300 mt-2"
+                      className="
+                        text-sm
+                        text-emerald-600
+                        hover:text-emerald-700
+                        mt-2
+                        font-medium
+                        transition
+                      "
                     >
                       Clear Search
                     </button>
                   )}
-                </div>
 
+                </div>
 
               </div>
 
@@ -1621,11 +2050,21 @@ export default function AllJobs() {
               ========================== */}
 
               {filteredJobs.length === 0 && (
-                <div className="bg-slate-900 border border-slate-800 rounded-2xl p-10 text-center">
+                <div
+                  className="
+                    bg-white
+                    border
+                    border-slate-200
+                    rounded-2xl
+                    p-10
+                    text-center
+                    shadow-sm
+                  "
+                >
 
-                  <FaBriefcase className="text-slate-600 text-5xl mx-auto" />
+                  <FaBriefcase className="text-slate-300 text-5xl mx-auto" />
 
-                  <h3 className="text-white text-xl font-semibold mt-5">
+                  <h3 className="text-slate-900 text-xl font-semibold mt-5">
                     No Jobs Found
                   </h3>
 
@@ -1635,7 +2074,17 @@ export default function AllJobs() {
 
                   <button
                     onClick={clearSearch}
-                    className="mt-5 bg-emerald-500 hover:bg-emerald-600 text-white px-5 py-3 rounded-xl"
+                    className="
+                      mt-5
+                      bg-emerald-600
+                      hover:bg-emerald-700
+                      text-white
+                      px-5
+                      py-3
+                      rounded-xl
+                      font-semibold
+                      transition
+                    "
                   >
                     Clear Filters
                   </button>
@@ -1647,7 +2096,7 @@ export default function AllJobs() {
                   JOB LIST
               ========================== */}
 
-              <div className="border-t border-slate-800">
+              <div className="border-t border-slate-200">
 
                 {filteredJobs.map((job, index) => (
                   <Fragment key={job._id}>
@@ -1658,7 +2107,19 @@ export default function AllJobs() {
 
                     <div
                       onClick={() => openJob(job)}
-                      className="group block border-b border-slate-800 py-6 sm:py-7 hover:bg-slate-900/40 transition cursor-pointer"
+                      className="
+                        group
+                        block
+                        border-b
+                        border-slate-200
+                        py-6
+                        sm:py-7
+                        px-2
+                        sm:px-3
+                        hover:bg-white
+                        transition
+                        cursor-pointer
+                      "
                     >
 
                       <div className="grid grid-cols-1 md:grid-cols-[360px_1fr] lg:grid-cols-[440px_1fr] gap-5 md:gap-8 items-center">
@@ -1676,10 +2137,13 @@ export default function AllJobs() {
                               lg:w-[440px] lg:h-[260px]
                               rounded-xl
                               bg-white
-                              border border-slate-800
-                              flex items-center justify-center
+                              border border-slate-200
+                              flex
+                              items-center
+                              justify-center
                               overflow-hidden
                               shrink-0
+                              shadow-sm
                             "
                           >
                             <JobBanner job={job} />
@@ -1689,11 +2153,11 @@ export default function AllJobs() {
 
                           <div className="md:hidden min-w-0">
 
-                            <h3 className="text-lg font-bold text-white leading-snug line-clamp-2">
+                            <h3 className="text-lg font-bold text-slate-900 leading-snug line-clamp-2">
                               {job.jobTitle}
                             </h3>
 
-                            <p className="text-emerald-400 text-sm font-medium mt-1 truncate">
+                            <p className="text-emerald-600 text-sm font-medium mt-1 truncate">
                               {job.companyName}
                             </p>
 
@@ -1711,18 +2175,60 @@ export default function AllJobs() {
 
                           <div className="flex flex-wrap gap-2 mb-2.5">
 
-                            <span className="bg-slate-800 border border-slate-700 text-slate-200 text-[10px] sm:text-[11px] px-2.5 py-1 font-bold rounded-sm tracking-wide">
+                            <span
+                              className="
+                                bg-emerald-50
+                                border
+                                border-emerald-100
+                                text-emerald-700
+                                text-[10px]
+                                sm:text-[11px]
+                                px-2.5
+                                py-1
+                                font-bold
+                                rounded-md
+                                tracking-wide
+                              "
+                            >
                               {getExperienceBadge(job)}
                             </span>
 
                             {job.employmentType && (
-                              <span className="bg-slate-800 border border-slate-700 text-slate-200 text-[10px] sm:text-[11px] px-2.5 py-1 font-bold rounded-sm tracking-wide">
+                              <span
+                                className="
+                                  bg-slate-100
+                                  border
+                                  border-slate-200
+                                  text-slate-600
+                                  text-[10px]
+                                  sm:text-[11px]
+                                  px-2.5
+                                  py-1
+                                  font-bold
+                                  rounded-md
+                                  tracking-wide
+                                "
+                              >
                                 {job.employmentType.toUpperCase()}
                               </span>
                             )}
 
                             {job.workMode && (
-                              <span className="bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-[10px] sm:text-[11px] px-2.5 py-1 font-bold rounded-sm tracking-wide">
+                              <span
+                                className="
+                                  bg-emerald-50
+                                  border
+                                  border-emerald-100
+                                  text-emerald-700
+                                  text-[10px]
+                                  sm:text-[11px]
+                                  px-2.5
+                                  py-1
+                                  font-bold
+                                  rounded-md
+                                  tracking-wide
+                                "
+                              >
                                 {job.workMode.toUpperCase()}
                               </span>
                             )}
@@ -1731,7 +2237,19 @@ export default function AllJobs() {
 
                           {/* TITLE */}
 
-                          <h3 className="hidden md:block text-xl lg:text-2xl font-bold text-white leading-snug group-hover:text-emerald-400 transition">
+                          <h3
+                            className="
+                              hidden
+                              md:block
+                              text-xl
+                              lg:text-2xl
+                              font-bold
+                              text-slate-900
+                              leading-snug
+                              group-hover:text-emerald-600
+                              transition
+                            "
+                          >
                             {job.jobTitle}
                           </h3>
 
@@ -1739,7 +2257,7 @@ export default function AllJobs() {
 
                           <div className="flex items-center gap-2 mt-2">
 
-                            <span className="text-emerald-400 text-sm font-semibold truncate">
+                            <span className="text-emerald-600 text-sm font-semibold truncate">
                               {job.companyName}
                             </span>
 
@@ -1749,17 +2267,19 @@ export default function AllJobs() {
 
                           {/* DESCRIPTION */}
 
-                          <p className="text-slate-400 text-sm sm:text-[15px] leading-6 mt-2 line-clamp-2">
+                          <p className="text-slate-600 text-sm sm:text-[15px] leading-6 mt-2 line-clamp-2">
+
                             {job.jobSummary ||
                               job.description?.replace(/<[^>]*>/g, "") ||
                               "Explore this opportunity and discover more details about the role, requirements and application process."}
+
                           </p>
 
                           {/* AUTHOR + DATE */}
 
                           <div className="flex flex-wrap items-center gap-x-3 gap-y-2 mt-4 text-xs sm:text-sm">
 
-                            <span className="flex items-center gap-1.5 text-slate-300 font-medium">
+                            <span className="flex items-center gap-1.5 text-slate-700 font-medium">
 
                               <FaCheckCircle className="text-emerald-500 text-xs" />
 
@@ -1769,7 +2289,7 @@ export default function AllJobs() {
 
                             </span>
 
-                            <span className="text-slate-700">
+                            <span className="text-slate-300">
                               |
                             </span>
 
@@ -1801,7 +2321,7 @@ export default function AllJobs() {
                             {(job.city || job.state) && (
                               <span className="flex items-center gap-1.5">
 
-                                <FaMapMarkerAlt />
+                                <FaMapMarkerAlt className="text-slate-400" />
 
                                 {job.city || "Location"}
 
@@ -1813,15 +2333,15 @@ export default function AllJobs() {
                             )}
 
                             {job.workMode && (
-                              <span className="text-emerald-400">
+                              <span className="text-emerald-600 font-medium">
                                 {job.workMode}
                               </span>
                             )}
 
                             {job.salaryMin || job.salaryMax ? (
-                              <span className="flex items-center gap-1.5 text-slate-400">
+                              <span className="flex items-center gap-1.5 text-slate-600">
 
-                                <FaMoneyBillWave className="text-emerald-400" />
+                                <FaMoneyBillWave className="text-emerald-500" />
 
                                 ₹
                                 {job.salaryMin?.toLocaleString() ||
@@ -1846,14 +2366,37 @@ export default function AllJobs() {
                                 .map((skill) => (
                                   <span
                                     key={skill}
-                                    className="px-2 sm:px-3 py-1 sm:py-2 rounded-lg bg-slate-800 text-slate-300 text-[11px] sm:text-xs"
+                                    className="
+                                      px-2
+                                      sm:px-3
+                                      py-1
+                                      sm:py-2
+                                      rounded-lg
+                                      bg-slate-100
+                                      border
+                                      border-slate-200
+                                      text-slate-600
+                                      text-[11px]
+                                      sm:text-xs
+                                    "
                                   >
                                     {skill}
                                   </span>
                                 ))}
 
                               {job.skills.length > 5 && (
-                                <span className="px-2 py-1 rounded-lg bg-slate-800 text-slate-400 text-xs">
+                                <span
+                                  className="
+                                    px-2
+                                    py-1
+                                    rounded-lg
+                                    bg-slate-100
+                                    border
+                                    border-slate-200
+                                    text-slate-500
+                                    text-xs
+                                  "
+                                >
                                   +
                                   {job.skills.length - 5}
                                 </span>
@@ -1862,7 +2405,6 @@ export default function AllJobs() {
                             </div>
                           )}
 
-
                         </div>
 
                       </div>
@@ -1870,13 +2412,18 @@ export default function AllJobs() {
                     </div>
 
                     {/* ==========================
-                        DUMMY AD
-                        AFTER EVERY 5 JOBS
+                        AD AFTER EVERY 3 JOBS
                     ========================== */}
 
                     {(index + 1) % 3 === 0 && (
                       <div className="w-full flex justify-center py-6">
-                        <Ads type="320x50" />
+
+                        <div className="bg-white border border-slate-200 rounded-xl px-3 py-2 shadow-sm">
+
+                          <Ads type="320x50" />
+
+                        </div>
+
                       </div>
                     )}
 
@@ -1891,728 +2438,761 @@ export default function AllJobs() {
                 RIGHT - RECENT JOBS
             ================================= */}
 
-         <aside className="lg:col-span-4 xl:col-span-3">
+            <aside className="lg:col-span-4 xl:col-span-3">
 
-  <div className="space-y-5">
+              <div className="space-y-5">
 
-    {/* =====================================================
-        RECENT JOBS
-    ====================================================== */}
-
-    <div className="bg-slate-900 border border-slate-800 rounded-2xl p-5">
-
-      {/* HEADER */}
-
-      <div className="flex items-center justify-between mb-5">
-
-        <div>
-          <h2 className="text-white text-lg font-bold">
-            Recent Jobs
-          </h2>
-
-          <p className="text-slate-500 text-xs mt-1">
-            Latest opportunities
-          </p>
-        </div>
-
-        <div className="w-9 h-9 rounded-lg bg-emerald-500/10 flex items-center justify-center">
-          <FaBriefcase className="text-emerald-400 text-sm" />
-        </div>
-
-      </div>
-
-      {/* RECENT JOBS */}
-
-      <div className="space-y-3">
-
-        {recentJobs.length === 0 ? (
-          <p className="text-slate-500 text-sm">
-            No recent jobs available.
-          </p>
-        ) : (
-          recentJobs.map((job) => (
-
-            <div
-              key={job._id}
-              onClick={() => openJob(job)}
-              className="
-                group
-                bg-slate-950
-                border border-slate-800
-                hover:border-emerald-500/60
-                hover:bg-slate-900
-                rounded-xl
-                p-3.5
-                cursor-pointer
-                transition-all
-                duration-200
-              "
-            >
-
-              {/* TOP */}
-
-              <div className="flex gap-3">
-
-                {/* LOGO */}
+                {/* =====================================================
+                    RECENT JOBS
+                ====================================================== */}
 
                 <div
                   className="
-                    w-12 h-12
-                    rounded-lg
                     bg-white
-                    border border-slate-700
-                    flex items-center
-                    justify-center
-                    p-1.5
-                    shrink-0
-                    overflow-hidden
+                    border
+                    border-slate-200
+                    rounded-2xl
+                    p-5
+                    shadow-sm
                   "
                 >
 
-                  {job.companyLogo ? (
-                    <img
-                      src={job.companyLogo}
-                      alt={
-                        job.companyName ||
-                        "Company"
-                      }
-                      className="w-full h-full object-contain rounded"
-                      onError={(e) => {
-                        e.currentTarget.style.display =
-                          "none";
-                      }}
-                    />
-                  ) : (
-                    <FaBuilding className="text-slate-400 text-lg" />
-                  )}
+                  {/* HEADER */}
 
-                </div>
+                  <div className="flex items-center justify-between mb-5">
 
-                {/* INFO */}
+                    <div>
 
-                <div className="min-w-0 flex-1">
+                      <h2 className="text-slate-900 text-lg font-bold">
+                        Recent Jobs
+                      </h2>
 
-                  {/* JOB TITLE */}
+                      <p className="text-slate-500 text-xs mt-1">
+                        Latest opportunities
+                      </p>
 
-                  <h3
-                    className="
-                      text-white
-                      text-sm
-                      font-bold
-                      leading-tight
-                      line-clamp-2
-                      group-hover:text-emerald-400
-                      transition
-                    "
-                  >
-                    {job.jobTitle ||
-                      job.title ||
-                      "Job Opening"}
-                  </h3>
+                    </div>
 
-                  {/* COMPANY */}
-
-                  <div className="flex items-center gap-1.5 mt-1.5 min-w-0">
-
-                    <p className="text-slate-400 text-xs truncate">
-                      {job.companyName ||
-                        job.company?.name ||
-                        "Company"}
-                    </p>
-
-                    <FaCheckCircle
+                    <div
                       className="
-                        text-emerald-500
-                        text-[10px]
-                        shrink-0
+                        w-9 h-9
+                        rounded-lg
+                        bg-emerald-50
+                        border
+                        border-emerald-100
+                        flex
+                        items-center
+                        justify-center
                       "
-                    />
+                    >
+                      <FaBriefcase className="text-emerald-600 text-sm" />
+                    </div>
 
                   </div>
 
-                </div>
+                  {/* RECENT JOBS */}
 
-              </div>
+                  <div className="space-y-3">
 
-              {/* JOB META */}
+                    {recentJobs.length === 0 ? (
+                      <p className="text-slate-500 text-sm">
+                        No recent jobs available.
+                      </p>
+                    ) : (
+                      recentJobs.map((job) => (
 
-              <div className="flex items-center gap-3 mt-3 text-[11px]">
+                        <div
+                          key={job._id}
+                          onClick={() => openJob(job)}
+                          className="
+                            group
+                            bg-slate-50
+                            border
+                            border-slate-200
+                            hover:border-emerald-300
+                            hover:bg-emerald-50/40
+                            rounded-xl
+                            p-3.5
+                            cursor-pointer
+                            transition-all
+                            duration-200
+                          "
+                        >
 
-                {/* LOCATION */}
+                          {/* TOP */}
 
-                {(job.city ||
-                  job.state ||
-                  job.location) && (
+                          <div className="flex gap-3">
 
-                  <div
+                            {/* LOGO */}
+
+                            <div
+                              className="
+                                w-12 h-12
+                                rounded-lg
+                                bg-white
+                                border
+                                border-slate-200
+                                flex
+                                items-center
+                                justify-center
+                                p-1.5
+                                shrink-0
+                                overflow-hidden
+                              "
+                            >
+
+                              {job.companyLogo ? (
+                                <img
+                                  src={job.companyLogo}
+                                  alt={
+                                    job.companyName ||
+                                    "Company"
+                                  }
+                                  className="w-full h-full object-contain rounded"
+                                  onError={(e) => {
+                                    e.currentTarget.style.display =
+                                      "none";
+                                  }}
+                                />
+                              ) : (
+                                <FaBuilding className="text-slate-400 text-lg" />
+                              )}
+
+                            </div>
+
+                            {/* INFO */}
+
+                            <div className="min-w-0 flex-1">
+
+                              {/* JOB TITLE */}
+
+                              <h3
+                                className="
+                                  text-slate-900
+                                  text-sm
+                                  font-bold
+                                  leading-tight
+                                  line-clamp-2
+                                  group-hover:text-emerald-600
+                                  transition
+                                "
+                              >
+                                {job.jobTitle ||
+                                  job.title ||
+                                  "Job Opening"}
+                              </h3>
+
+                              {/* COMPANY */}
+
+                              <div className="flex items-center gap-1.5 mt-1.5 min-w-0">
+
+                                <p className="text-slate-500 text-xs truncate">
+                                  {job.companyName ||
+                                    job.company?.name ||
+                                    "Company"}
+                                </p>
+
+                                <FaCheckCircle
+                                  className="
+                                    text-emerald-500
+                                    text-[10px]
+                                    shrink-0
+                                  "
+                                />
+
+                              </div>
+
+                            </div>
+
+                          </div>
+
+                          {/* JOB META */}
+
+                          <div className="flex items-center gap-3 mt-3 text-[11px]">
+
+                            {/* LOCATION */}
+
+                            {(job.city ||
+                              job.state ||
+                              job.location) && (
+
+                              <div
+                                className="
+                                  flex
+                                  items-center
+                                  gap-1
+                                  min-w-0
+                                  text-slate-500
+                                "
+                              >
+
+                                <FaMapMarkerAlt
+                                  className="
+                                    text-emerald-500
+                                    text-[10px]
+                                    shrink-0
+                                  "
+                                />
+
+                                <span className="truncate">
+                                  {job.city ||
+                                    job.state ||
+                                    (typeof job.location ===
+                                    "string"
+                                      ? job.location
+                                      : job.location?.city ||
+                                        job.location?.state) ||
+                                    "Location"}
+                                </span>
+
+                              </div>
+
+                            )}
+
+                            {/* WORK MODE */}
+
+                            {job.workMode && (
+                              <>
+                                <span className="text-slate-300">
+                                  •
+                                </span>
+
+                                <span className="text-emerald-600 truncate font-medium">
+                                  {job.workMode}
+                                </span>
+                              </>
+                            )}
+
+                          </div>
+
+                          {/* BOTTOM */}
+
+                          <div
+                            className="
+                              flex
+                              items-center
+                              justify-between
+                              mt-3
+                              pt-3
+                              border-t
+                              border-slate-200
+                            "
+                          >
+
+                            {/* DATE */}
+
+                            <span
+                              className="
+                                text-slate-400
+                                text-[10px]
+                                flex
+                                items-center
+                                gap-1
+                              "
+                            >
+
+                              <FaClock />
+
+                              {job.createdAt
+                                ? new Date(
+                                    job.createdAt
+                                  ).toLocaleDateString(
+                                    "en-IN",
+                                    {
+                                      day: "numeric",
+                                      month: "short",
+                                    }
+                                  )
+                                : "Recent"}
+
+                            </span>
+
+                            {/* VIEW */}
+
+                            <span
+                              className="
+                                text-emerald-600
+                                text-[10px]
+                                font-semibold
+                                flex
+                                items-center
+                                gap-1
+                                opacity-0
+                                group-hover:opacity-100
+                                transition
+                              "
+                            >
+                              View
+
+                              <FaArrowRight className="text-[9px]" />
+                            </span>
+
+                          </div>
+
+                        </div>
+
+                      ))
+                    )}
+
+                  </div>
+
+                  {/* VIEW ALL */}
+
+                  <button
+                    onClick={() => {
+                      setKeyword("");
+                      setLocation("");
+                      setSearchParams({});
+
+                      window.scrollTo({
+                        top: 0,
+                        behavior: "smooth",
+                      });
+                    }}
                     className="
+                      w-full
+                      mt-5
+                      py-3
+                      rounded-xl
+                      border
+                      border-slate-200
+                      hover:border-emerald-300
+                      hover:bg-emerald-50
+                      text-slate-600
+                      hover:text-emerald-700
+                      text-sm
+                      font-semibold
+                      transition
                       flex
                       items-center
-                      gap-1
-                      min-w-0
-                      text-slate-500
+                      justify-center
+                      gap-2
                     "
                   >
+                    View All Jobs
 
-                    <FaMapMarkerAlt
-                      className="
-                        text-emerald-500
-                        text-[10px]
-                        shrink-0
-                      "
-                    />
+                    <FaArrowRight className="text-xs" />
 
-                    <span className="truncate">
-                      {job.city ||
-                        job.state ||
-                        (typeof job.location ===
-                        "string"
-                          ? job.location
-                          : job.location?.city ||
-                            job.location?.state) ||
-                        "Location"}
-                    </span>
+                  </button>
+
+                </div>
+
+                {/* =====================================================
+                    VERTICAL AD
+                ====================================================== */}
+
+                <div
+                  className="
+                    bg-white
+                    border
+                    border-slate-200
+                    rounded-2xl
+                    p-4
+                    overflow-hidden
+                    shadow-sm
+                  "
+                >
+
+                  <p
+                    className="
+                      text-[10px]
+                      text-slate-400
+                      text-center
+                      uppercase
+                      tracking-widest
+                      mb-3
+                    "
+                  >
+                    Advertisement
+                  </p>
+
+                  <div className="flex justify-center items-center w-full overflow-hidden">
+
+                    <Ads type="160x300" />
 
                   </div>
 
-                )}
+                </div>
 
-                {/* WORK MODE */}
+                {/* =====================================================
+                    SMART LINKS
+                ====================================================== */}
 
-                {job.workMode && (
-                  <>
-                    <span className="text-slate-700">
-                      •
-                    </span>
-
-                    <span className="text-emerald-400 truncate">
-                      {job.workMode}
-                    </span>
-                  </>
-                )}
-
-              </div>
-
-              {/* BOTTOM */}
-
-              <div
-                className="
-                  flex
-                  items-center
-                  justify-between
-                  mt-3
-                  pt-3
-                  border-t
-                  border-slate-800
-                "
-              >
-
-                {/* DATE */}
-
-                <span
+                <div
                   className="
-                    text-slate-600
-                    text-[10px]
-                    flex
-                    items-center
-                    gap-1
+                    bg-white
+                    border
+                    border-slate-200
+                    rounded-2xl
+                    p-5
+                    shadow-sm
                   "
                 >
 
-                  <FaClock />
+                  {/* HEADER */}
 
-                  {job.createdAt
-                    ? new Date(
-                        job.createdAt
-                      ).toLocaleDateString(
-                        "en-IN",
-                        {
-                          day: "numeric",
-                          month: "short",
-                        }
-                      )
-                    : "Recent"}
+                  <div className="flex items-center justify-between mb-4">
 
-                </span>
+                    <div>
 
-                {/* VIEW */}
+                      <h2 className="text-slate-900 text-lg font-bold">
+                        Smart Links
+                      </h2>
 
-                <span
-                  className="
-                    text-emerald-500
-                    text-[10px]
-                    font-semibold
-                    flex
-                    items-center
-                    gap-1
-                    opacity-0
-                    group-hover:opacity-100
-                    transition
-                  "
-                >
-                  View
+                      <p className="text-slate-500 text-xs mt-1">
+                        Quick access
+                      </p>
 
-                  <FaArrowRight className="text-[9px]" />
-                </span>
+                    </div>
+
+                    <div
+                      className="
+                        w-9 h-9
+                        rounded-lg
+                        bg-emerald-50
+                        border
+                        border-emerald-100
+                        flex
+                        items-center
+                        justify-center
+                      "
+                    >
+                      <FaArrowRight className="text-emerald-600 text-sm" />
+                    </div>
+
+                  </div>
+
+                  {/* LINKS */}
+
+                  <div className="space-y-2">
+
+                    {/* FRESHER JOBS */}
+
+                    <button
+                      onClick={() => {
+                        setSearchParams({
+                          type: "freshers",
+                          page: "1",
+                        });
+
+                        window.scrollTo({
+                          top: 0,
+                          behavior: "smooth",
+                        });
+                      }}
+                      className="
+                        w-full
+                        flex
+                        items-center
+                        justify-between
+                        gap-3
+                        p-3
+                        rounded-xl
+                        bg-slate-50
+                        border
+                        border-slate-200
+                        hover:border-emerald-300
+                        hover:bg-emerald-50
+                        transition
+                        group
+                        text-left
+                      "
+                    >
+
+                      <div className="flex items-center gap-3 min-w-0">
+
+                        <div
+                          className="
+                            w-9 h-9
+                            rounded-lg
+                            bg-emerald-50
+                            border
+                            border-emerald-100
+                            flex
+                            items-center
+                            justify-center
+                            shrink-0
+                          "
+                        >
+                          <FaBriefcase className="text-emerald-600 text-sm" />
+                        </div>
+
+                        <div className="min-w-0">
+
+                          <p className="text-slate-800 text-sm font-semibold">
+                            Fresher Jobs
+                          </p>
+
+                          <p className="text-slate-500 text-[10px] mt-0.5">
+                            Jobs for freshers
+                          </p>
+
+                        </div>
+
+                      </div>
+
+                      <FaArrowRight
+                        className="
+                          text-slate-400
+                          group-hover:text-emerald-600
+                          group-hover:translate-x-1
+                          transition
+                          text-xs
+                          shrink-0
+                        "
+                      />
+
+                    </button>
+
+                    {/* INTERNSHIPS */}
+
+                    <button
+                      onClick={() => {
+                        setSearchParams({
+                          type: "internship",
+                          page: "1",
+                        });
+
+                        window.scrollTo({
+                          top: 0,
+                          behavior: "smooth",
+                        });
+                      }}
+                      className="
+                        w-full
+                        flex
+                        items-center
+                        justify-between
+                        gap-3
+                        p-3
+                        rounded-xl
+                        bg-slate-50
+                        border
+                        border-slate-200
+                        hover:border-blue-300
+                        hover:bg-blue-50
+                        transition
+                        group
+                        text-left
+                      "
+                    >
+
+                      <div className="flex items-center gap-3 min-w-0">
+
+                        <div
+                          className="
+                            w-9 h-9
+                            rounded-lg
+                            bg-blue-50
+                            border
+                            border-blue-100
+                            flex
+                            items-center
+                            justify-center
+                            shrink-0
+                          "
+                        >
+                          <FaClock className="text-blue-600 text-sm" />
+                        </div>
+
+                        <div className="min-w-0">
+
+                          <p className="text-slate-800 text-sm font-semibold">
+                            Internships
+                          </p>
+
+                          <p className="text-slate-500 text-[10px] mt-0.5">
+                            Start your career
+                          </p>
+
+                        </div>
+
+                      </div>
+
+                      <FaArrowRight
+                        className="
+                          text-slate-400
+                          group-hover:text-blue-600
+                          group-hover:translate-x-1
+                          transition
+                          text-xs
+                          shrink-0
+                        "
+                      />
+
+                    </button>
+
+                    {/* WORK FROM HOME */}
+
+                    <button
+                      onClick={() => {
+                        setSearchParams({
+                          workMode: "remote",
+                          page: "1",
+                        });
+
+                        window.scrollTo({
+                          top: 0,
+                          behavior: "smooth",
+                        });
+                      }}
+                      className="
+                        w-full
+                        flex
+                        items-center
+                        justify-between
+                        gap-3
+                        p-3
+                        rounded-xl
+                        bg-slate-50
+                        border
+                        border-slate-200
+                        hover:border-purple-300
+                        hover:bg-purple-50
+                        transition
+                        group
+                        text-left
+                      "
+                    >
+
+                      <div className="flex items-center gap-3 min-w-0">
+
+                        <div
+                          className="
+                            w-9 h-9
+                            rounded-lg
+                            bg-purple-50
+                            border
+                            border-purple-100
+                            flex
+                            items-center
+                            justify-center
+                            shrink-0
+                          "
+                        >
+                          <FaBuilding className="text-purple-600 text-sm" />
+                        </div>
+
+                        <div className="min-w-0">
+
+                          <p className="text-slate-800 text-sm font-semibold">
+                            Remote Jobs
+                          </p>
+
+                          <p className="text-slate-500 text-[10px] mt-0.5">
+                            Work from anywhere
+                          </p>
+
+                        </div>
+
+                      </div>
+
+                      <FaArrowRight
+                        className="
+                          text-slate-400
+                          group-hover:text-purple-600
+                          group-hover:translate-x-1
+                          transition
+                          text-xs
+                          shrink-0
+                        "
+                      />
+
+                    </button>
+
+                    {/* IT JOBS */}
+
+                    <button
+                      onClick={() => {
+                        setSearchParams({
+                          category: "IT",
+                          page: "1",
+                        });
+
+                        window.scrollTo({
+                          top: 0,
+                          behavior: "smooth",
+                        });
+                      }}
+                      className="
+                        w-full
+                        flex
+                        items-center
+                        justify-between
+                        gap-3
+                        p-3
+                        rounded-xl
+                        bg-slate-50
+                        border
+                        border-slate-200
+                        hover:border-orange-300
+                        hover:bg-orange-50
+                        transition
+                        group
+                        text-left
+                      "
+                    >
+
+                      <div className="flex items-center gap-3 min-w-0">
+
+                        <div
+                          className="
+                            w-9 h-9
+                            rounded-lg
+                            bg-orange-50
+                            border
+                            border-orange-100
+                            flex
+                            items-center
+                            justify-center
+                            shrink-0
+                          "
+                        >
+                          <FaArrowRight className="text-orange-600 text-sm" />
+                        </div>
+
+                        <div className="min-w-0">
+
+                          <p className="text-slate-800 text-sm font-semibold">
+                            IT Jobs
+                          </p>
+
+                          <p className="text-slate-500 text-[10px] mt-0.5">
+                            Technology opportunities
+                          </p>
+
+                        </div>
+
+                      </div>
+
+                      <FaArrowRight
+                        className="
+                          text-slate-400
+                          group-hover:text-orange-600
+                          group-hover:translate-x-1
+                          transition
+                          text-xs
+                          shrink-0
+                        "
+                      />
+
+                    </button>
+
+                  </div>
+
+                </div>
 
               </div>
 
-            </div>
-
-          ))
-        )}
-
-      </div>
-
-      {/* VIEW ALL */}
-
-      <button
-        onClick={() => {
-          setKeyword("");
-          setLocation("");
-          setSearchParams({});
-
-          window.scrollTo({
-            top: 0,
-            behavior: "smooth",
-          });
-        }}
-        className="
-          w-full
-          mt-5
-          py-3
-          rounded-xl
-          border
-          border-slate-700
-          hover:border-emerald-500
-          hover:bg-emerald-500/10
-          text-slate-300
-          hover:text-emerald-400
-          text-sm
-          font-semibold
-          transition
-          flex
-          items-center
-          justify-center
-          gap-2
-        "
-      >
-        View All Jobs
-
-        <FaArrowRight className="text-xs" />
-
-      </button>
-
-    </div>
-
-
-    {/* =====================================================
-        VERTICAL AD
-    ====================================================== */}
-
-    <div
-      className="
-        bg-slate-900
-        border
-        border-slate-800
-        rounded-2xl
-        p-4
-        overflow-hidden
-      "
-    >
-
-      <p className="
-        text-[10px]
-        text-slate-600
-        text-center
-        uppercase
-        tracking-widest
-        mb-3
-      ">
-        Advertisement
-      </p>
-
-      <div className="flex justify-center items-center w-full overflow-hidden">
-
-        <Ads type="160x300" />
-
-      </div>
-
-    </div>
-
-
-    {/* =====================================================
-        SMART LINKS
-    ====================================================== */}
-
-    <div
-      className="
-        bg-slate-900
-        border
-        border-slate-800
-        rounded-2xl
-        p-5
-      "
-    >
-
-      {/* HEADER */}
-
-      <div className="flex items-center justify-between mb-4">
-
-        <div>
-
-          <h2 className="text-white text-lg font-bold">
-            Smart Links
-          </h2>
-
-          <p className="text-slate-500 text-xs mt-1">
-            Quick access
-          </p>
-
-        </div>
-
-        <div
-          className="
-            w-9 h-9
-            rounded-lg
-            bg-emerald-500/10
-            flex
-            items-center
-            justify-center
-          "
-        >
-          <FaArrowRight className="text-emerald-400 text-sm" />
-        </div>
-
-      </div>
-
-
-      {/* LINKS */}
-
-      <div className="space-y-2">
-
-        {/* FRESHER JOBS */}
-
-        <button
-          onClick={() => {
-            setSearchParams({
-              type: "freshers",
-              page: "1",
-            });
-
-            window.scrollTo({
-              top: 0,
-              behavior: "smooth",
-            });
-          }}
-          className="
-            w-full
-            flex
-            items-center
-            justify-between
-            gap-3
-            p-3
-            rounded-xl
-            bg-slate-950
-            border
-            border-slate-800
-            hover:border-emerald-500/50
-            hover:bg-emerald-500/5
-            transition
-            group
-            text-left
-          "
-        >
-
-          <div className="flex items-center gap-3 min-w-0">
-
-            <div
-              className="
-                w-9 h-9
-                rounded-lg
-                bg-emerald-500/10
-                flex
-                items-center
-                justify-center
-                shrink-0
-              "
-            >
-              <FaBriefcase className="text-emerald-400 text-sm" />
-            </div>
-
-            <div className="min-w-0">
-
-              <p className="text-white text-sm font-semibold">
-                Fresher Jobs
-              </p>
-
-              <p className="text-slate-600 text-[10px] mt-0.5">
-                Jobs for freshers
-              </p>
-
-            </div>
-
-          </div>
-
-          <FaArrowRight
-            className="
-              text-slate-600
-              group-hover:text-emerald-400
-              group-hover:translate-x-1
-              transition
-              text-xs
-              shrink-0
-            "
-          />
-
-        </button>
-
-
-        {/* INTERNSHIPS */}
-
-        <button
-          onClick={() => {
-            setSearchParams({
-              type: "internship",
-              page: "1",
-            });
-
-            window.scrollTo({
-              top: 0,
-              behavior: "smooth",
-            });
-          }}
-          className="
-            w-full
-            flex
-            items-center
-            justify-between
-            gap-3
-            p-3
-            rounded-xl
-            bg-slate-950
-            border
-            border-slate-800
-            hover:border-blue-500/50
-            hover:bg-blue-500/5
-            transition
-            group
-            text-left
-          "
-        >
-
-          <div className="flex items-center gap-3 min-w-0">
-
-            <div
-              className="
-                w-9 h-9
-                rounded-lg
-                bg-blue-500/10
-                flex
-                items-center
-                justify-center
-                shrink-0
-              "
-            >
-              <FaClock className="text-blue-400 text-sm" />
-            </div>
-
-            <div className="min-w-0">
-
-              <p className="text-white text-sm font-semibold">
-                Internships
-              </p>
-
-              <p className="text-slate-600 text-[10px] mt-0.5">
-                Start your career
-              </p>
-
-            </div>
-
-          </div>
-
-          <FaArrowRight
-            className="
-              text-slate-600
-              group-hover:text-blue-400
-              group-hover:translate-x-1
-              transition
-              text-xs
-              shrink-0
-            "
-          />
-
-        </button>
-
-
-        {/* WORK FROM HOME */}
-
-        <button
-          onClick={() => {
-            setSearchParams({
-              workMode: "remote",
-              page: "1",
-            });
-
-            window.scrollTo({
-              top: 0,
-              behavior: "smooth",
-            });
-          }}
-          className="
-            w-full
-            flex
-            items-center
-            justify-between
-            gap-3
-            p-3
-            rounded-xl
-            bg-slate-950
-            border
-            border-slate-800
-            hover:border-purple-500/50
-            hover:bg-purple-500/5
-            transition
-            group
-            text-left
-          "
-        >
-
-          <div className="flex items-center gap-3 min-w-0">
-
-            <div
-              className="
-                w-9 h-9
-                rounded-lg
-                bg-purple-500/10
-                flex
-                items-center
-                justify-center
-                shrink-0
-              "
-            >
-              <FaBuilding className="text-purple-400 text-sm" />
-            </div>
-
-            <div className="min-w-0">
-
-              <p className="text-white text-sm font-semibold">
-                Remote Jobs
-              </p>
-
-              <p className="text-slate-600 text-[10px] mt-0.5">
-                Work from anywhere
-              </p>
-
-            </div>
-
-          </div>
-
-          <FaArrowRight
-            className="
-              text-slate-600
-              group-hover:text-purple-400
-              group-hover:translate-x-1
-              transition
-              text-xs
-              shrink-0
-            "
-          />
-
-        </button>
-
-
-        {/* IT JOBS */}
-
-        <button
-          onClick={() => {
-            setSearchParams({
-              category: "IT",
-              page: "1",
-            });
-
-            window.scrollTo({
-              top: 0,
-              behavior: "smooth",
-            });
-          }}
-          className="
-            w-full
-            flex
-            items-center
-            justify-between
-            gap-3
-            p-3
-            rounded-xl
-            bg-slate-950
-            border
-            border-slate-800
-            hover:border-orange-500/50
-            hover:bg-orange-500/5
-            transition
-            group
-            text-left
-          "
-        >
-
-          <div className="flex items-center gap-3 min-w-0">
-
-            <div
-              className="
-                w-9 h-9
-                rounded-lg
-                bg-orange-500/10
-                flex
-                items-center
-                justify-center
-                shrink-0
-              "
-            >
-              <FaArrowRight className="text-orange-400 text-sm" />
-            </div>
-
-            <div className="min-w-0">
-
-              <p className="text-white text-sm font-semibold">
-                IT Jobs
-              </p>
-
-              <p className="text-slate-600 text-[10px] mt-0.5">
-                Technology opportunities
-              </p>
-
-            </div>
-
-          </div>
-
-          <FaArrowRight
-            className="
-              text-slate-600
-              group-hover:text-orange-400
-              group-hover:translate-x-1
-              transition
-              text-xs
-              shrink-0
-            "
-          />
-
-        </button>
-
-      </div>
-
-    </div>
-
-  </div>
-
-</aside>
+            </aside>
 
           </div>
 
         </div>
+
       </section>
 
       <Footer />
     </>
   );
 }
-

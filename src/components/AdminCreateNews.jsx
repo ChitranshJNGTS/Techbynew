@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import {
   FaNewspaper,
@@ -8,50 +7,61 @@ import {
   FaSave,
   FaEye,
   FaStar,
-  FaArrowLeft,
   FaCheckCircle,
   FaTimes,
+  FaLandmark,
 } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 
 const API_URL =
   import.meta.env.VITE_API_URL || "http://localhost:5050";
 
+// Government Job focused categories
 const categories = [
-  "IT Jobs",
   "Government Jobs",
-  "Hiring News",
-  "Career Tips",
-  "Internships",
-  "Private Jobs",
-  "Tech News",
-  "Education",
-  "Other",
+  "SSC",
+  "UPSC",
+  "Railway",
+  "Banking",
+  "Defence",
+  "Police",
+  "Teaching",
+  "State Government",
+  "Admit Card",
+  "Results",
+  "Answer Key",
+  "Exam Updates",
+  "Scholarship",
 ];
+
+const initialForm = {
+  title: "",
+  excerpt: "",
+  content: "",
+  category: "Government Jobs",
+  image: "",
+  author: "TechBy",
+  readTime: "5 min",
+  tags: "",
+  seoTitle: "",
+  seoDescription: "",
+  status: "draft",
+  featured: false,
+};
 
 function AdminCreateNews() {
   const navigate = useNavigate();
 
-  const [form, setForm] = useState({
-    title: "",
-    excerpt: "",
-    content: "",
-    category: "IT Jobs",
-    image: "",
-    author: "TechBy",
-    readTime: "5 min",
-    tags: "",
-    seoTitle: "",
-    seoDescription: "",
-    status: "draft",
-    featured: false,
-  });
+  const [form, setForm] = useState(initialForm);
 
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
   const [showPreview, setShowPreview] = useState(false);
 
+  // =========================
+  // HANDLE INPUT CHANGE
+  // =========================
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
 
@@ -61,143 +71,200 @@ function AdminCreateNews() {
     }));
   };
 
-const handleSubmit = async (e) => {
-  e.preventDefault();
+  // =========================
+  // SUBMIT NEWS
+  // =========================
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-  setLoading(true);
-  setMessage("");
-  setError("");
+    setLoading(true);
+    setMessage("");
+    setError("");
 
-  try {
-    // Get existing admin token from localStorage
-    const adminToken = localStorage.getItem("adminToken");
+    try {
+      // =========================
+      // ADMIN TOKEN
+      // =========================
+      const adminToken = localStorage.getItem("adminToken");
 
-    if (!adminToken) {
-      setError("Admin session expired. Please login again.");
-      setLoading(false);
-      return;
-    }
-
-    // Validation
-    if (!form.title.trim()) {
-      setError("Please enter a news title.");
-      setLoading(false);
-      return;
-    }
-
-    if (!form.excerpt.trim()) {
-      setError("Please enter a news excerpt.");
-      setLoading(false);
-      return;
-    }
-
-    if (!form.content.trim()) {
-      setError("Please write the news content.");
-      setLoading(false);
-      return;
-    }
-
-    // Convert comma-separated tags into array
-    const tags = form.tags
-      .split(",")
-      .map((tag) => tag.trim())
-      .filter(Boolean);
-
-    const payload = {
-      title: form.title.trim(),
-      excerpt: form.excerpt.trim(),
-      content: form.content,
-
-      category: form.category,
-
-      image: form.image.trim(),
-
-      author: form.author.trim() || "TechBy",
-
-      readTime: form.readTime.trim() || "5 min",
-
-      tags,
-
-      seoTitle:
-        form.seoTitle.trim() || form.title.trim(),
-
-      seoDescription:
-        form.seoDescription.trim() ||
-        form.excerpt.trim(),
-
-      status: form.status,
-
-      featured: form.featured,
-    };
-
-    const response = await fetch(
-      `${API_URL}/news/admin/create`,
-      {
-        method: "POST",
-
-        headers: {
-          "Content-Type": "application/json",
-
-          // Existing token from localStorage
-          "x-admin-token": adminToken,
-        },
-
-        body: JSON.stringify(payload),
+      if (!adminToken) {
+        setError("Admin session expired. Please login again.");
+        setLoading(false);
+        return;
       }
-    );
 
-    const data = await response.json();
+      // =========================
+      // VALIDATION
+      // =========================
+      if (!form.title.trim()) {
+        setError("Please enter a government job news title.");
+        setLoading(false);
+        return;
+      }
 
-    if (!response.ok || !data.success) {
-      throw new Error(
-        data.message || "Failed to create news"
+      if (!form.excerpt.trim()) {
+        setError("Please enter a short description.");
+        setLoading(false);
+        return;
+      }
+
+      if (!form.content.trim()) {
+        setError("Please write the government job news content.");
+        setLoading(false);
+        return;
+      }
+
+      // =========================
+      // TAGS
+      // =========================
+      const tags = form.tags
+        .split(",")
+        .map((tag) => tag.trim())
+        .filter(Boolean);
+
+      // =========================
+      // PAYLOAD
+      // =========================
+      const payload = {
+        title: form.title.trim(),
+
+        excerpt: form.excerpt.trim(),
+
+        content: form.content,
+
+        category: form.category,
+
+        image: form.image.trim(),
+
+        author: form.author.trim() || "TechBy",
+
+        readTime: form.readTime.trim() || "5 min",
+
+        tags,
+
+        seoTitle:
+          form.seoTitle.trim() || form.title.trim(),
+
+        seoDescription:
+          form.seoDescription.trim() ||
+          form.excerpt.trim(),
+
+        status: form.status,
+
+        featured: form.featured,
+      };
+
+      // =========================
+      // API REQUEST
+      // =========================
+      const response = await fetch(
+        `${API_URL}/news/admin/create`,
+        {
+          method: "POST",
+
+          headers: {
+            "Content-Type": "application/json",
+
+            "x-admin-token": adminToken,
+          },
+
+          body: JSON.stringify(payload),
+        }
       );
+
+      const data = await response.json();
+
+      if (!response.ok || !data.success) {
+        throw new Error(
+          data.message || "Failed to create government news"
+        );
+      }
+
+      // =========================
+      // SUCCESS
+      // =========================
+      setMessage(
+        form.status === "published"
+          ? "Government news published successfully!"
+          : "Government news saved as draft successfully!"
+      );
+
+      // =========================
+      // RESET
+      // =========================
+      setForm(initialForm);
+
+      // Optional: scroll to top
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
+    } catch (err) {
+      console.error("Create government news error:", err);
+
+      setError(
+        err.message ||
+          "Something went wrong while posting government news."
+      );
+    } finally {
+      setLoading(false);
     }
+  };
 
-    setMessage(
-      form.status === "published"
-        ? "News published successfully!"
-        : "News saved as draft successfully!"
-    );
-
-    // Reset form
-    setForm({
-      title: "",
-      excerpt: "",
-      content: "",
-      category: "IT Jobs",
-      image: "",
-      author: "TechBy",
-      readTime: "5 min",
-      tags: "",
-      seoTitle: "",
-      seoDescription: "",
-      status: "draft",
-      featured: false,
-    });
-  } catch (err) {
-    console.error("Create news error:", err);
-
-    setError(
-      err.message ||
-        "Something went wrong while posting news."
-    );
-  } finally {
-    setLoading(false);
-  }
-};
+  // =========================
+  // PREVIEW
+  // =========================
+  const openPreview = () => {
+    setError("");
+    setMessage("");
+    setShowPreview(true);
+  };
 
   return (
     <div className="min-h-screen bg-slate-50 text-slate-900">
 
-    
-
-      {/* ================= MAIN ================= */}
+      {/* =========================
+          MAIN
+      ========================= */}
       <main className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
 
-        {/* SUCCESS MESSAGE */}
+        {/* =========================
+            PAGE HEADER
+        ========================= */}
+        <div className="mb-6 flex flex-col gap-4 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6 md:flex-row md:items-center md:justify-between">
+
+          <div className="flex items-start gap-4">
+
+            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-emerald-50 text-xl text-emerald-600">
+              <FaLandmark />
+            </div>
+
+            <div>
+              <h1 className="text-xl font-black text-slate-900 sm:text-2xl">
+                Government News
+              </h1>
+
+              <p className="mt-1 text-sm text-slate-500">
+                Create and publish government job, recruitment and exam
+                updates.
+              </p>
+            </div>
+
+          </div>
+
+          <div className="flex items-center gap-2 rounded-xl bg-emerald-50 px-3 py-2 text-xs font-semibold text-emerald-700">
+            <FaNewspaper />
+            Government Jobs & Exams
+          </div>
+
+        </div>
+
+        {/* =========================
+            SUCCESS MESSAGE
+        ========================= */}
         {message && (
           <div className="mb-5 flex items-center gap-3 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-700">
+
             <FaCheckCircle />
 
             <span>{message}</span>
@@ -209,12 +276,16 @@ const handleSubmit = async (e) => {
             >
               <FaTimes />
             </button>
+
           </div>
         )}
 
-        {/* ERROR MESSAGE */}
+        {/* =========================
+            ERROR MESSAGE
+        ========================= */}
         {error && (
           <div className="mb-5 flex items-center gap-3 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-600">
+
             <FaTimes />
 
             <span>{error}</span>
@@ -226,6 +297,7 @@ const handleSubmit = async (e) => {
             >
               <FaTimes />
             </button>
+
           </div>
         )}
 
@@ -233,24 +305,44 @@ const handleSubmit = async (e) => {
 
           <div className="grid min-w-0 gap-6 lg:grid-cols-[minmax(0,1fr)_340px]">
 
-            {/* ================= LEFT ================= */}
+            {/* ==================================================
+                LEFT SIDE
+            ================================================== */}
             <div className="min-w-0 space-y-6">
 
-              {/* NEWS INFORMATION */}
+              {/* =========================
+                  NEWS INFORMATION
+              ========================= */}
               <section className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm sm:p-6">
 
                 <div className="mb-6">
-                  <h2 className="text-base font-bold text-slate-900 sm:text-lg">
-                    News Information
-                  </h2>
 
-                  <p className="mt-1 text-sm text-slate-500">
-                    Add the main information for your article.
-                  </p>
+                  <div className="flex items-center gap-3">
+
+                    <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-emerald-50 text-emerald-600">
+                      <FaNewspaper />
+                    </div>
+
+                    <div>
+                      <h2 className="text-base font-bold text-slate-900 sm:text-lg">
+                        Government News Information
+                      </h2>
+
+                      <p className="mt-1 text-sm text-slate-500">
+                        Add recruitment, examination or government job
+                        information.
+                      </p>
+                    </div>
+
+                  </div>
+
                 </div>
 
-                {/* TITLE */}
+                {/* =========================
+                    TITLE
+                ========================= */}
                 <div className="mb-5">
+
                   <label className="mb-2 block text-sm font-semibold text-slate-700">
                     News Title
                   </label>
@@ -260,7 +352,7 @@ const handleSubmit = async (e) => {
                     name="title"
                     value={form.title}
                     onChange={handleChange}
-                    placeholder="Enter news title..."
+                    placeholder="SSC CGL Recruitment 2026: Apply Online, Eligibility, Vacancy & Dates"
                     maxLength={250}
                     className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 shadow-sm outline-none transition placeholder:text-slate-400 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
                   />
@@ -268,10 +360,14 @@ const handleSubmit = async (e) => {
                   <div className="mt-2 text-right text-xs text-slate-400">
                     {form.title.length}/250
                   </div>
+
                 </div>
 
-                {/* EXCERPT */}
+                {/* =========================
+                    EXCERPT
+                ========================= */}
                 <div className="mb-5">
+
                   <label className="mb-2 block text-sm font-semibold text-slate-700">
                     Short Description
                   </label>
@@ -282,19 +378,23 @@ const handleSubmit = async (e) => {
                     onChange={handleChange}
                     rows={4}
                     maxLength={500}
-                    placeholder="Write a short description of the news..."
+                    placeholder="SSC CGL 2026 recruitment notification details including vacancies, eligibility, important dates, application process and official website information."
                     className="w-full resize-none rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 shadow-sm outline-none transition placeholder:text-slate-400 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
                   />
 
                   <div className="mt-2 text-right text-xs text-slate-400">
                     {form.excerpt.length}/500
                   </div>
+
                 </div>
 
-                {/* CONTENT */}
+                {/* =========================
+                    CONTENT
+                ========================= */}
                 <div>
+
                   <label className="mb-2 block text-sm font-semibold text-slate-700">
-                    Article Content
+                    Government News Content
                   </label>
 
                   <div className="rounded-t-xl border border-b-0 border-slate-200 bg-slate-50 px-3 py-2 text-xs font-medium text-slate-500">
@@ -305,23 +405,58 @@ const handleSubmit = async (e) => {
                     name="content"
                     value={form.content}
                     onChange={handleChange}
-                    rows={18}
-                    placeholder={`<h2>Latest IT Jobs</h2>
+                    rows={22}
+                    placeholder={`<h2>SSC CGL Recruitment 2026</h2>
 
-<p>Write your article content here...</p>
+<p>The Staff Selection Commission has announced...</p>
 
-<h3>Companies Hiring</h3>
+<h2>Important Dates</h2>
+
+<table>
+  <tr>
+    <th>Event</th>
+    <th>Date</th>
+  </tr>
+  <tr>
+    <td>Application Start</td>
+    <td>To be announced</td>
+  </tr>
+  <tr>
+    <td>Last Date</td>
+    <td>To be announced</td>
+  </tr>
+</table>
+
+<h2>Eligibility</h2>
 
 <ul>
-  <li>Company 1</li>
-  <li>Company 2</li>
-</ul>`}
+  <li>Educational Qualification</li>
+  <li>Age Limit</li>
+  <li>Other Requirements</li>
+</ul>
+
+<h2>Application Process</h2>
+
+<p>Eligible candidates can apply through the official website.</p>
+
+<h2>Important Links</h2>
+
+<p>Official Website: ...</p>`}
                     className="w-full resize-y rounded-b-xl border border-slate-200 bg-white px-4 py-3 font-mono text-sm leading-6 text-slate-700 outline-none transition placeholder:text-slate-300 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
                   />
+
+                  <p className="mt-2 text-xs text-slate-400">
+                    Tip: Include important dates, vacancy, eligibility,
+                    selection process, application steps and official links.
+                  </p>
+
                 </div>
+
               </section>
 
-              {/* ================= SEO ================= */}
+              {/* =========================
+                  SEO
+              ========================= */}
               <section className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm sm:p-6">
 
                 <div className="mb-6 flex items-center gap-3">
@@ -336,7 +471,7 @@ const handleSubmit = async (e) => {
                     </h2>
 
                     <p className="text-xs text-slate-500">
-                      Improve search engine visibility.
+                      Optimize your government job article for search engines.
                     </p>
                   </div>
 
@@ -344,6 +479,7 @@ const handleSubmit = async (e) => {
 
                 {/* SEO TITLE */}
                 <div className="mb-5">
+
                   <label className="mb-2 block text-sm font-semibold text-slate-700">
                     SEO Title
                   </label>
@@ -354,15 +490,28 @@ const handleSubmit = async (e) => {
                     value={form.seoTitle}
                     onChange={handleChange}
                     placeholder={
-                      form.title || "SEO title..."
+                      form.title ||
+                      "SSC CGL Recruitment 2026 - Apply Online"
                     }
                     maxLength={250}
                     className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 shadow-sm outline-none transition placeholder:text-slate-400 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
                   />
+
+                  <div className="mt-2 flex justify-between text-xs text-slate-400">
+                    <span>
+                      Keep it clear and search-friendly.
+                    </span>
+
+                    <span>
+                      {form.seoTitle.length}/250
+                    </span>
+                  </div>
+
                 </div>
 
                 {/* SEO DESCRIPTION */}
                 <div>
+
                   <label className="mb-2 block text-sm font-semibold text-slate-700">
                     SEO Description
                   </label>
@@ -375,25 +524,38 @@ const handleSubmit = async (e) => {
                     maxLength={500}
                     placeholder={
                       form.excerpt ||
-                      "SEO description..."
+                      "Get the latest government job recruitment details, eligibility, important dates, vacancies and application process."
                     }
                     className="w-full resize-none rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 shadow-sm outline-none transition placeholder:text-slate-400 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
                   />
+
+                  <div className="mt-2 text-right text-xs text-slate-400">
+                    {form.seoDescription.length}/500
+                  </div>
+
                 </div>
+
               </section>
+
             </div>
 
-            {/* ================= RIGHT SIDEBAR ================= */}
+            {/* ==================================================
+                RIGHT SIDEBAR
+            ================================================== */}
             <aside className="min-w-0 space-y-6">
 
-              {/* PUBLISH */}
+              {/* =========================
+                  PUBLISH
+              ========================= */}
               <section className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm sm:p-5">
 
                 <h2 className="mb-4 font-bold text-slate-900">
                   Publish
                 </h2>
 
+                {/* STATUS */}
                 <div className="mb-4">
+
                   <label className="mb-2 block text-xs font-semibold uppercase tracking-wide text-slate-500">
                     Status
                   </label>
@@ -412,8 +574,10 @@ const handleSubmit = async (e) => {
                       Published
                     </option>
                   </select>
+
                 </div>
 
+                {/* FEATURED */}
                 <label className="flex cursor-pointer items-center gap-3 rounded-xl border border-slate-200 bg-slate-50 p-3 transition hover:bg-slate-100">
 
                   <input
@@ -425,46 +589,58 @@ const handleSubmit = async (e) => {
                   />
 
                   <div>
+
                     <div className="flex items-center gap-2 text-sm font-semibold text-slate-700">
+
                       <FaStar className="text-yellow-500" />
 
-                      Featured News
+                      Featured Government Update
+
                     </div>
 
                     <p className="mt-1 text-xs text-slate-500">
-                      Show this article as featured news.
+                      Show this article in the featured government news section.
                     </p>
+
                   </div>
 
                 </label>
 
+                {/* SAVE */}
                 <button
                   type="submit"
                   disabled={loading}
                   className="mt-5 flex w-full items-center justify-center gap-2 rounded-xl bg-emerald-500 px-4 py-3 font-semibold text-white shadow-sm transition hover:bg-emerald-600 disabled:cursor-not-allowed disabled:opacity-50"
                 >
+
                   <FaSave />
 
                   {loading
                     ? "Saving..."
                     : form.status === "published"
-                    ? "Publish News"
+                    ? "Publish Government News"
                     : "Save Draft"}
+
                 </button>
 
+                {/* PREVIEW */}
                 <button
                   type="button"
-                  onClick={() => setShowPreview(true)}
+                  onClick={openPreview}
                   className="mt-3 flex w-full items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm font-medium text-slate-700 shadow-sm transition hover:bg-slate-50"
                 >
+
                   <FaEye />
 
                   Preview
+
                 </button>
 
               </section>
 
-              {/* COVER IMAGE */}
+              {/* =========================
+                  COVER IMAGE
+              ========================= */}
               <section className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm sm:p-5">
 
                 <div className="mb-4 flex items-center gap-3">
@@ -474,13 +650,15 @@ const handleSubmit = async (e) => {
                   </div>
 
                   <div>
+
                     <h2 className="font-bold text-slate-900">
                       Cover Image
                     </h2>
 
                     <p className="text-xs text-slate-500">
-                      Add article thumbnail.
+                      Add article thumbnail or featured image.
                     </p>
+
                   </div>
 
                 </div>
@@ -490,30 +668,34 @@ const handleSubmit = async (e) => {
                   name="image"
                   value={form.image}
                   onChange={handleChange}
-                  placeholder="https://example.com/image.jpg"
+                  placeholder="https://example.com/ssc-cgl-2026.jpg"
                   className="w-full rounded-xl border border-slate-200 bg-white px-3 py-3 text-sm text-slate-900 shadow-sm outline-none transition placeholder:text-slate-400 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
                 />
 
                 {form.image && (
                   <div className="mt-4 overflow-hidden rounded-xl border border-slate-200 bg-slate-50">
+
                     <img
                       src={form.image}
-                      alt="Preview"
+                      alt="Government news preview"
                       className="aspect-video w-full object-cover"
                       onError={(e) => {
                         e.currentTarget.style.display = "none";
                       }}
                     />
+
                   </div>
                 )}
 
               </section>
 
-              {/* CATEGORY */}
+              {/* =========================
+                  CATEGORY
+              ========================= */}
               <section className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm sm:p-5">
 
                 <h2 className="mb-4 font-bold text-slate-900">
-                  Category
+                  Government Category
                 </h2>
 
                 <select
@@ -522,6 +704,7 @@ const handleSubmit = async (e) => {
                   onChange={handleChange}
                   className="w-full rounded-xl border border-slate-200 bg-white px-3 py-3 text-sm text-slate-900 shadow-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
                 >
+
                   {categories.map((category) => (
                     <option
                       key={category}
@@ -530,11 +713,19 @@ const handleSubmit = async (e) => {
                       {category}
                     </option>
                   ))}
+
                 </select>
+
+                <p className="mt-2 text-xs leading-5 text-slate-400">
+                  Select the government recruitment or exam category that
+                  best matches this article.
+                </p>
 
               </section>
 
-              {/* ARTICLE DETAILS */}
+              {/* =========================
+                  ARTICLE DETAILS
+              ========================= */}
               <section className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm sm:p-5">
 
                 <h2 className="mb-4 font-bold text-slate-900">
@@ -543,7 +734,9 @@ const handleSubmit = async (e) => {
 
                 <div className="space-y-4">
 
+                  {/* AUTHOR */}
                   <div>
+
                     <label className="mb-2 block text-xs font-semibold text-slate-500">
                       Author
                     </label>
@@ -555,9 +748,12 @@ const handleSubmit = async (e) => {
                       onChange={handleChange}
                       className="w-full rounded-xl border border-slate-200 bg-white px-3 py-3 text-sm text-slate-900 shadow-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
                     />
+
                   </div>
 
+                  {/* READ TIME */}
                   <div>
+
                     <label className="mb-2 block text-xs font-semibold text-slate-500">
                       Read Time
                     </label>
@@ -570,12 +766,16 @@ const handleSubmit = async (e) => {
                       placeholder="5 min"
                       className="w-full rounded-xl border border-slate-200 bg-white px-3 py-3 text-sm text-slate-900 shadow-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
                     />
+
                   </div>
 
                 </div>
+
               </section>
 
-              {/* TAGS */}
+              {/* =========================
+                  TAGS
+              ========================= */}
               <section className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm sm:p-5">
 
                 <div className="mb-4 flex items-center gap-3">
@@ -583,7 +783,7 @@ const handleSubmit = async (e) => {
                   <FaTags className="text-emerald-600" />
 
                   <h2 className="font-bold text-slate-900">
-                    Tags
+                    Government Job Tags
                   </h2>
 
                 </div>
@@ -593,7 +793,7 @@ const handleSubmit = async (e) => {
                   name="tags"
                   value={form.tags}
                   onChange={handleChange}
-                  placeholder="React, Jobs, Freshers"
+                  placeholder="SSC CGL, SSC Recruitment, Government Jobs, SSC Exam"
                   className="w-full rounded-xl border border-slate-200 bg-white px-3 py-3 text-sm text-slate-900 shadow-sm outline-none transition placeholder:text-slate-400 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
                 />
 
@@ -602,28 +802,38 @@ const handleSubmit = async (e) => {
                 </p>
 
               </section>
+
             </aside>
+
           </div>
+
         </form>
+
       </main>
 
-      {/* ================= PREVIEW MODAL ================= */}
+      {/* ==================================================
+          PREVIEW MODAL
+      ================================================== */}
       {showPreview && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 p-3 backdrop-blur-sm sm:p-6">
 
           <div className="flex max-h-[95vh] w-full max-w-4xl flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-2xl">
 
-            {/* MODAL HEADER */}
+            {/* =========================
+                MODAL HEADER
+            ========================= */}
             <div className="flex items-center justify-between border-b border-slate-200 bg-white px-4 py-4 sm:px-6">
 
               <div>
+
                 <h2 className="font-bold text-slate-900">
-                  News Preview
+                  Government News Preview
                 </h2>
 
                 <p className="text-xs text-slate-500">
-                  Preview before publishing
+                  Preview the article before publishing.
                 </p>
+
               </div>
 
               <button
@@ -636,19 +846,26 @@ const handleSubmit = async (e) => {
 
             </div>
 
-            {/* MODAL CONTENT */}
+            {/* =========================
+                MODAL CONTENT
+            ========================= */}
             <div className="overflow-y-auto">
 
+              {/* COVER IMAGE */}
               {form.image && (
                 <img
                   src={form.image}
                   alt={form.title}
                   className="aspect-[2/1] w-full object-cover"
+                  onError={(e) => {
+                    e.currentTarget.style.display = "none";
+                  }}
                 />
               )}
 
               <article className="mx-auto max-w-3xl px-5 py-7 sm:px-8 sm:py-10">
 
+                {/* CATEGORY */}
                 <div className="mb-4 flex flex-wrap items-center gap-2">
 
                   <span className="rounded-full bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-700">
@@ -657,18 +874,22 @@ const handleSubmit = async (e) => {
 
                   {form.featured && (
                     <span className="flex items-center gap-1 rounded-full bg-yellow-50 px-3 py-1 text-xs font-semibold text-yellow-700">
+
                       <FaStar />
 
                       Featured
+
                     </span>
                   )}
 
                 </div>
 
+                {/* TITLE */}
                 <h1 className="text-2xl font-black leading-tight text-slate-900 sm:text-4xl">
-                  {form.title || "Your News Title"}
+                  {form.title || "Government Job News Title"}
                 </h1>
 
+                {/* META */}
                 <div className="mt-4 flex flex-wrap gap-3 text-xs text-slate-500">
 
                   <span>
@@ -683,28 +904,58 @@ const handleSubmit = async (e) => {
 
                 </div>
 
+                {/* EXCERPT */}
                 <p className="mt-6 text-base leading-7 text-slate-600">
                   {form.excerpt ||
-                    "Your news excerpt will appear here."}
+                    "Your government job news description will appear here."}
                 </p>
 
+                {/* CONTENT */}
                 <div
-                  className="prose mt-8 max-w-none prose-headings:text-slate-900 prose-p:text-slate-700 prose-li:text-slate-700"
+                  className="prose mt-8 max-w-none prose-headings:text-slate-900 prose-p:text-slate-700 prose-li:text-slate-700 prose-a:text-emerald-600"
                   dangerouslySetInnerHTML={{
                     __html:
                       form.content ||
-                      "<p>Your article content will appear here.</p>",
+                      "<p>Your government news content will appear here.</p>",
                   }}
                 />
 
+                {/* OFFICIAL SOURCE REMINDER */}
+                <div className="mt-8 rounded-xl border border-blue-200 bg-blue-50 p-4">
+
+                  <div className="flex gap-3">
+
+                    <FaGlobe className="mt-1 shrink-0 text-blue-600" />
+
+                    <div>
+
+                      <h3 className="text-sm font-bold text-blue-900">
+                        Admin Reminder
+                      </h3>
+
+                      <p className="mt-1 text-xs leading-5 text-blue-700">
+                        Always verify recruitment details from the official
+                        government department, commission or organization
+                        website before publishing.
+                      </p>
+
+                    </div>
+
+                  </div>
+
+                </div>
+
               </article>
+
             </div>
+
           </div>
+
         </div>
       )}
+
     </div>
   );
 }
 
 export default AdminCreateNews;
-
