@@ -1682,7 +1682,7 @@ const shareJob = async () => {
 
           <div className="absolute inset-0 bg-gradient-to-br from-emerald-50 via-transparent to-blue-50 pointer-events-none"></div>
  {/* ================= BANNER AD ================= */}
-<div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-24">
+<div className="relative max-w-7xl mx-auto px-4 lg:mt-4 sm:px-6 lg:px-8 pt-24">
   <div className="w-full flex justify-center items-center overflow-hidden">
     
     {/* Desktop */}

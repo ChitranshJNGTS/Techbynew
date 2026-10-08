@@ -370,51 +370,50 @@ export default function PostJob() {
 
                 </div>
 
+<div>
+  <label className="block text-gray-700 mb-2 font-medium">
+    Experience Required
+  </label>
 
-                <div>
+  <select
+    name="experience"
+    value={job.experience}
+    onChange={handleChange}
+    className="w-full bg-white border border-gray-300 rounded-xl px-5 py-3.5 text-gray-900 outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100 transition"
+  >
+    <option value="">
+      Select
+    </option>
 
-                  <label className="block text-gray-700 mb-2 font-medium">
-                    Experience Required
-                  </label>
+    <option value="Fresher">
+      Fresher
+    </option>
 
-                  <select
-                    name="experience"
-                    value={job.experience}
-                    onChange={handleChange}
-                    className="w-full bg-white border border-gray-300 rounded-xl px-5 py-3.5 text-gray-900 outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100 transition"
-                  >
+    <option value="6 Months - 1 Year">
+      6 Months - 1 Year
+    </option>
 
-                    <option value="">
-                      Select
-                    </option>
+    <option value="1 - 2 Years">
+      1 - 2 Years
+    </option>
 
-                    <option>
-                      Fresher
-                    </option>
+    <option value="2 - 3 Years">
+      2 - 3 Years
+    </option>
 
-                    <option>
-                      1+ Years
-                    </option>
+    <option value="3 - 5 Years">
+      3 - 5 Years
+    </option>
 
-                    <option>
-                      2+ Years
-                    </option>
+    <option value="5 - 10 Years">
+      5 - 10 Years
+    </option>
 
-                    <option>
-                      3+ Years
-                    </option>
-
-                    <option>
-                      5+ Years
-                    </option>
-
-                    <option>
-                      10+ Years
-                    </option>
-
-                  </select>
-
-                </div>
+    <option value="10+ Years">
+      10+ Years
+    </option>
+  </select>
+</div>
 
 
                 {/* <div>
