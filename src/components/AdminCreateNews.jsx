@@ -66,8 +66,7 @@ function AdminCreateNews() {
 
   const [form, setForm] = useState(initialForm);
 
-  const [pdfFile, setPdfFile] = useState(null);
-  const [pdfError, setPdfError] = useState("");
+
 
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
@@ -94,263 +93,156 @@ function AdminCreateNews() {
   // HANDLE PDF
   // ==========================================
 
-  const handlePdfChange = (e) => {
-    const file = e.target.files?.[0];
 
-    setPdfError("");
-    setError("");
-    setMessage("");
-
-    if (!file) {
-      setPdfFile(null);
-      return;
-    }
-
-    // Check PDF type
-    if (
-      file.type !== "application/pdf" &&
-      !file.name.toLowerCase().endsWith(".pdf")
-    ) {
-      setPdfError("Only PDF files are allowed.");
-      e.target.value = "";
-      setPdfFile(null);
-      return;
-    }
-
-    // 10 MB limit
-    const maxSize = 10 * 1024 * 1024;
-
-    if (file.size > maxSize) {
-      setPdfError("PDF size must be less than 10 MB.");
-      e.target.value = "";
-      setPdfFile(null);
-      return;
-    }
-
-    setPdfFile(file);
-  };
-
-  // ==========================================
-  // REMOVE PDF
-  // ==========================================
-
-  const removePdf = () => {
-    setPdfFile(null);
-
-    const input = document.getElementById("government-pdf");
-
-    if (input) {
-      input.value = "";
-    }
-
-    setPdfError("");
-  };
 
   // ==========================================
   // SUBMIT NEWS
   // ==========================================
+const handleSubmit = async (e) => {
+  e.preventDefault();
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  setLoading(true);
+  setMessage("");
+  setError("");
 
-    setLoading(true);
-    setMessage("");
-    setError("");
+  try {
+    const adminToken = localStorage.getItem("adminToken");
 
-    try {
-      // ==========================================
-      // ADMIN TOKEN
-      // ==========================================
-
-      const adminToken = localStorage.getItem("adminToken");
-
-      if (!adminToken) {
-        setError("Admin session expired. Please login again.");
-        setLoading(false);
-        return;
-      }
-
-      // ==========================================
-      // VALIDATION
-      // ==========================================
-
-      if (!form.title.trim()) {
-        setError("Please enter a government job news title.");
-        setLoading(false);
-        return;
-      }
-
-      if (!form.excerpt.trim()) {
-        setError("Please enter a short description.");
-        setLoading(false);
-        return;
-      }
-
-      if (!form.content.trim()) {
-        setError("Please write the government job news content.");
-        setLoading(false);
-        return;
-      }
-
-      // ==========================================
-      // TAGS
-      // ==========================================
-
-      const tags = form.tags
-        .split(",")
-        .map((tag) => tag.trim())
-        .filter(Boolean);
-
-      // ==========================================
-      // FORM DATA
-      // ==========================================
-
-      const formData = new FormData();
-
-      formData.append("title", form.title.trim());
-
-      formData.append(
-        "excerpt",
-        form.excerpt.trim()
-      );
-
-      formData.append(
-        "content",
-        form.content
-      );
-
-      formData.append(
-        "category",
-        form.category
-      );
-
-      formData.append(
-        "image",
-        form.image.trim()
-      );
-      formData.append(
-  "applyLink",
-  form.applyLink.trim()
-);
-
-      formData.append(
-        "author",
-        form.author.trim() || "TechBy"
-      );
-
-      formData.append(
-        "readTime",
-        form.readTime.trim() || "5 min"
-      );
-
-      formData.append(
-        "tags",
-        JSON.stringify(tags)
-      );
-
-      formData.append(
-        "seoTitle",
-        form.seoTitle.trim() || form.title.trim()
-      );
-
-      formData.append(
-        "seoDescription",
-        form.seoDescription.trim() ||
-          form.excerpt.trim()
-      );
-
-      formData.append(
-        "status",
-        form.status
-      );
-
-      formData.append(
-        "featured",
-        String(form.featured)
-      );
-
-      // ==========================================
-      // PDF
-      // ==========================================
-
-      if (pdfFile) {
-        formData.append(
-          "pdf",
-          pdfFile
-        );
-      }
-
-      // ==========================================
-      // API REQUEST
-      // ==========================================
-
-      const response = await fetch(
-        `${API_URL}/news/admin/create`,
-        {
-          method: "POST",
-
-          headers: {
-            "x-admin-token": adminToken,
-          },
-
-          body: formData,
-        }
-      );
-
-      const data = await response.json();
-
-      if (!response.ok || !data.success) {
-        throw new Error(
-          data.message ||
-            "Failed to create government news."
-        );
-      }
-
-      // ==========================================
-      // SUCCESS
-      // ==========================================
-
-      setMessage(
-        form.status === "published"
-          ? "Government news published successfully!"
-          : "Government news saved as draft successfully!"
-      );
-
-      // ==========================================
-      // RESET
-      // ==========================================
-
-      setForm(initialForm);
-      setPdfFile(null);
-
-      const pdfInput =
-        document.getElementById(
-          "government-pdf"
-        );
-
-      if (pdfInput) {
-        pdfInput.value = "";
-      }
-
-      window.scrollTo({
-        top: 0,
-        behavior: "smooth",
-      });
-    } catch (err) {
-      console.error(
-        "Create government news error:",
-        err
-      );
-
-      setError(
-        err.message ||
-          "Something went wrong while posting government news."
-      );
-    } finally {
+    if (!adminToken) {
+      setError("Admin session expired. Please login again.");
       setLoading(false);
+      return;
     }
-  };
 
+    // ==========================================
+    // VALIDATION
+    // ==========================================
+
+    if (!form.title.trim()) {
+      setError("Please enter a government job news title.");
+      setLoading(false);
+      return;
+    }
+
+    if (!form.excerpt.trim()) {
+      setError("Please enter a short description.");
+      setLoading(false);
+      return;
+    }
+
+    if (!form.content.trim()) {
+      setError("Please write the government job news content.");
+      setLoading(false);
+      return;
+    }
+
+    // ==========================================
+    // TAGS
+    // ==========================================
+
+    const tags = form.tags
+      .split(",")
+      .map((tag) => tag.trim())
+      .filter(Boolean);
+
+    // ==========================================
+    // JSON DATA
+    // ==========================================
+
+    const payload = {
+      title: form.title.trim(),
+
+      excerpt: form.excerpt.trim(),
+
+      content: form.content,
+
+      category: form.category,
+
+      image: form.image.trim(),
+
+      applyLink: form.applyLink.trim(),
+
+      author: form.author.trim() || "TechBy",
+
+      readTime: form.readTime.trim() || "5 min",
+
+      tags,
+
+      seoTitle:
+        form.seoTitle.trim() || form.title.trim(),
+
+      seoDescription:
+        form.seoDescription.trim() ||
+        form.excerpt.trim(),
+
+      status: form.status,
+
+      featured: form.featured,
+    };
+
+    // ==========================================
+    // API REQUEST
+    // ==========================================
+
+    const response = await fetch(
+      `${API_URL}/news/admin/create`,
+      {
+        method: "POST",
+
+        headers: {
+          "Content-Type": "application/json",
+          "x-admin-token": adminToken,
+        },
+
+        body: JSON.stringify(payload),
+      }
+    );
+
+    const data = await response.json();
+
+    if (!response.ok || !data.success) {
+      throw new Error(
+        data.message ||
+          "Failed to create government news."
+      );
+    }
+
+    // ==========================================
+    // SUCCESS
+    // ==========================================
+
+    setMessage(
+      form.status === "published"
+        ? "Government news published successfully!"
+        : "Government news saved as draft successfully!"
+    );
+
+    // ==========================================
+    // RESET
+    // ==========================================
+
+    setForm(initialForm);
+
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+
+  } catch (err) {
+    console.error(
+      "Create government news error:",
+      err
+    );
+
+    setError(
+      err.message ||
+        "Something went wrong while posting government news."
+    );
+
+  } finally {
+    setLoading(false);
+  }
+};
   // ==========================================
   // PREVIEW
   // ==========================================
@@ -808,105 +700,7 @@ function AdminCreateNews() {
 
               </section>
 
-              {/* ==========================================
-                  PDF UPLOAD
-              ========================================== */}
 
-              <section className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm sm:p-5">
-
-                <div className="mb-4 flex items-center gap-3">
-
-                  <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-red-50 text-red-600">
-                    <FaFilePdf />
-                  </div>
-
-                  <div>
-
-                    <h2 className="font-bold text-slate-900">
-                      Official Notification PDF
-                    </h2>
-
-                    <p className="text-xs text-slate-500">
-                      Upload the official government notification.
-                    </p>
-
-                  </div>
-
-                </div>
-
-                {!pdfFile ? (
-                  <label
-                    htmlFor="government-pdf"
-                    className="flex cursor-pointer flex-col items-center justify-center rounded-xl border-2 border-dashed border-slate-200 bg-slate-50 px-4 py-7 text-center transition hover:border-emerald-300 hover:bg-emerald-50/40"
-                  >
-
-                    <FaUpload className="mb-3 text-2xl text-slate-400" />
-
-                    <span className="text-sm font-semibold text-slate-700">
-                      Click to upload PDF
-                    </span>
-
-                    <span className="mt-1 text-xs text-slate-400">
-                      PDF only • Maximum 10 MB
-                    </span>
-
-                    <input
-                      id="government-pdf"
-                      type="file"
-                      accept="application/pdf,.pdf"
-                      onChange={handlePdfChange}
-                      className="hidden"
-                    />
-
-                  </label>
-                ) : (
-                  <div className="rounded-xl border border-red-100 bg-red-50 p-4">
-
-                    <div className="flex items-center gap-3">
-
-                      <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-red-100 text-red-600">
-                        <FaFilePdf />
-                      </div>
-
-                      <div className="min-w-0 flex-1">
-
-                        <p className="truncate text-sm font-semibold text-slate-800">
-                          {pdfFile.name}
-                        </p>
-
-                        <p className="mt-1 text-xs text-slate-500">
-                          {(pdfFile.size / 1024 / 1024).toFixed(2)} MB
-                        </p>
-
-                      </div>
-
-                      <button
-                        type="button"
-                        onClick={removePdf}
-                        className="rounded-lg p-2 text-slate-400 transition hover:bg-red-100 hover:text-red-600"
-                        title="Remove PDF"
-                      >
-                        <FaTrash />
-                      </button>
-
-                    </div>
-
-                  </div>
-                )}
-
-                {pdfError && (
-                  <p className="mt-3 rounded-lg bg-red-50 px-3 py-2 text-xs text-red-600">
-                    {pdfError}
-                  </p>
-                )}
-
-                <p className="mt-3 text-xs leading-5 text-slate-400">
-                  Recommended: Upload the original official
-                  notification PDF from the government department,
-                  commission or organization.
-                </p>
-
-              </section>
 
 {/* ==========================================
     OFFICIAL APPLY LINK
