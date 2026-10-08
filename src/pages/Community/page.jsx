@@ -1,8 +1,8 @@
 import {
-  FaWhatsapp,
-  FaInstagram,
-  FaLinkedin,
-  FaArrowLeft,
+  FaInfoCircle,
+  FaShieldAlt,
+  FaFileContract,
+  FaArrowRight,
 } from "react-icons/fa";
 
 import { Link } from "react-router-dom";
@@ -10,124 +10,134 @@ import Navbar from "../../components/Navbar";
 import MobileBottomBar from "../../components/MobileBottomBar";
 
 export default function Community() {
-  const communities = [
+  const informationLinks = [
     {
-      name: "WhatsApp",
-      description: "Get the latest job updates directly on WhatsApp.",
-      icon: <FaWhatsapp />,
-      iconBg: "bg-green-500",
-      link: "https://chat.whatsapp.com/CimbUfCYdUnGLTAKJLThWR",
+      name: "About Us",
+      description: "Learn more about TechBy and what we do.",
+      icon: <FaInfoCircle />,
+      path: "/about",
     },
     {
-      name: "Instagram",
-      description: "Follow us for daily jobs, career tips and updates.",
-      icon: <FaInstagram />,
-      iconBg: "bg-pink-500",
-      link: "https://www.instagram.com/mr_vansh_s?igsi=MWtvd24yOGxwamlm",
+      name: "Privacy Policy",
+      description:
+        "Learn how we collect, use and protect your information.",
+      icon: <FaShieldAlt />,
+      path: "/privacy-policy",
     },
     {
-      name: "LinkedIn",
-      description: "Follow TechBy for professional career updates.",
-      icon: <FaLinkedin />,
-      iconBg: "bg-blue-600",
-      link: "https://www.linkedin.com/company/techby-consultancy-services/",
+      name: "Terms & Conditions",
+      description:
+        "Read the terms and conditions for using TechBy.",
+      icon: <FaFileContract />,
+      path: "/terms-and-conditions",
     },
   ];
 
   return (
-  <>
-  <Navbar/>
-  <MobileBottomBar/>
-    <div className="min-h-screen bg-slate-950 text-white px-5 pt-24 pb-24 lg:hidden">
+    <>
+      <Navbar />
+      <MobileBottomBar />
 
-      {/* Header */}
+      <div className="min-h-screen bg-white px-5 pb-24 pt-24 text-slate-900">
 
-      <div className="flex items-center gap-4 mb-8">
+        {/* Header */}
+        <div className="mx-auto mb-8 max-w-3xl">
 
-        {/* <Link
-          to="/"
-          className="w-10 h-10 rounded-xl bg-slate-900 border border-slate-800 flex items-center justify-center text-slate-300 hover:text-white transition"
-        >
-          <FaArrowLeft />
-        </Link> */}
+          <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-emerald-100 bg-emerald-50 px-3 py-1.5 text-xs font-semibold text-emerald-600">
+            TechBy Information
+          </div>
 
-        <div>
-          <h1 className="text-2xl font-bold">
-            Join Our Community
+          <h1 className="text-2xl font-bold text-slate-900 md:text-3xl">
+            About TechBy
           </h1>
 
-          <p className="text-slate-400 text-sm mt-1">
-            Stay updated with the latest job opportunities.
+          <p className="mt-2 text-sm leading-relaxed text-slate-500">
+            Learn more about TechBy, our policies and the terms
+            for using our website.
           </p>
+
+        </div>
+
+        {/* Main Content */}
+        <div className="mx-auto max-w-3xl">
+
+          {/* Information Links */}
+          <div>
+
+            <h2 className="mb-4 text-lg font-bold text-slate-900">
+              Website Information
+            </h2>
+
+            <div className="space-y-3">
+
+              {informationLinks.map((item) => (
+                <Link
+                  key={item.name}
+                  to={item.path}
+                  className="group flex items-center gap-4 rounded-2xl border border-slate-200 bg-slate-50 p-4 transition-all hover:border-emerald-300 hover:bg-white hover:shadow-sm"
+                >
+
+                  {/* Icon */}
+                  <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-slate-200 bg-white text-lg text-emerald-600 transition group-hover:border-emerald-200 group-hover:bg-emerald-50">
+                    {item.icon}
+                  </div>
+
+                  {/* Text */}
+                  <div className="min-w-0 flex-1">
+
+                    <h3 className="text-base font-semibold text-slate-900">
+                      {item.name}
+                    </h3>
+
+                    <p className="mt-1 text-xs leading-relaxed text-slate-500">
+                      {item.description}
+                    </p>
+
+                  </div>
+
+                  {/* Arrow */}
+                  <div className="text-slate-400 transition group-hover:text-emerald-500">
+                    <FaArrowRight />
+                  </div>
+
+                </Link>
+              ))}
+
+            </div>
+
+          </div>
+
+          {/* Bottom Information */}
+          <div className="mt-8 rounded-2xl border border-emerald-100 bg-emerald-50 p-5 text-center">
+
+            <div className="mx-auto mb-3 flex h-10 w-10 items-center justify-center rounded-full bg-white text-emerald-600 shadow-sm">
+              <FaInfoCircle />
+            </div>
+
+            <h3 className="text-sm font-bold text-slate-900">
+              About TechBy
+            </h3>
+
+            <p className="mx-auto mt-2 max-w-xl text-xs leading-relaxed text-slate-600">
+              TechBy provides job opportunities, government job
+              updates, recruitment information and career resources
+              to help job seekers discover relevant opportunities.
+            </p>
+
+          </div>
+
+          {/* Footer */}
+          <div className="mt-8 pb-4 text-center">
+
+            <p className="text-xs text-slate-400">
+              © {new Date().getFullYear()} TechBy. All rights reserved.
+            </p>
+
+          </div>
+
         </div>
 
       </div>
-
-
-      {/* Community Cards */}
-
-      <div className="space-y-4">
-
-        {communities.map((community) => (
-          <a
-            key={community.name}
-            href={community.link}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="group flex items-center gap-4 p-5 rounded-2xl bg-slate-900 border border-slate-800 hover:border-emerald-500/50 hover:bg-slate-900/80 transition"
-          >
-
-            {/* Icon */}
-
-            <div
-              className={`w-14 h-14 shrink-0 rounded-2xl ${community.iconBg} flex items-center justify-center text-white text-2xl`}
-            >
-              {community.icon}
-            </div>
-
-
-            {/* Text */}
-
-            <div className="flex-1 min-w-0">
-
-              <h2 className="text-lg font-semibold text-white">
-                {community.name}
-              </h2>
-
-              <p className="text-sm text-slate-400 mt-1 leading-relaxed">
-                {community.description}
-              </p>
-
-            </div>
-
-
-            {/* Arrow */}
-
-            <div className="text-slate-500 group-hover:text-emerald-400 transition text-lg">
-              →
-            </div>
-
-          </a>
-        ))}
-
-      </div>
-
-
-      {/* Bottom Message */}
-
-      <div className="mt-8 p-5 rounded-2xl bg-emerald-500/5 border border-emerald-500/10 text-center">
-
-        <p className="text-sm text-slate-400">
-          Follow TechBy and never miss your next
-          <span className="text-emerald-400 font-medium">
-            {" "}job opportunity.
-          </span>
-        </p>
-
-      </div>
-
-    </div>
     </>
   );
 }
-

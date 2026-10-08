@@ -3,7 +3,7 @@ import {
   FaBriefcase,
   FaGraduationCap,
   FaGlobe,
-  FaUsers,
+  FaNewspaper,
 } from "react-icons/fa";
 
 import { Link, useLocation } from "react-router-dom";
@@ -11,12 +11,10 @@ import { Link, useLocation } from "react-router-dom";
 export default function MobileBottomBar() {
   const location = useLocation();
 
-  const isActive = (path) =>
-    location.pathname === path;
+  const isActive = (path) => location.pathname === path;
 
   const isQueryActive = (query) =>
-    location.pathname === "/jobs" &&
-    location.search === query;
+    location.pathname === "/jobs" && location.search === query;
 
   const itemClass = (active) =>
     `relative flex flex-col items-center justify-center gap-1 h-full flex-1 transition duration-200 ${
@@ -36,9 +34,7 @@ export default function MobileBottomBar() {
 
         <Link
           to="/"
-          className={itemClass(
-            isActive("/")
-          )}
+          className={itemClass(isActive("/"))}
         >
           {isActive("/") && (
             <span className="absolute top-0 left-1/2 -translate-x-1/2 w-8 h-0.5 bg-emerald-500 rounded-full" />
@@ -58,9 +54,7 @@ export default function MobileBottomBar() {
 
         <Link
           to="/all-jobs"
-          className={itemClass(
-            isActive("/all-jobs")
-          )}
+          className={itemClass(isActive("/all-jobs"))}
         >
           {isActive("/all-jobs") && (
             <span className="absolute top-0 left-1/2 -translate-x-1/2 w-8 h-0.5 bg-emerald-500 rounded-full" />
@@ -81,14 +75,10 @@ export default function MobileBottomBar() {
         <Link
           to="/jobs?type=freshers"
           className={itemClass(
-            isQueryActive(
-              "?type=freshers"
-            )
+            isQueryActive("?type=freshers")
           )}
         >
-          {isQueryActive(
-            "?type=freshers"
-          ) && (
+          {isQueryActive("?type=freshers") && (
             <span className="absolute top-0 left-1/2 -translate-x-1/2 w-8 h-0.5 bg-emerald-500 rounded-full" />
           )}
 
@@ -107,14 +97,10 @@ export default function MobileBottomBar() {
         <Link
           to="/jobs?workMode=Remote"
           className={itemClass(
-            isQueryActive(
-              "?workMode=Remote"
-            )
+            isQueryActive("?workMode=Remote")
           )}
         >
-          {isQueryActive(
-            "?workMode=Remote"
-          ) && (
+          {isQueryActive("?workMode=Remote") && (
             <span className="absolute top-0 left-1/2 -translate-x-1/2 w-8 h-0.5 bg-emerald-500 rounded-full" />
           )}
 
@@ -127,23 +113,23 @@ export default function MobileBottomBar() {
 
 
         {/* =================================================
-            COMMUNITY
+            GOVT NEWS
         ================================================= */}
 
         <Link
-          to="/community"
+          to="/job-news"
           className={itemClass(
-            isActive("/community")
+            isActive("/job-news")
           )}
         >
-          {isActive("/community") && (
+          {isActive("/job-news") && (
             <span className="absolute top-0 left-1/2 -translate-x-1/2 w-8 h-0.5 bg-emerald-500 rounded-full" />
           )}
 
-          <FaUsers className="text-lg" />
+          <FaNewspaper className="text-lg" />
 
           <span className="text-[10px] font-medium">
-            Community
+            Govt News
           </span>
         </Link>
 
