@@ -813,6 +813,9 @@ import {
   FaLaptopHouse,
   FaLayerGroup,
   FaSearch,
+    FaMobileAlt,
+  FaBell,
+  FaRocket,
 } from "react-icons/fa";
 
 import { Link, useLocation, useNavigate } from "react-router-dom";
@@ -1403,48 +1406,30 @@ export default function Navbar() {
                   DESKTOP JOIN BUTTON
               ================================================= */}
 
-              <div className="hidden lg:flex items-center ml-auto xl:ml-4">
+             
+<button
+  type="button"
+  onClick={() => setSocialOpen(true)}
+  className="
+    group relative hidden  lg:flex items-center gap-2.5
+    px-5 py-3 rounded-xl
+    bg-gradient-to-r from-emerald-500 to-emerald-600
+    hover:from-emerald-600 hover:to-emerald-700
+    text-white text-[15px] font-semibold
+    shadow-md shadow-emerald-500/20
+    hover:shadow-lg transition-all duration-200
+  "
+>
+  <span className="flex items-center justify-center w-7 h-7 rounded-lg bg-white/15">
+    <FaMobileAlt className="text-sm" />
+  </span>
 
-                <button
-                  type="button"
-                  onClick={() => setSocialOpen(true)}
-                  className="
-                    group
-                    relative
-                    flex
-                    items-center
-                    gap-2.5
-                    px-5
-                    py-3
-                    rounded-xl
-                    bg-gradient-to-r
-                    from-emerald-500
-                    to-emerald-600
-                    hover:from-emerald-600
-                    hover:to-emerald-700
-                    text-white
-                    text-[15px]
-                    font-semibold
-                    shadow-md
-                    shadow-emerald-500/20
-                    hover:shadow-lg
-                    hover:shadow-emerald-500/25
-                    transition-all
-                    duration-200
-                  "
-                >
+  <span>Download App</span>
 
-                  <span className="flex items-center justify-center w-7 h-7 rounded-lg bg-white/15">
-                    <FaUsers className="text-sm" />
-                  </span>
-
-                  <span>Join Our Groups</span>
-
-                  <span className="absolute -top-1.5 -right-1.5 w-2.5 h-2.5 bg-emerald-400 rounded-full ring-2 ring-white" />
-
-                </button>
-
-              </div>
+  <span className="absolute -top-1.5 -right-1.5 text-[9px] font-bold px-2 py-1 rounded-full bg-amber-400 text-slate-900 shadow-sm">
+    SOON
+  </span>
+</button>
 
               {/* =================================================
                   MOBILE SEARCH
@@ -1776,40 +1761,28 @@ export default function Navbar() {
                     JOIN GROUPS
                 ================================================= */}
 
-                <button
-                  type="button"
-                  onClick={() => {
-                    setSocialOpen(true);
-                    closeMenu();
-                  }}
-                  className="
-                    w-full
-                    flex
-                    items-center
-                    justify-center
-                    gap-2.5
-                    bg-gradient-to-r
-                    from-emerald-500
-                    to-emerald-600
-                    hover:from-emerald-600
-                    hover:to-emerald-700
-                    text-white
-                    py-3.5
-                    rounded-xl
-                    text-[15px]
-                    font-semibold
-                    shadow-md
-                    shadow-emerald-500/20
-                    transition-all
-                    duration-200
-                  "
-                >
-
-                  <FaUsers />
-
-                  Join Our Groups
-
-                </button>
+              
+<button
+  type="button"
+  onClick={() => {
+    setSocialOpen(true);
+    closeMenu();
+  }}
+  className="
+    w-full flex items-center justify-center gap-2.5
+    bg-gradient-to-r from-emerald-500 to-emerald-600
+    hover:from-emerald-600 hover:to-emerald-700
+    text-white py-3.5 rounded-xl text-[15px]
+    font-semibold shadow-md shadow-emerald-500/20
+    transition-all duration-200
+  "
+>
+  <FaMobileAlt />
+  Download TechBy App
+  <span className="text-[10px] font-bold bg-white/20 px-2 py-1 rounded-full">
+    SOON
+  </span>
+</button>
 
               </div>
 
@@ -1825,253 +1798,120 @@ export default function Navbar() {
           SOCIAL POPUP
       ===================================================== */}
 
-      {socialOpen && (
-        <div
-          className="
-            fixed
-            inset-0
-            z-[100]
-            bg-slate-950/50
-            backdrop-blur-sm
-            flex
-            items-center
-            justify-center
-            px-5
-          "
+     
+{socialOpen && (
+  <div
+    className="fixed inset-0 z-[100] bg-slate-950/60 backdrop-blur-sm flex items-center justify-center px-5"
+    onClick={() => setSocialOpen(false)}
+  >
+    <div
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="app-popup-title"
+      onClick={(e) => e.stopPropagation()}
+      className="relative w-full max-w-md overflow-hidden bg-white border border-slate-200 rounded-3xl shadow-2xl"
+    >
+      {/* Top decorative section */}
+      <div className="relative bg-gradient-to-br from-emerald-500 via-emerald-600 to-teal-700 px-6 pt-8 pb-12 text-center overflow-hidden">
+        <div className="absolute -top-12 -right-10 w-40 h-40 rounded-full bg-white/10" />
+        <div className="absolute -bottom-16 -left-8 w-44 h-44 rounded-full bg-white/10" />
+
+        <button
+          type="button"
           onClick={() => setSocialOpen(false)}
+          aria-label="Close popup"
+          className="absolute top-4 right-4 z-10 w-9 h-9 flex items-center justify-center rounded-xl text-white hover:bg-white/15 transition"
         >
+          <FaTimes />
+        </button>
 
-          <div
-            onClick={(e) => e.stopPropagation()}
-            className="
-              relative
-              w-full
-              max-w-md
-              bg-white
-              border
-              border-slate-200
-              rounded-3xl
-              p-7
-              shadow-2xl
-            "
-          >
+        <div className="relative mx-auto w-24 h-24 rounded-[26px] bg-white shadow-xl flex items-center justify-center">
+          <FaMobileAlt className="text-emerald-600 text-5xl" />
+          <span className="absolute -bottom-2 -right-2 w-9 h-9 rounded-xl bg-amber-400 border-4 border-emerald-600 flex items-center justify-center text-slate-900">
+            <FaRocket className="text-sm" />
+          </span>
+        </div>
 
-            {/* =================================================
-                CLOSE
-            ================================================= */}
+        <p className="relative mt-5 text-emerald-50 text-xs font-bold uppercase tracking-[0.2em]">
+          Something exciting is coming
+        </p>
 
-            <button
-              type="button"
-              onClick={() => setSocialOpen(false)}
-              aria-label="Close community popup"
-              className="
-                absolute
-                top-5
-                right-5
-                w-9
-                h-9
-                flex
-                items-center
-                justify-center
-                rounded-xl
-                text-slate-400
-                hover:text-slate-700
-                hover:bg-slate-100
-                transition
-              "
-            >
-              <FaTimes />
-            </button>
+        <h2
+          id="app-popup-title"
+          className="relative mt-2 text-3xl font-extrabold text-white"
+        >
+          TechBy App
+        </h2>
 
-            {/* =================================================
-                HEADER
-            ================================================= */}
+        <p className="relative mt-2 text-emerald-50 text-sm">
+          Your career opportunities, all in one place.
+        </p>
+      </div>
 
-            <div className="text-center mb-7">
+      {/* Content */}
+      <div className="px-6 pt-7 pb-6 -mt-4 relative bg-white rounded-t-3xl">
+        <div className="flex justify-center">
+          <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-amber-50 border border-amber-200 text-amber-700 text-xs font-bold">
+            <span className="w-2 h-2 rounded-full bg-amber-500 animate-pulse" />
+            APP UNDER DEVELOPMENT
+          </span>
+        </div>
 
-              <div className="relative w-16 h-16 mx-auto">
+        <h3 className="mt-5 text-center text-xl font-bold text-slate-900">
+          Launching Soon!
+        </h3>
 
-                <div className="absolute inset-0 rounded-2xl bg-emerald-100 animate-pulse opacity-50" />
+        <p className="mt-3 text-center text-sm text-slate-500 leading-6">
+          We’re working hard to bring you the TechBy mobile app.
+          Soon, you’ll be able to discover job opportunities
+          and get career updates more conveniently.
+        </p>
 
-                <div className="relative w-16 h-16 rounded-2xl bg-emerald-50 border border-emerald-100 flex items-center justify-center">
-
-                  <FaUsers className="text-emerald-500 text-3xl" />
-
-                </div>
-
-              </div>
-
-              <h2 className="text-2xl font-bold text-slate-900 mt-4">
-                Join Our Job Community
-              </h2>
-
-              <p className="text-slate-500 mt-2 text-sm leading-6 max-w-sm mx-auto">
-                Get the latest job updates directly
-                on your favorite platform.
-              </p>
-
-            </div>
-
-            {/* =================================================
-                SOCIAL LINKS
-            ================================================= */}
-
-            <div className="space-y-3">
-
-              {/* WHATSAPP */}
-
-              <a
-                href="https://chat.whatsapp.com/CimbUfCYdUnGLTAKJLThWR"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="
-                  group
-                  flex
-                  items-center
-                  gap-4
-                  bg-slate-50
-                  hover:bg-emerald-50
-                  border
-                  border-slate-200
-                  hover:border-emerald-300
-                  rounded-2xl
-                  p-4
-                  transition-all
-                  duration-200
-                "
-              >
-
-                <div className="w-11 h-11 shrink-0 rounded-xl bg-green-500 flex items-center justify-center text-white text-xl shadow-sm">
-                  <FaWhatsapp />
-                </div>
-
-                <div className="text-left flex-1">
-
-                  <h3 className="text-slate-900 font-semibold">
-                    WhatsApp Group
-                  </h3>
-
-                  <p className="text-slate-500 text-sm mt-0.5">
-                    Get job updates on WhatsApp
-                  </p>
-
-                </div>
-
-                <span className="text-slate-300 group-hover:text-emerald-500 text-lg transition">
-                  →
-                </span>
-
-              </a>
-
-              {/* INSTAGRAM */}
-
-              <a
-                href="https://www.instagram.com/mr_vansh_s?igsi=MWtvd24yOGxwamlm"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="
-                  group
-                  flex
-                  items-center
-                  gap-4
-                  bg-slate-50
-                  hover:bg-pink-50
-                  border
-                  border-slate-200
-                  hover:border-pink-200
-                  rounded-2xl
-                  p-4
-                  transition-all
-                  duration-200
-                "
-              >
-
-                <div className="w-11 h-11 shrink-0 rounded-xl bg-gradient-to-br from-pink-500 to-purple-600 flex items-center justify-center text-white text-xl shadow-sm">
-                  <FaInstagram />
-                </div>
-
-                <div className="text-left flex-1">
-
-                  <h3 className="text-slate-900 font-semibold">
-                    Instagram
-                  </h3>
-
-                  <p className="text-slate-500 text-sm mt-0.5">
-                    Follow us for job updates
-                  </p>
-
-                </div>
-
-                <span className="text-slate-300 group-hover:text-pink-500 text-lg transition">
-                  →
-                </span>
-
-              </a>
-
-              {/* LINKEDIN */}
-
-              <a
-                href="https://www.linkedin.com/company/techby-consultancy-services/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="
-                  group
-                  flex
-                  items-center
-                  gap-4
-                  bg-slate-50
-                  hover:bg-blue-50
-                  border
-                  border-slate-200
-                  hover:border-blue-200
-                  rounded-2xl
-                  p-4
-                  transition-all
-                  duration-200
-                "
-              >
-
-                <div className="w-11 h-11 shrink-0 rounded-xl bg-blue-600 flex items-center justify-center text-white text-xl shadow-sm">
-                  <FaLinkedin />
-                </div>
-
-                <div className="text-left flex-1">
-
-                  <h3 className="text-slate-900 font-semibold">
-                    LinkedIn
-                  </h3>
-
-                  <p className="text-slate-500 text-sm mt-0.5">
-                    Follow our professional updates
-                  </p>
-
-                </div>
-
-                <span className="text-slate-300 group-hover:text-blue-500 text-lg transition">
-                  →
-                </span>
-
-              </a>
-
-            </div>
-
-            {/* =================================================
-                FOOTER
-            ================================================= */}
-
-            <div className="mt-6 pt-5 border-t border-slate-100">
-
-              <p className="text-center text-slate-400 text-xs">
-                Join our communities and never miss a
-                job opportunity.
-              </p>
-
-            </div>
-
+        <div className="mt-5 grid grid-cols-2 gap-3">
+          <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4 text-center">
+            <FaBriefcase className="mx-auto text-emerald-600 text-xl" />
+            <p className="mt-2 text-sm font-semibold text-slate-800">
+              Latest Jobs
+            </p>
+            <p className="mt-1 text-xs text-slate-500">
+              Explore opportunities
+            </p>
           </div>
 
+          <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4 text-center">
+            <FaBell className="mx-auto text-emerald-600 text-xl" />
+            <p className="mt-2 text-sm font-semibold text-slate-800">
+              Career Updates
+            </p>
+            <p className="mt-1 text-xs text-slate-500">
+              Stay informed
+            </p>
+          </div>
         </div>
-      )}
+
+        <button
+          type="button"
+          onClick={() => setSocialOpen(false)}
+          className="mt-6 w-full flex items-center justify-center gap-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white py-3.5 font-semibold transition-colors"
+        >
+          <FaRocket />
+          Got It — Coming Soon
+        </button>
+
+        <p className="mt-4 text-center text-xs text-slate-400">
+          Until launch, keep exploring{" "}
+          <a
+            href="https://techby.in/jobs"
+            onClick={() => setSocialOpen(false)}
+            className="font-semibold text-emerald-600 hover:underline"
+          >
+            jobs on TechBy
+          </a>.
+        </p>
+      </div>
+    </div>
+  </div>
+)}
 
     </>
   );

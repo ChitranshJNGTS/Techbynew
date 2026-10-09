@@ -1279,8 +1279,6 @@
 
 // export default AdminCreateNews;
 
-
-
 import React, { useState } from "react";
 import {
   FaNewspaper,
@@ -1296,7 +1294,6 @@ import {
   FaUpload,
   FaTrash,
 } from "react-icons/fa";
-import { useNavigate } from "react-router-dom";
 
 const API_URL =
   import.meta.env.VITE_API_URL || "http://localhost:5050";
@@ -1342,8 +1339,6 @@ const initialForm = {
 };
 
 function AdminCreateNews() {
-  const navigate = useNavigate();
-
   const [form, setForm] = useState(initialForm);
 
   // ==========================================
@@ -1352,12 +1347,6 @@ function AdminCreateNews() {
 
   const [imageFile, setImageFile] = useState(null);
   const [imagePreview, setImagePreview] = useState("");
-
-  // ==========================================
-  // PDF
-  // ==========================================
-
-  const [pdfFile, setPdfFile] = useState(null);
 
   // ==========================================
   // UI
@@ -1416,10 +1405,13 @@ function AdminCreateNews() {
       return;
     }
 
-    setImageFile(file);
+    // Revoke previous preview URL
+    if (imagePreview) {
+      URL.revokeObjectURL(imagePreview);
+    }
 
-    const previewUrl = URL.createObjectURL(file);
-    setImagePreview(previewUrl);
+    setImageFile(file);
+    setImagePreview(URL.createObjectURL(file));
   };
 
   // ==========================================
@@ -1427,43 +1419,12 @@ function AdminCreateNews() {
   // ==========================================
 
   const removeImage = () => {
+    if (imagePreview) {
+      URL.revokeObjectURL(imagePreview);
+    }
+
     setImageFile(null);
     setImagePreview("");
-  };
-
-  // ==========================================
-  // HANDLE PDF
-  // ==========================================
-
-  const handlePdfChange = (e) => {
-    const file = e.target.files?.[0];
-
-    if (!file) return;
-
-    setError("");
-    setMessage("");
-
-    if (file.type !== "application/pdf") {
-      setError("Only PDF files are allowed.");
-      e.target.value = "";
-      return;
-    }
-
-    if (file.size > 10 * 1024 * 1024) {
-      setError("PDF size must be less than 10 MB.");
-      e.target.value = "";
-      return;
-    }
-
-    setPdfFile(file);
-  };
-
-  // ==========================================
-  // REMOVE PDF
-  // ==========================================
-
-  const removePdf = () => {
-    setPdfFile(null);
   };
 
   // ==========================================
@@ -1481,9 +1442,7 @@ function AdminCreateNews() {
       const adminToken = localStorage.getItem("adminToken");
 
       if (!adminToken) {
-        setError("Admin session expired. Please login again.");
-        setLoading(false);
-        return;
+        throw new Error("Admin session expired. Please login again.");
       }
 
       // ==========================================
@@ -1491,27 +1450,19 @@ function AdminCreateNews() {
       // ==========================================
 
       if (!form.title.trim()) {
-        setError("Please enter a government job news title.");
-        setLoading(false);
-        return;
+        throw new Error("Please enter a government job news title.");
       }
 
       if (!form.excerpt.trim()) {
-        setError("Please enter a short description.");
-        setLoading(false);
-        return;
+        throw new Error("Please enter a short description.");
       }
 
       if (!form.content.trim()) {
-        setError("Please write the government job news content.");
-        setLoading(false);
-        return;
+        throw new Error("Please write the government job news content.");
       }
 
       if (!imageFile) {
-        setError("Please select a cover image.");
-        setLoading(false);
-        return;
+        throw new Error("Please select a cover image.");
       }
 
       // ==========================================
@@ -1525,36 +1476,17 @@ function AdminCreateNews() {
 
       // ==========================================
       // FORM DATA
+      // Only text fields + cover image
       // ==========================================
 
       const formData = new FormData();
 
       formData.append("title", form.title.trim());
-
-      formData.append(
-        "excerpt",
-        form.excerpt.trim()
-      );
-
-      formData.append(
-        "content",
-        form.content
-      );
-
-      formData.append(
-        "category",
-        form.category
-      );
-
-      formData.append(
-        "author",
-        form.author.trim() || "TechBy"
-      );
-
-      formData.append(
-        "readTime",
-        form.readTime.trim() || "5 min"
-      );
+      formData.append("excerpt", form.excerpt.trim());
+      formData.append("content", form.content);
+      formData.append("category", form.category);
+      formData.append("author", form.author.trim() || "TechBy");
+      formData.append("readTime", form.readTime.trim() || "5 min");
 
       formData.append(
         "seoTitle",
@@ -1563,50 +1495,16 @@ function AdminCreateNews() {
 
       formData.append(
         "seoDescription",
-        form.seoDescription.trim() ||
-          form.excerpt.trim()
+        form.seoDescription.trim() || form.excerpt.trim()
       );
 
-      formData.append(
-        "status",
-        form.status
-      );
+      formData.append("status", form.status);
+      formData.append("featured", String(form.featured));
+      formData.append("applyLink", form.applyLink.trim());
+      formData.append("tags", JSON.stringify(tags));
 
-      formData.append(
-        "featured",
-        String(form.featured)
-      );
-
-      formData.append(
-        "applyLink",
-        form.applyLink.trim()
-      );
-
-      // Send tags as JSON string
-      formData.append(
-        "tags",
-        JSON.stringify(tags)
-      );
-
-      // ==========================================
-      // IMAGE FILE
-      // ==========================================
-
-      formData.append(
-        "image",
-        imageFile
-      );
-
-      // ==========================================
-      // PDF FILE
-      // ==========================================
-
-      if (pdfFile) {
-        formData.append(
-          "pdf",
-          pdfFile
-        );
-      }
+      // Cover image only
+      formData.append("image", imageFile);
 
       // ==========================================
       // API REQUEST
@@ -1616,21 +1514,18 @@ function AdminCreateNews() {
         `${API_URL}/news/admin/create`,
         {
           method: "POST",
-
           headers: {
             "x-admin-token": adminToken,
           },
-
           body: formData,
         }
       );
 
-      const data = await response.json();
+      const data = await response.json().catch(() => ({}));
 
       if (!response.ok || !data.success) {
         throw new Error(
-          data.message ||
-            "Failed to create government news."
+          data.message || "Failed to create government news."
         );
       }
 
@@ -1645,26 +1540,23 @@ function AdminCreateNews() {
       );
 
       // ==========================================
-      // RESET
+      // RESET FORM
       // ==========================================
 
-      setForm(initialForm);
+      if (imagePreview) {
+        URL.revokeObjectURL(imagePreview);
+      }
 
+      setForm({ ...initialForm });
       setImageFile(null);
       setImagePreview("");
-
-      setPdfFile(null);
 
       window.scrollTo({
         top: 0,
         behavior: "smooth",
       });
-
     } catch (err) {
-      console.error(
-        "Create government news error:",
-        err
-      );
+      console.error("Create government news error:", err);
 
       setError(
         err.message ||
@@ -1687,59 +1579,38 @@ function AdminCreateNews() {
 
   return (
     <div className="min-h-screen bg-slate-50 text-slate-900">
-
-      {/* ==========================================
-          MAIN
-      ========================================== */}
-
       <main className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
-
-        {/* ==========================================
-            HEADER
-        ========================================== */}
+        {/* HEADER */}
 
         <div className="mb-6 flex flex-col gap-4 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6 md:flex-row md:items-center md:justify-between">
-
           <div className="flex items-start gap-4">
-
             <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-emerald-50 text-xl text-emerald-600">
               <FaLandmark />
             </div>
 
             <div>
-
               <h1 className="text-xl font-black text-slate-900 sm:text-2xl">
                 Government News
               </h1>
 
               <p className="mt-1 text-sm text-slate-500">
-                Create and publish government job,
-                recruitment and exam updates.
+                Create and publish government job, recruitment and exam
+                updates.
               </p>
-
             </div>
-
           </div>
 
           <div className="flex items-center gap-2 rounded-xl bg-emerald-50 px-3 py-2 text-xs font-semibold text-emerald-700">
-
             <FaNewspaper />
-
-            Government Jobs & Exams
-
+            Government Jobs &amp; Exams
           </div>
-
         </div>
 
-        {/* ==========================================
-            SUCCESS
-        ========================================== */}
+        {/* SUCCESS MESSAGE */}
 
         {message && (
           <div className="mb-5 flex items-center gap-3 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-700">
-
             <FaCheckCircle />
-
             <span>{message}</span>
 
             <button
@@ -1749,19 +1620,14 @@ function AdminCreateNews() {
             >
               <FaTimes />
             </button>
-
           </div>
         )}
 
-        {/* ==========================================
-            ERROR
-        ========================================== */}
+        {/* ERROR MESSAGE */}
 
         {error && (
           <div className="mb-5 flex items-center gap-3 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-600">
-
             <FaTimes />
-
             <span>{error}</span>
 
             <button
@@ -1771,107 +1637,97 @@ function AdminCreateNews() {
             >
               <FaTimes />
             </button>
-
           </div>
         )}
 
-        {/* ==========================================
-            FORM
-        ========================================== */}
+        {/* MAIN FORM */}
 
         <form onSubmit={handleSubmit}>
-
           <div className="grid min-w-0 gap-6 lg:grid-cols-[minmax(0,1fr)_340px]">
-
-            {/* ==========================================
-                LEFT
-            ========================================== */}
+            {/* LEFT COLUMN */}
 
             <div className="min-w-0 space-y-6">
-
-              {/* ==========================================
-                  NEWS INFORMATION
-              ========================================== */}
+              {/* NEWS INFORMATION */}
 
               <section className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm sm:p-6">
-
-                <div className="mb-6">
-
-                  <div className="flex items-center gap-3">
-
-                    <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-emerald-50 text-emerald-600">
-                      <FaNewspaper />
-                    </div>
-
-                    <div>
-
-                      <h2 className="text-base font-bold text-slate-900 sm:text-lg">
-                        Government News Information
-                      </h2>
-
-                      <p className="mt-1 text-sm text-slate-500">
-                        Add recruitment, examination or government job information.
-                      </p>
-
-                    </div>
-
+                <div className="mb-6 flex items-center gap-3">
+                  <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-emerald-50 text-emerald-600">
+                    <FaNewspaper />
                   </div>
 
+                  <div>
+                    <h2 className="text-base font-bold text-slate-900 sm:text-lg">
+                      Government News Information
+                    </h2>
+
+                    <p className="mt-1 text-sm text-slate-500">
+                      Add recruitment, examination or government job
+                      information.
+                    </p>
+                  </div>
                 </div>
 
                 {/* TITLE */}
 
                 <div className="mb-5">
-
-                  <label className="mb-2 block text-sm font-semibold text-slate-700">
+                  <label
+                    htmlFor="title"
+                    className="mb-2 block text-sm font-semibold text-slate-700"
+                  >
                     News Title
                   </label>
 
                   <input
+                    id="title"
                     type="text"
                     name="title"
                     value={form.title}
                     onChange={handleChange}
                     placeholder="SSC CGL Recruitment 2026: Apply Online, Eligibility, Vacancy & Dates"
                     maxLength={250}
+                    required
                     className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 shadow-sm outline-none transition placeholder:text-slate-400 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
                   />
 
                   <div className="mt-2 text-right text-xs text-slate-400">
                     {form.title.length}/250
                   </div>
-
                 </div>
 
-                {/* EXCERPT */}
+                {/* SHORT DESCRIPTION */}
 
                 <div className="mb-5">
-
-                  <label className="mb-2 block text-sm font-semibold text-slate-700">
+                  <label
+                    htmlFor="excerpt"
+                    className="mb-2 block text-sm font-semibold text-slate-700"
+                  >
                     Short Description
                   </label>
 
                   <textarea
+                    id="excerpt"
                     name="excerpt"
                     value={form.excerpt}
                     onChange={handleChange}
                     rows={4}
                     maxLength={500}
-                    placeholder="SSC CGL 2026 recruitment notification details including vacancies, eligibility, important dates, application process and official website information."
+                    required
+                    placeholder="Provide a concise summary of vacancies, eligibility, important dates, application process and official website information."
                     className="w-full resize-none rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 shadow-sm outline-none transition placeholder:text-slate-400 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
                   />
 
                   <div className="mt-2 text-right text-xs text-slate-400">
                     {form.excerpt.length}/500
                   </div>
-
                 </div>
 
                 {/* CONTENT */}
 
                 <div>
-
-                  <label className="mb-2 block text-sm font-semibold text-slate-700">
+                  <label
+                    htmlFor="content"
+                    className="mb-2 block text-sm font-semibold text-slate-700"
+                  >
                     Government News Content
                   </label>
 
@@ -1880,13 +1736,15 @@ function AdminCreateNews() {
                   </div>
 
                   <textarea
+                    id="content"
                     name="content"
                     value={form.content}
                     onChange={handleChange}
                     rows={22}
-                    placeholder={`<h2>SSC CGL Recruitment 2026</h2>
+                    required
+                    placeholder={`<h2>Recruitment 2026</h2>
 
-<p>The Staff Selection Commission has announced...</p>
+<p>The department has announced the recruitment details...</p>
 
 <h2>Important Dates</h2>
 
@@ -1920,29 +1778,21 @@ function AdminCreateNews() {
                   />
 
                   <p className="mt-2 text-xs text-slate-400">
-                    Include important dates, vacancies,
-                    eligibility, selection process,
-                    application steps and official links.
+                    Include important dates, vacancies, eligibility,
+                    selection process, application steps and official links.
                   </p>
-
                 </div>
-
               </section>
 
-              {/* ==========================================
-                  SEO
-              ========================================== */}
+              {/* SEO SETTINGS */}
 
               <section className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm sm:p-6">
-
                 <div className="mb-6 flex items-center gap-3">
-
                   <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-blue-50 text-blue-600">
                     <FaGlobe />
                   </div>
 
                   <div>
-
                     <h2 className="font-bold text-slate-900">
                       SEO Settings
                     </h2>
@@ -1950,51 +1800,44 @@ function AdminCreateNews() {
                     <p className="text-xs text-slate-500">
                       Optimize your government job article for search engines.
                     </p>
-
                   </div>
-
                 </div>
 
                 <div className="mb-5">
-
-                  <label className="mb-2 block text-sm font-semibold text-slate-700">
+                  <label
+                    htmlFor="seoTitle"
+                    className="mb-2 block text-sm font-semibold text-slate-700"
+                  >
                     SEO Title
                   </label>
 
                   <input
+                    id="seoTitle"
                     type="text"
                     name="seoTitle"
                     value={form.seoTitle}
                     onChange={handleChange}
-                    placeholder={
-                      form.title ||
-                      "SSC CGL Recruitment 2026 - Apply Online"
-                    }
+                    placeholder={form.title || "Recruitment 2026 - Apply Online"}
                     maxLength={250}
                     className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 shadow-sm outline-none transition placeholder:text-slate-400 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
                   />
 
                   <div className="mt-2 flex justify-between text-xs text-slate-400">
-
-                    <span>
-                      Keep it clear and search-friendly.
-                    </span>
-
-                    <span>
-                      {form.seoTitle.length}/250
-                    </span>
-
+                    <span>Keep it clear and search-friendly.</span>
+                    <span>{form.seoTitle.length}/250</span>
                   </div>
-
                 </div>
 
                 <div>
-
-                  <label className="mb-2 block text-sm font-semibold text-slate-700">
+                  <label
+                    htmlFor="seoDescription"
+                    className="mb-2 block text-sm font-semibold text-slate-700"
+                  >
                     SEO Description
                   </label>
 
                   <textarea
+                    id="seoDescription"
                     name="seoDescription"
                     value={form.seoDescription}
                     onChange={handleChange}
@@ -2002,7 +1845,7 @@ function AdminCreateNews() {
                     maxLength={500}
                     placeholder={
                       form.excerpt ||
-                      "Get the latest government job recruitment details, eligibility, important dates, vacancies and application process."
+                      "Get the latest government recruitment details, eligibility, important dates, vacancies and application process."
                     }
                     className="w-full resize-none rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 shadow-sm outline-none transition placeholder:text-slate-400 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
                   />
@@ -2010,54 +1853,39 @@ function AdminCreateNews() {
                   <div className="mt-2 text-right text-xs text-slate-400">
                     {form.seoDescription.length}/500
                   </div>
-
                 </div>
-
               </section>
-
             </div>
 
-            {/* ==========================================
-                RIGHT SIDEBAR
-            ========================================== */}
+            {/* RIGHT SIDEBAR */}
 
             <aside className="min-w-0 space-y-6">
-
               {/* PUBLISH */}
 
               <section className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm sm:p-5">
-
-                <h2 className="mb-4 font-bold text-slate-900">
-                  Publish
-                </h2>
+                <h2 className="mb-4 font-bold text-slate-900">Publish</h2>
 
                 <div className="mb-4">
-
-                  <label className="mb-2 block text-xs font-semibold uppercase tracking-wide text-slate-500">
+                  <label
+                    htmlFor="status"
+                    className="mb-2 block text-xs font-semibold uppercase tracking-wide text-slate-500"
+                  >
                     Status
                   </label>
 
                   <select
+                    id="status"
                     name="status"
                     value={form.status}
                     onChange={handleChange}
                     className="w-full rounded-xl border border-slate-200 bg-white px-3 py-3 text-sm text-slate-900 shadow-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
                   >
-
-                    <option value="draft">
-                      Draft
-                    </option>
-
-                    <option value="published">
-                      Published
-                    </option>
-
+                    <option value="draft">Draft</option>
+                    <option value="published">Published</option>
                   </select>
-
                 </div>
 
                 <label className="flex cursor-pointer items-center gap-3 rounded-xl border border-slate-200 bg-slate-50 p-3 transition hover:bg-slate-100">
-
                   <input
                     type="checkbox"
                     name="featured"
@@ -2067,21 +1895,15 @@ function AdminCreateNews() {
                   />
 
                   <div>
-
                     <div className="flex items-center gap-2 text-sm font-semibold text-slate-700">
-
                       <FaStar className="text-yellow-500" />
-
                       Featured Government Update
-
                     </div>
 
                     <p className="mt-1 text-xs text-slate-500">
                       Show this article in the featured government news section.
                     </p>
-
                   </div>
-
                 </label>
 
                 <button
@@ -2089,15 +1911,12 @@ function AdminCreateNews() {
                   disabled={loading}
                   className="mt-5 flex w-full items-center justify-center gap-2 rounded-xl bg-emerald-500 px-4 py-3 font-semibold text-white shadow-sm transition hover:bg-emerald-600 disabled:cursor-not-allowed disabled:opacity-50"
                 >
-
                   <FaSave />
-
                   {loading
                     ? "Uploading & Saving..."
                     : form.status === "published"
                     ? "Publish Government News"
                     : "Save Draft"}
-
                 </button>
 
                 <button
@@ -2105,29 +1924,20 @@ function AdminCreateNews() {
                   onClick={openPreview}
                   className="mt-3 flex w-full items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm font-medium text-slate-700 shadow-sm transition hover:bg-slate-50"
                 >
-
                   <FaEye />
-
                   Preview
-
                 </button>
-
               </section>
 
-              {/* ==========================================
-                  OFFICIAL APPLY LINK
-              ========================================== */}
+              {/* OFFICIAL APPLY LINK */}
 
               <section className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm sm:p-5">
-
                 <div className="mb-4 flex items-center gap-3">
-
                   <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-emerald-50 text-emerald-600">
                     <FaGlobe />
                   </div>
 
                   <div>
-
                     <h2 className="font-bold text-slate-900">
                       Official Apply Link
                     </h2>
@@ -2135,9 +1945,7 @@ function AdminCreateNews() {
                     <p className="text-xs text-slate-500">
                       Add the official application website.
                     </p>
-
                   </div>
-
                 </div>
 
                 <input
@@ -2160,42 +1968,30 @@ function AdminCreateNews() {
                     rel="noopener noreferrer"
                     className="mt-3 inline-flex items-center gap-2 text-xs font-semibold text-emerald-600 hover:text-emerald-700"
                   >
-                    Check Apply Link
-                    <span>↗</span>
+                    Check Apply Link <span>↗</span>
                   </a>
                 )}
-
               </section>
 
-              {/* ==========================================
-                  COVER IMAGE
-              ========================================== */}
+              {/* COVER IMAGE */}
 
               <section className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm sm:p-5">
-
                 <div className="mb-4 flex items-center gap-3">
-
                   <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-purple-50 text-purple-600">
                     <FaImage />
                   </div>
 
                   <div>
-
-                    <h2 className="font-bold text-slate-900">
-                      Cover Image
-                    </h2>
+                    <h2 className="font-bold text-slate-900">Cover Image</h2>
 
                     <p className="text-xs text-slate-500">
                       Upload article thumbnail or featured image.
                     </p>
-
                   </div>
-
                 </div>
 
                 {!imagePreview ? (
                   <label className="flex cursor-pointer flex-col items-center justify-center rounded-xl border-2 border-dashed border-slate-200 bg-slate-50 px-4 py-8 text-center transition hover:border-emerald-400 hover:bg-emerald-50">
-
                     <FaUpload className="mb-3 text-2xl text-emerald-500" />
 
                     <span className="text-sm font-semibold text-slate-700">
@@ -2212,11 +2008,9 @@ function AdminCreateNews() {
                       onChange={handleImageChange}
                       className="hidden"
                     />
-
                   </label>
                 ) : (
                   <div className="overflow-hidden rounded-xl border border-slate-200">
-
                     <img
                       src={imagePreview}
                       alt="Cover preview"
@@ -2224,118 +2018,34 @@ function AdminCreateNews() {
                     />
 
                     <div className="flex items-center justify-between bg-white p-3">
-
                       <div className="min-w-0">
-
                         <p className="truncate text-xs font-semibold text-slate-700">
                           {imageFile?.name}
                         </p>
 
                         <p className="mt-1 text-xs text-slate-400">
                           {imageFile
-                            ? `${(
-                                imageFile.size /
-                                1024 /
-                                1024
-                              ).toFixed(2)} MB`
+                            ? `${(imageFile.size / 1024 / 1024).toFixed(2)} MB`
                             : ""}
                         </p>
-
                       </div>
 
                       <button
                         type="button"
                         onClick={removeImage}
                         className="ml-3 rounded-lg bg-red-50 p-2 text-red-500 transition hover:bg-red-100"
+                        aria-label="Remove cover image"
                       >
                         <FaTrash />
                       </button>
-
                     </div>
-
                   </div>
                 )}
-
               </section>
 
-              {/* ==========================================
-                  OFFICIAL PDF
-              ========================================== */}
+              {/* GOVERNMENT CATEGORY */}
 
               <section className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm sm:p-5">
-
-                <div className="mb-4">
-
-                  <h2 className="font-bold text-slate-900">
-                    Official Notification PDF
-                  </h2>
-
-                  <p className="mt-1 text-xs text-slate-500">
-                    Optional. Upload the official recruitment notification.
-                  </p>
-
-                </div>
-
-                {!pdfFile ? (
-                  <label className="flex cursor-pointer flex-col items-center justify-center rounded-xl border-2 border-dashed border-slate-200 bg-slate-50 px-4 py-7 text-center transition hover:border-red-300 hover:bg-red-50">
-
-                    <FaUpload className="mb-3 text-xl text-red-500" />
-
-                    <span className="text-sm font-semibold text-slate-700">
-                      Upload PDF
-                    </span>
-
-                    <span className="mt-1 text-xs text-slate-400">
-                      PDF only • Max 10 MB
-                    </span>
-
-                    <input
-                      type="file"
-                      accept="application/pdf"
-                      onChange={handlePdfChange}
-                      className="hidden"
-                    />
-
-                  </label>
-                ) : (
-                  <div className="flex items-center justify-between rounded-xl border border-red-200 bg-red-50 p-3">
-
-                    <div className="min-w-0">
-
-                      <p className="truncate text-sm font-semibold text-slate-700">
-                        {pdfFile.name}
-                      </p>
-
-                      <p className="mt-1 text-xs text-slate-400">
-                        {(
-                          pdfFile.size /
-                          1024 /
-                          1024
-                        ).toFixed(2)}{" "}
-                        MB
-                      </p>
-
-                    </div>
-
-                    <button
-                      type="button"
-                      onClick={removePdf}
-                      className="ml-3 rounded-lg bg-white p-2 text-red-500 shadow-sm hover:bg-red-100"
-                    >
-                      <FaTrash />
-                    </button>
-
-                  </div>
-                )}
-
-              </section>
-
-              {/* ==========================================
-                  CATEGORY
-              ========================================== */}
-
-              <section className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm sm:p-5">
-
                 <h2 className="mb-4 font-bold text-slate-900">
                   Government Category
                 </h2>
@@ -2346,60 +2056,55 @@ function AdminCreateNews() {
                   onChange={handleChange}
                   className="w-full rounded-xl border border-slate-200 bg-white px-3 py-3 text-sm text-slate-900 shadow-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
                 >
-
                   {categories.map((category) => (
-                    <option
-                      key={category}
-                      value={category}
-                    >
+                    <option key={category} value={category}>
                       {category}
                     </option>
                   ))}
-
                 </select>
 
                 <p className="mt-2 text-xs leading-5 text-slate-400">
-                  Select the government recruitment or exam
-                  category that best matches this article.
+                  Select the government recruitment or exam category that best
+                  matches this article.
                 </p>
-
               </section>
 
-              {/* ==========================================
-                  ARTICLE DETAILS
-              ========================================== */}
+              {/* ARTICLE DETAILS */}
 
               <section className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm sm:p-5">
-
                 <h2 className="mb-4 font-bold text-slate-900">
                   Article Details
                 </h2>
 
                 <div className="space-y-4">
-
                   <div>
-
-                    <label className="mb-2 block text-xs font-semibold text-slate-500">
+                    <label
+                      htmlFor="author"
+                      className="mb-2 block text-xs font-semibold text-slate-500"
+                    >
                       Author
                     </label>
 
                     <input
+                      id="author"
                       type="text"
                       name="author"
                       value={form.author}
                       onChange={handleChange}
                       className="w-full rounded-xl border border-slate-200 bg-white px-3 py-3 text-sm text-slate-900 shadow-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
                     />
-
                   </div>
 
                   <div>
-
-                    <label className="mb-2 block text-xs font-semibold text-slate-500">
+                    <label
+                      htmlFor="readTime"
+                      className="mb-2 block text-xs font-semibold text-slate-500"
+                    >
                       Read Time
                     </label>
 
                     <input
+                      id="readTime"
                       type="text"
                       name="readTime"
                       value={form.readTime}
@@ -2407,27 +2112,18 @@ function AdminCreateNews() {
                       placeholder="5 min"
                       className="w-full rounded-xl border border-slate-200 bg-white px-3 py-3 text-sm text-slate-900 shadow-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
                     />
-
                   </div>
-
                 </div>
-
               </section>
 
-              {/* ==========================================
-                  TAGS
-              ========================================== */}
+              {/* TAGS */}
 
               <section className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm sm:p-5">
-
                 <div className="mb-4 flex items-center gap-3">
-
                   <FaTags className="text-emerald-600" />
-
                   <h2 className="font-bold text-slate-900">
                     Government Job Tags
                   </h2>
-
                 </div>
 
                 <input
@@ -2435,39 +2131,28 @@ function AdminCreateNews() {
                   name="tags"
                   value={form.tags}
                   onChange={handleChange}
-                  placeholder="SSC CGL, SSC Recruitment, Government Jobs, SSC Exam"
+                  placeholder="SSC CGL, SSC Recruitment, Government Jobs"
                   className="w-full rounded-xl border border-slate-200 bg-white px-3 py-3 text-sm text-slate-900 shadow-sm outline-none transition placeholder:text-slate-400 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
                 />
 
                 <p className="mt-2 text-xs text-slate-400">
                   Separate tags with commas.
                 </p>
-
               </section>
-
             </aside>
-
           </div>
-
         </form>
-
       </main>
 
-      {/* ==========================================
-          PREVIEW MODAL
-      ========================================== */}
+      {/* PREVIEW MODAL */}
 
       {showPreview && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 p-3 backdrop-blur-sm sm:p-6">
-
           <div className="flex max-h-[95vh] w-full max-w-4xl flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-2xl">
-
-            {/* HEADER */}
+            {/* PREVIEW HEADER */}
 
             <div className="flex items-center justify-between border-b border-slate-200 bg-white px-4 py-4 sm:px-6">
-
               <div>
-
                 <h2 className="font-bold text-slate-900">
                   Government News Preview
                 </h2>
@@ -2475,51 +2160,41 @@ function AdminCreateNews() {
                 <p className="text-xs text-slate-500">
                   Preview the article before publishing.
                 </p>
-
               </div>
 
               <button
                 type="button"
                 onClick={() => setShowPreview(false)}
                 className="rounded-lg p-2 text-slate-400 transition hover:bg-slate-100 hover:text-slate-700"
+                aria-label="Close preview"
               >
                 <FaTimes />
               </button>
-
             </div>
 
-            {/* CONTENT */}
+            {/* PREVIEW CONTENT */}
 
             <div className="overflow-y-auto">
-
-              {/* IMAGE */}
-
               {imagePreview && (
                 <img
                   src={imagePreview}
-                  alt={form.title}
+                  alt={form.title || "Government news cover"}
                   className="aspect-[2/1] w-full object-cover"
                 />
               )}
 
               <article className="mx-auto max-w-3xl px-5 py-7 sm:px-8 sm:py-10">
-
                 <div className="mb-4 flex flex-wrap items-center gap-2">
-
                   <span className="rounded-full bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-700">
                     {form.category}
                   </span>
 
                   {form.featured && (
                     <span className="flex items-center gap-1 rounded-full bg-yellow-50 px-3 py-1 text-xs font-semibold text-yellow-700">
-
                       <FaStar />
-
                       Featured
-
                     </span>
                   )}
-
                 </div>
 
                 <h1 className="text-2xl font-black leading-tight text-slate-900 sm:text-4xl">
@@ -2527,17 +2202,9 @@ function AdminCreateNews() {
                 </h1>
 
                 <div className="mt-4 flex flex-wrap gap-3 text-xs text-slate-500">
-
-                  <span>
-                    By {form.author || "TechBy"}
-                  </span>
-
+                  <span>By {form.author || "TechBy"}</span>
                   <span>•</span>
-
-                  <span>
-                    {form.readTime || "5 min"}
-                  </span>
-
+                  <span>{form.readTime || "5 min"}</span>
                 </div>
 
                 <p className="mt-6 text-base leading-7 text-slate-600">
@@ -2554,67 +2221,48 @@ function AdminCreateNews() {
                   }}
                 />
 
-                {pdfFile && (
-                  <div className="mt-8 rounded-xl border border-red-200 bg-red-50 p-4">
+                {form.applyLink && (
+                  <div className="mt-8 rounded-xl border border-emerald-200 bg-emerald-50 p-4">
+                    <h3 className="text-sm font-bold text-emerald-900">
+                      Official Application Website
+                    </h3>
 
-                    <div className="flex items-center gap-3">
-
-                      <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-red-100 text-red-600">
-                        PDF
-                      </div>
-
-                      <div>
-
-                        <h3 className="text-sm font-bold text-slate-900">
-                          Official Notification PDF
-                        </h3>
-
-                        <p className="mt-1 text-xs text-slate-500">
-                          {pdfFile.name}
-                        </p>
-
-                      </div>
-
-                    </div>
-
+                    <a
+                      href={form.applyLink}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="mt-2 inline-block break-all text-sm text-emerald-700 underline"
+                    >
+                      {form.applyLink}
+                    </a>
                   </div>
                 )}
 
                 <div className="mt-8 rounded-xl border border-blue-200 bg-blue-50 p-4">
-
                   <div className="flex gap-3">
-
                     <FaGlobe className="mt-1 shrink-0 text-blue-600" />
 
                     <div>
-
                       <h3 className="text-sm font-bold text-blue-900">
                         Admin Reminder
                       </h3>
 
                       <p className="mt-1 text-xs leading-5 text-blue-700">
-                        Always verify recruitment details from the official
-                        government department, commission or organization
-                        website before publishing.
+                        Verify recruitment details from the official government
+                        department, commission or organization website before
+                        publishing.
                       </p>
-
                     </div>
-
                   </div>
-
                 </div>
-
               </article>
-
             </div>
-
           </div>
-
         </div>
       )}
-
     </div>
   );
 }
 
 export default AdminCreateNews;
+

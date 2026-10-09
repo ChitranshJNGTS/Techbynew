@@ -284,139 +284,139 @@ export default Ads;
 
 
 
-// import { useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 
-// /* =========================================================
-//    DUMMY AD CONFIG
-//    No real ad network / API is used
-// ========================================================= */
+/* =========================================================
+   DUMMY AD CONFIG
+   No real ad network / API is used
+========================================================= */
 
-// const DUMMY_ADS = {
-//   "160x300": {
-//     width: 160,
-//     height: 300,
-//     label: "160 × 300 AD",
-//   },
+const DUMMY_ADS = {
+  "160x300": {
+    width: 160,
+    height: 300,
+    label: "160 × 300 AD",
+  },
 
-//   "320x50": {
-//     width: 320,
-//     height: 50,
-//     label: "320 × 50 AD",
-//   },
+  "320x50": {
+    width: 320,
+    height: 50,
+    label: "320 × 50 AD",
+  },
 
-//   "728x90": {
-//     width: 728,
-//     height: 90,
-//     label: "728 × 90 AD",
-//   },
+  "728x90": {
+    width: 728,
+    height: 90,
+    label: "728 × 90 AD",
+  },
 
-//   "profit-1": {
-//     width: "100%",
-//     height: 60,
-//     label: "DUMMY AD",
-//   },
+  "profit-1": {
+    width: "100%",
+    height: 60,
+    label: "DUMMY AD",
+  },
 
-//   "profit-2": {
-//     width: "100%",
-//     height: 60,
-//     label: "DUMMY AD",
-//   },
-// };
+  "profit-2": {
+    width: "100%",
+    height: 60,
+    label: "DUMMY AD",
+  },
+};
 
-// /* =========================================================
-//    ADS COMPONENT
-// ========================================================= */
+/* =========================================================
+   ADS COMPONENT
+========================================================= */
 
-// const Ads = ({ type }) => {
-//   const adRef = useRef(null);
+const Ads = ({ type }) => {
+  const adRef = useRef(null);
 
-//   useEffect(() => {
-//     const container = adRef.current;
+  useEffect(() => {
+    const container = adRef.current;
 
-//     if (!container || !type) {
-//       return;
-//     }
+    if (!container || !type) {
+      return;
+    }
 
-//     // Clear previous ad
-//     container.innerHTML = "";
+    // Clear previous ad
+    container.innerHTML = "";
 
-//     const ad = DUMMY_ADS[type];
+    const ad = DUMMY_ADS[type];
 
-//     if (!ad) {
-//       return;
-//     }
+    if (!ad) {
+      return;
+    }
 
-//     /* =====================================================
-//        CREATE DUMMY AD
-//     ===================================================== */
+    /* =====================================================
+       CREATE DUMMY AD
+    ===================================================== */
 
-//     const wrapper = document.createElement("div");
+    const wrapper = document.createElement("div");
 
-//     wrapper.style.width =
-//       typeof ad.width === "number" ? `${ad.width}px` : ad.width;
+    wrapper.style.width =
+      typeof ad.width === "number" ? `${ad.width}px` : ad.width;
 
-//     wrapper.style.height = `${ad.height}px`;
+    wrapper.style.height = `${ad.height}px`;
 
-//     wrapper.style.display = "flex";
-//     wrapper.style.alignItems = "center";
-//     wrapper.style.justifyContent = "center";
+    wrapper.style.display = "flex";
+    wrapper.style.alignItems = "center";
+    wrapper.style.justifyContent = "center";
 
-//     wrapper.style.background =
-//       "linear-gradient(135deg, #0f172a, #1e293b)";
+    wrapper.style.background =
+      "linear-gradient(135deg, #0f172a, #1e293b)";
 
-//     wrapper.style.border = "1px solid #334155";
-//     wrapper.style.borderRadius = "8px";
+    wrapper.style.border = "1px solid #334155";
+    wrapper.style.borderRadius = "8px";
 
-//     wrapper.style.color = "#94a3b8";
-//     wrapper.style.fontSize = "12px";
-//     wrapper.style.fontFamily = "Arial, sans-serif";
+    wrapper.style.color = "#94a3b8";
+    wrapper.style.fontSize = "12px";
+    wrapper.style.fontFamily = "Arial, sans-serif";
 
-//     wrapper.style.overflow = "hidden";
+    wrapper.style.overflow = "hidden";
 
-//     /* =====================================================
-//        AD TEXT
-//     ===================================================== */
+    /* =====================================================
+       AD TEXT
+    ===================================================== */
 
-//     const text = document.createElement("span");
+    const text = document.createElement("span");
 
-//     text.innerText = ad.label;
+    text.innerText = ad.label;
 
-//     text.style.pointerEvents = "none";
-//     text.style.userSelect = "none";
+    text.style.pointerEvents = "none";
+    text.style.userSelect = "none";
 
-//     wrapper.appendChild(text);
+    wrapper.appendChild(text);
 
-//     container.appendChild(wrapper);
+    container.appendChild(wrapper);
 
-//     /* =====================================================
-//        CLEANUP
-//     ===================================================== */
+    /* =====================================================
+       CLEANUP
+    ===================================================== */
 
-//     return () => {
-//       container.innerHTML = "";
-//     };
-//   }, [type]);
+    return () => {
+      container.innerHTML = "";
+    };
+  }, [type]);
 
-//   /* =========================================================
-//      INVALID TYPE
-//   ========================================================= */
+  /* =========================================================
+     INVALID TYPE
+  ========================================================= */
 
-//   if (!type || !DUMMY_ADS[type]) {
-//     return null;
-//   }
+  if (!type || !DUMMY_ADS[type]) {
+    return null;
+  }
 
-//   /* =========================================================
-//      RENDER
-//   ========================================================= */
+  /* =========================================================
+     RENDER
+  ========================================================= */
 
-//   return (
-//     <div
-//       ref={adRef}
-//       className="overflow-hidden"
-//       data-ad-type={type}
-//       data-ad-placement="techby"
-//     />
-//   );
-// };
+  return (
+    <div
+      ref={adRef}
+      className="overflow-hidden"
+      data-ad-type={type}
+      data-ad-placement="techby"
+    />
+  );
+};
 
-// export default Ads;
+export default Ads;
