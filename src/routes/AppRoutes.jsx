@@ -101,10 +101,7 @@ export default function AppRoutes() {
 
       <Route element={<AdminProtectedRoute />}>
 
-        <Route
-          path="/admin/dashboard"
-          element={<AdminDashboard />}
-        />
+  
  {/* ================= RECRUITER ================= */}
 
       <Route

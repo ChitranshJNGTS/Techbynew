@@ -1310,6 +1310,7 @@ import {
 import { toast } from "react-toastify";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { Helmet } from "react-helmet-async";
 import API from "../Api/JobApi";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
@@ -1672,7 +1673,78 @@ const shareJob = async () => {
 
   return (
     <>
-      <Navbar />
+    <Helmet>
+  <title>{job.jobTitle} - {job.companyName} | TechBy</title>
+
+  <meta
+    name="description"
+    content={`${job.jobTitle} at ${job.companyName}. ${
+      (job.jobSummary || "Explore this job opportunity on TechBy.")
+        .replace(/\s+/g, " ")
+        .slice(0, 150)
+    }`}
+  />
+
+  <link
+    rel="canonical"
+    href={`https://techby.in/jobs/${job.slug}`}
+  />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="TechBy" />
+  <meta
+    property="og:title"
+    content={`${job.jobTitle} - ${job.companyName}`}
+  />
+  <meta
+    property="og:description"
+    content={`${job.jobTitle} at ${job.companyName}. ${
+      (job.jobSummary || "Explore this job opportunity on TechBy.")
+        .replace(/\s+/g, " ")
+        .slice(0, 150)
+    }`}
+  />
+  <meta
+    property="og:url"
+    content={`https://techby.in/jobs/${job.slug}`}
+  />
+  <meta
+    property="og:image"
+    content={
+      job.companyLogo &&
+      job.companyLogo !== "null" &&
+      job.companyLogo.startsWith("https://")
+        ? job.companyLogo
+        : "https://techby.in/default-job-share.png"
+    }
+  />
+  <meta
+    property="og:image:alt"
+    content={`${job.companyName} logo`}
+  />
+
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta
+    name="twitter:title"
+    content={`${job.jobTitle} - ${job.companyName}`}
+  />
+  <meta
+    name="twitter:description"
+    content={`Explore this ${job.jobTitle} opportunity on TechBy.`}
+  />
+  <meta
+    name="twitter:image"
+    content={
+      job.companyLogo &&
+      job.companyLogo !== "null" &&
+      job.companyLogo.startsWith("https://")
+        ? job.companyLogo
+        : "https://techby.in/default-job-share.png"
+    }
+  />
+</Helmet>
+
+<Navbar />
 
       <main className="bg-slate-50 min-h-screen">
 
