@@ -639,6 +639,7 @@ import {
 } from "react-icons/fa";
 import Navbar from "./Navbar";
 import Ads from "./Ads";
+import Footer from "./Footer";
 
 const API_URL =
   import.meta.env.VITE_API_URL || "http://localhost:5050";
@@ -846,23 +847,33 @@ export default function NewsDetails() {
     );
   }
 
-  /* =======================================================
-     SHARE URL
-  ======================================================= */
 
-  const shareUrl = window.location.href;
+/* =======================================================
+   SHARE DETAILS
+======================================================= */
 
-  const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(
-    `${article.title} - ${shareUrl}`
-  )}`;
+const shareUrl = window.location.href;
 
-  const linkedinUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(
-    shareUrl
-  )}`;
+const shareTitle = article.title || "Latest News on TechBy";
 
-  const facebookUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
-    shareUrl
-  )}`;
+const shareDescription =
+  article.excerpt || "Read the latest news and updates on TechBy.";
+
+const shareText = `${shareTitle}\n\n${shareDescription}\n\nRead more: ${shareUrl}`;
+
+const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(
+  shareText
+)}`;
+
+const linkedinUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(
+  shareUrl
+)}`;
+
+const facebookUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
+  shareUrl
+)}`;
+
+
 
   /* =======================================================
      CONTENT
@@ -1048,6 +1059,37 @@ export default function NewsDetails() {
                 }}
               />
 
+
+
+{/* OFFICIAL APPLY BUTTON */}
+
+{article.applyLink && (
+  <div className="mt-8 rounded-2xl border border-emerald-200 bg-emerald-50 p-5">
+    <h3 className="text-lg font-bold text-slate-900">
+      Apply for This Opportunity
+    </h3>
+
+    <p className="mt-2 text-sm leading-6 text-slate-600">
+      Visit the official website for application details and eligibility.
+    </p>
+
+    <a
+      href={article.applyLink}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-emerald-700 px-5 py-3 text-sm font-bold text-white transition hover:bg-emerald-800 sm:w-auto"
+    >
+      Apply on Official Website
+      <FaArrowRight />
+    </a>
+
+    <p className="mt-2 break-all text-xs text-slate-500">
+      {article.applyLink}
+    </p>
+  </div>
+)}
+
+
               {/* =================================================
                   JOB SEEKER REMINDER
               ================================================= */}
@@ -1099,57 +1141,67 @@ export default function NewsDetails() {
                   </div>
                 )}
 
-              {/* =================================================
-                  SHARE
-              ================================================= */}
+          
+{/* SHARE */}
 
-              <div className="mt-10 border-t border-slate-200 pt-6">
+<div className="mt-10 border-t border-slate-200 pt-6">
+  <h3 className="text-sm font-semibold text-slate-700">
+    Share this article
+  </h3>
 
-                <h3 className="text-sm font-semibold text-slate-700">
-                  Share this article
-                </h3>
+  <p className="mt-2 text-sm leading-6 text-slate-500">
+    {shareTitle}
+  </p>
 
-                <div className="mt-3 flex gap-3">
+  <p className="mt-1 text-sm leading-6 text-slate-500">
+    {shareDescription}
+  </p>
 
-                  {/* WhatsApp */}
+  {article.image && (
+    <img
+      src={article.image}
+      alt={shareTitle}
+      className="mt-4 aspect-video w-full max-w-md rounded-xl border border-slate-200 object-cover"
+    />
+  )}
 
-                  <a
-                    href={whatsappUrl}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="flex h-10 w-10 items-center justify-center rounded-xl border border-green-100 bg-green-50 text-green-600 transition hover:bg-green-600 hover:text-white"
-                    aria-label="Share on WhatsApp"
-                  >
-                    <FaWhatsapp />
-                  </a>
+  <div className="mt-4 flex gap-3">
+    <a
+      href={whatsappUrl}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="flex h-10 w-10 items-center justify-center rounded-xl border border-green-100 bg-green-50 text-green-600 transition hover:bg-green-600 hover:text-white"
+      aria-label="Share on WhatsApp"
+      title="Share on WhatsApp"
+    >
+      <FaWhatsapp />
+    </a>
 
-                  {/* LinkedIn */}
+    <a
+      href={linkedinUrl}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="flex h-10 w-10 items-center justify-center rounded-xl border border-blue-100 bg-blue-50 text-blue-600 transition hover:bg-blue-600 hover:text-white"
+      aria-label="Share on LinkedIn"
+      title="Share on LinkedIn"
+    >
+      <FaLinkedinIn />
+    </a>
 
-                  <a
-                    href={linkedinUrl}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="flex h-10 w-10 items-center justify-center rounded-xl border border-blue-100 bg-blue-50 text-blue-600 transition hover:bg-blue-600 hover:text-white"
-                    aria-label="Share on LinkedIn"
-                  >
-                    <FaLinkedinIn />
-                  </a>
+    <a
+      href={facebookUrl}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="flex h-10 w-10 items-center justify-center rounded-xl border border-indigo-100 bg-indigo-50 text-indigo-600 transition hover:bg-indigo-600 hover:text-white"
+      aria-label="Share on Facebook"
+      title="Share on Facebook"
+    >
+      <FaFacebookF />
+    </a>
+  </div>
+</div>
 
-                  {/* Facebook */}
 
-                  <a
-                    href={facebookUrl}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="flex h-10 w-10 items-center justify-center rounded-xl border border-indigo-100 bg-indigo-50 text-indigo-600 transition hover:bg-indigo-600 hover:text-white"
-                    aria-label="Share on Facebook"
-                  >
-                    <FaFacebookF />
-                  </a>
-
-                </div>
-
-              </div>
 
             </article>
 
@@ -1269,6 +1321,7 @@ export default function NewsDetails() {
         </main>
 
       </div>
+      <Footer/>
     </>
   );
 }
