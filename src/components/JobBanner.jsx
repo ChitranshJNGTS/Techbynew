@@ -332,13 +332,13 @@
 
 
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useParams } from "react-router-dom";
 import API from "../Api/JobApi";
 
 export default function JobBanner({ job: jobProp }) {
   const { id } = useParams();
-
+const bannerRef = useRef(null);
   const [job, setJob] = useState(jobProp || null);
   const [loading, setLoading] = useState(!jobProp);
 
@@ -423,7 +423,7 @@ export default function JobBanner({ job: jobProp }) {
   const companyName = job.companyName || job.company || "Company";
 
   return (
-    <div className="relative w-full h-full bg-white overflow-hidden">
+    <div  ref={bannerRef} className="relative w-full h-full bg-white overflow-hidden">
       {/* =====================================
           TOP LEFT - TECHBY BRANDING
       ===================================== */}
