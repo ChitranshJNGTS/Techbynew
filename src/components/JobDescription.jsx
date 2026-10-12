@@ -1533,29 +1533,25 @@ const submitApplication = async (e) => {
 };
 
 
+
 const shareJob = async () => {
   try {
-    const shareUrl =
-      `${window.location.origin}/jobs/${job.slug}`;
+    // API.defaults.baseURL should include your backend's /api prefix.
+    const apiBaseURL = API.defaults.baseURL?.replace(/\/+$/, "");
+
+    if (!apiBaseURL || !job?._id) {
+      toast.error("Unable to create job share link.");
+      return;
+    }
+
+    // This endpoint returns HTML containing server-generated OG tags.
+    const shareUrl = `${apiBaseURL}/jobs/share/${job._id}`;
 
     const shareData = {
       title: `${job.jobTitle} - ${job.companyName}`,
-
       text:
         `${job.jobTitle} at ${job.companyName}\n\n` +
-        `${job.jobSummary || "Check out this job opportunity."}\n\n` +
-        `${job.city ? `📍 ${job.city}${job.state ? `, ${job.state}` : ""}\n` : ""}` +
-        `${job.experience ? `💼 ${job.experience}\n` : ""}` +
-        `${
-          job.salaryMin || job.salaryMax
-            ? `💰 ₹${job.salaryMin?.toLocaleString() || ""}${
-                job.salaryMax
-                  ? ` - ₹${job.salaryMax.toLocaleString()}`
-                  : ""
-              }`
-            : ""
-        }`,
-
+        `${job.jobSummary || "Check out this job opportunity on TechBy."}`,
       url: shareUrl,
     };
 
@@ -1572,6 +1568,7 @@ const shareJob = async () => {
     }
   }
 };
+
 
 
 
