@@ -97,17 +97,16 @@ export default function AppRoutes() {
         element={<AdminLogin />}
       />
 
+  
       {/* ================= PROTECTED ADMIN ROUTES ================= */}
 
       <Route element={<AdminProtectedRoute />}>
+        <Route
+          path="/admin/dashboard"
+          element={<AdminDashboard />}
+        />
 
-  
- {/* ================= RECRUITER ================= */}
-
-      <Route
-        path="/recruiter/post-job"
-        element={<PostJob />}
-      />
+        {/* ================= RECRUITER ================= */}
 
       </Route>
 
