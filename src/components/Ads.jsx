@@ -241,6 +241,216 @@ export default Ads;
 
 
 
+// import { useEffect, useRef } from "react";
+
+// /* =========================================================
+//    HIGH REVENUE FORMAT ADS
+// ========================================================= */
+
+// const AD_CONFIGS = {
+//   "160x300": {
+//     width: 160,
+//     height: 300,
+//     key: "f44d2c44bb180bf086b9ed9d4dfa1bcb",
+//     src: "https://www.highrevenueformat.com/f44d2c44bb180bf086b9ed9d4dfa1bcb/invoke.js",
+//   },
+
+//   "320x50": {
+//     width: 320,
+//     height: 50,
+//     key: "307b221387cc5d827c04a022a0bf1d1f",
+//     src: "https://www.highrevenueformat.com/307b221387cc5d827c04a022a0bf1d1f/invoke.js",
+//   },
+
+//   "468x60": {
+//     width: 468,
+//     height: 60,
+//     key: "ac40634fc67b2b36515a85d15736b857",
+//     src: "https://bauval.org/22/ac40634fc67b2b36515a85d15736b857",
+//   },
+
+//   "300x250": {
+//     width: 300,
+//     height: 250,
+//     key: "4922d9be567a700c2fb8ebe33fa4caf2",
+//     src: "https://bauval.org/22/4922d9be567a700c2fb8ebe33fa4caf2",
+//   },
+
+//   "728x90": {
+//     width: 728,
+//     height: 90,
+//     key: "aaecdb4c7c7f14863630123143dc2fd4",
+//     src: "https://www.highrevenueformat.com/aaecdb4c7c7f14863630123143dc2fd4/invoke.js",
+//   },
+
+//   // Add 160x600 here when you share its ad script.
+// };
+
+// /* =========================================================
+//    PROFITABLE RATE ADS
+// ========================================================= */
+
+// const PROFITABLE_RATE = {
+//   "profit-1":
+//     "https://pl31279381.profitableratecpmnetwork.com/19/39/6a/19396acf310a027f4dbee458cad9bc9e.js",
+
+//   "profit-2":
+//     "https://pl31279385.profitableratecpmnetwork.com/84/e3/3d/84e33d944bd8672f824018fd3e509e4f.js",
+// };
+
+// /* =========================================================
+//    DIMENSIONS
+// ========================================================= */
+
+// const DIMENSIONS = {
+//   "160x300": "w-[160px] h-[300px]",
+//   "160x600": "w-[160px] h-[600px]",
+//   "300x250": "w-[300px] h-[250px]",
+//   "320x50": "w-[320px] h-[50px]",
+//   "468x60": "w-[468px] h-[60px]",
+//   "728x90": "w-[728px] h-[90px]",
+
+//   "profit-1": "w-full min-h-[50px]",
+//   "profit-2": "w-full min-h-[50px]",
+// };
+
+// /* =========================================================
+//    HIGH REVENUE FORMAT LOADER
+//    Each ad loads inside its own iframe.
+// ========================================================= */
+
+// function loadHighRevenueAd(container, config) {
+//   const { key, width, height, src } = config;
+
+//   const iframe = document.createElement("iframe");
+
+//   iframe.width = width;
+//   iframe.height = height;
+
+//   iframe.style.width = `${width}px`;
+//   iframe.style.height = `${height}px`;
+//   iframe.style.border = "0";
+//   iframe.style.margin = "0";
+//   iframe.style.padding = "0";
+//   iframe.style.display = "block";
+//   iframe.style.overflow = "hidden";
+
+//   iframe.setAttribute("frameBorder", "0");
+//   iframe.setAttribute("scrolling", "no");
+//   iframe.setAttribute("title", "Advertisement");
+
+//   container.appendChild(iframe);
+
+//   const iframeDocument =
+//     iframe.contentDocument || iframe.contentWindow.document;
+
+//   iframeDocument.open();
+
+//   iframeDocument.write(`
+//     <!DOCTYPE html>
+//     <html>
+//       <head>
+//         <meta
+//           name="viewport"
+//           content="width=${width}, initial-scale=1.0"
+//         />
+
+//         <style>
+//           html,
+//           body {
+//             margin: 0;
+//             padding: 0;
+//             width: ${width}px;
+//             height: ${height}px;
+//             overflow: hidden;
+//             background: transparent;
+//           }
+//         </style>
+//       </head>
+
+//       <body>
+//         <script>
+//           window.atOptions = {
+//             key: "${key}",
+//             format: "iframe",
+//             height: ${height},
+//             width: ${width},
+//             params: {}
+//           };
+//         <\/script>
+
+//         <script src="${src}" async><\/script>
+//       </body>
+//     </html>
+//   `);
+
+//   iframeDocument.close();
+
+//   return iframe;
+// }
+
+// /* =========================================================
+//    PROFITABLE RATE LOADER
+// ========================================================= */
+
+// function loadProfitableRateAd(container, src) {
+//   const script = document.createElement("script");
+
+//   script.src = src;
+//   script.async = true;
+
+//   container.appendChild(script);
+
+//   return script;
+// }
+
+// /* =========================================================
+//    ADS COMPONENT
+// ========================================================= */
+
+// const Ads = ({ type }) => {
+//   const adRef = useRef(null);
+
+//   useEffect(() => {
+//     const container = adRef.current;
+
+//     if (!container || !type) return;
+
+//     container.innerHTML = "";
+
+//     const highRevenueConfig = AD_CONFIGS[type];
+
+//     if (highRevenueConfig) {
+//       loadHighRevenueAd(container, highRevenueConfig);
+//     }
+
+//     const profitableRateSrc = PROFITABLE_RATE[type];
+
+//     if (profitableRateSrc) {
+//       loadProfitableRateAd(container, profitableRateSrc);
+//     }
+
+//     return () => {
+//       container.innerHTML = "";
+//     };
+//   }, [type]);
+
+//   if (!type || !DIMENSIONS[type]) {
+//     return null;
+//   }
+
+//   return (
+//     <div
+//       ref={adRef}
+//       className={`${DIMENSIONS[type]} overflow-hidden`}
+//       data-ad-type={type}
+//       data-ad-placement="techby"
+//     />
+//   );
+// };
+
+// export default Ads;
+
 
 
 
@@ -419,3 +629,6 @@ export default Ads;
 // };
 
 // export default Ads;
+
+
+

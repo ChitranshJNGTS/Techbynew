@@ -966,6 +966,7 @@ import {
 import Navbar from "./Navbar";
 import Ads from "./Ads";
 import Footer from "./Footer";
+import MobileBottomBar from "./MobileBottomBar";
 
 const API_URL =
   import.meta.env.VITE_API_URL || "http://localhost:5050";
@@ -1512,7 +1513,7 @@ export default function JobNews() {
             HERO
         ================================================= */}
 
-        <section className="relative mt-8 overflow-hidden border-b border-emerald-100 bg-white">
+        <section className="relative mt-12 overflow-hidden border-b border-emerald-100 bg-white">
 
           {/* BACKGROUND */}
 
@@ -1946,7 +1947,7 @@ export default function JobNews() {
         </main>
 
       </div>
-
+<MobileBottomBar/>
       <Footer />
     </>
   );
